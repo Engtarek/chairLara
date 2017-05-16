@@ -70,6 +70,7 @@ class CartController extends Controller
   public function test(Request $request){
     $customer = Customer::create($request->all());
     $cart = Cart::getContent();
+    dd($cart);
     $order =[
       'order_number'=>rand(),
       'details'=>serialize($cart),
