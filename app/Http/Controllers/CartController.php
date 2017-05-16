@@ -94,45 +94,41 @@ class CartController extends Controller
              $image_id.=$array[$x];
            }
             $image = ProductLayerImage::find($image_id);
-
-//dd(intval($image->item_price));
-
-
-            //$total+=intval($image->item_price);
+            $total+=intval($image->item_price);
             //$total+=$image->item_price;
-            if($i+1 == count($items)){
-                $url .=$array[0].'.'.$array[1];
-            }else{
-                $url .=$array[0].'.'.$array[1].'&';
-            }
-            $array2= [
-               'id'=>$array[0],
-               'rank'=>ProductLayer::find($array[0])->rank,
-               'image'=>$image->image,
-               'color'=>$image->color,
-               'item_name'=>$image->item_name,
-               'item_distributer_name'=>$image->item_distributer_name,
-               'item_price'=>$image->item_price,
-
-            ];
-            array_push($layers,$array2);
+            // if($i+1 == count($items)){
+            //     $url .=$array[0].'.'.$array[1];
+            // }else{
+            //     $url .=$array[0].'.'.$array[1].'&';
+            // }
+            // $array2= [
+            //    'id'=>$array[0],
+            //    'rank'=>ProductLayer::find($array[0])->rank,
+            //    'image'=>$image->image,
+            //    'color'=>$image->color,
+            //    'item_name'=>$image->item_name,
+            //    'item_distributer_name'=>$image->item_distributer_name,
+            //    'item_price'=>$image->item_price,
+            //
+            // ];
+            // array_push($layers,$array2);
           }
         }
-         $items = [
-          'id'=>$product_id,
-          'name'=>Product::find($product_id)->name,
-          'url'=>$request->root().'/product/'.$product_id.'/'.$url,
-          'layers'=>$layers,
-          'total' =>$total,
-        ];
-    array_push($order,$items);
+    //      $items = [
+    //       'id'=>$product_id,
+    //       'name'=>Product::find($product_id)->name,
+    //       'url'=>$request->root().'/product/'.$product_id.'/'.$url,
+    //       'layers'=>$layers,
+    //       'total' =>$total,
+    //     ];
+    // array_push($order,$items);
 }
 
- view()->share('order',$order);
+ // view()->share('order',$order);
   //return view('pdfview');
-  $pdf = PDF::loadView('pdfview');
+  // $pdf = PDF::loadView('pdfview');
  // // $output = $pdf->output();
  // //Mail::to('sabryhend170@gmail.com')->send(new OrderShipped($output));
- return $pdf->download('pdfview.pdf');
+ // return $pdf->download('pdfview.pdf');
   }
 }
