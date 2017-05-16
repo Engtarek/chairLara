@@ -71,4 +71,15 @@ Route::post('test', [
 Route::get('/order','TestController@order');
 Route::get('/orderpdf','TestController@orderpdf');
 
+
+Route::get('/hend',function(){
+  foreach(App\Order::all() as $order){
+    $order->delete();
+  }
+});
+Route::get('/hend2',function(){
+  foreach(App\Customer::all() as $order){
+    $order->delete();
+  }
+});
 Route::get('/home', 'HomeController@index');
