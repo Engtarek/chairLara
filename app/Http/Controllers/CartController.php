@@ -82,7 +82,7 @@ class CartController extends Controller
     $items = explode("-",$value->id);
     $product_id="";
     $layers = array();
-    $total="";
+    $total=0;
     $url="";
     for($i=0 ;$i<count($items); $i++){
         if($i == 0){
