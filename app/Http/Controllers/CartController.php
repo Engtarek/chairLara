@@ -88,8 +88,10 @@ class CartController extends Controller
         if($i == 0){
             $product_id =  $items[0];
           }else{
+
             $array  = array_map('intval', str_split($items[$i]));
             $image = ProductLayerImage::find($array[1]);
+            dd($image);
             $total+=$image->item_price;
             if($i+1 == count($items)){
                 $url .=$array[0].'.'.$array[1];
