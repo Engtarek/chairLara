@@ -101,11 +101,11 @@ class CartController extends Controller
             }else{
                 $url .=$array[0].'.'.$image_id.'&';
             }
-            dd($image->image);
+
             $array2= [
                'id'=>$array[0],
                'rank'=>ProductLayer::find($array[0])->rank,
-               'image'=>$image->image,
+              // 'image'=>$image->image,
                'color'=>$image->color,
                'item_name'=>$image->item_name,
                'item_distributer_name'=>$image->item_distributer_name,
