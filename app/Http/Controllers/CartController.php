@@ -90,7 +90,6 @@ class CartController extends Controller
           }else{
 
             $array  = array_map('intval', str_split($items[$i]));
-            dd($array);
             $image = ProductLayerImage::find($array[1]);
             $total+=$image->item_price;
             if($i+1 == count($items)){
