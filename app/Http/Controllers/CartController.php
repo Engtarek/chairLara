@@ -101,18 +101,17 @@ class CartController extends Controller
             }else{
                 $url .=$array[0].'.'.$image_id.'&';
             }
-            return $url;
-            // $array2= [
-            //    'id'=>$array[0],
-            //    'rank'=>ProductLayer::find($array[0])->rank,
-            //    'image'=>$image->image,
-            //    'color'=>$image->color,
-            //    'item_name'=>$image->item_name,
-            //    'item_distributer_name'=>$image->item_distributer_name,
-            //    'item_price'=>$image->item_price,
-            //
-            // ];
-            // array_push($layers,$array2);
+            $array2= [
+               'id'=>$array[0],
+               'rank'=>ProductLayer::find($array[0])->rank,
+               'image'=>$image->image,
+               'color'=>$image->color,
+               'item_name'=>$image->item_name,
+               'item_distributer_name'=>$image->item_distributer_name,
+               'item_price'=>$image->item_price,
+
+            ];
+            array_push($layers,$array2);
           }
         }
     //      $items = [
