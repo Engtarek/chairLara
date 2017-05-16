@@ -96,11 +96,12 @@ class CartController extends Controller
             $image = ProductLayerImage::find($image_id);
             //$total+=intval($image->item_price);
             //$total+=$image->item_price;
-            // if($i+1 == count($items)){
-            //     $url .=$array[0].'.'.$array[1];
-            // }else{
-            //     $url .=$array[0].'.'.$array[1].'&';
-            // }
+            if($i+1 == count($items)){
+                $url .=$array[0].'.'.$image_id;
+            }else{
+                $url .=$array[0].'.'.$image_id.'&';
+            }
+            return $url;
             // $array2= [
             //    'id'=>$array[0],
             //    'rank'=>ProductLayer::find($array[0])->rank,
