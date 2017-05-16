@@ -84,7 +84,7 @@ class CartController extends Controller
     $layers = array();
     $total=0;
     $url="";
-    $image_id="";
+    $image_id=0;
     for($i=0 ;$i<count($items); $i++){
         if($i == 0){
             $product_id =  $items[0];
