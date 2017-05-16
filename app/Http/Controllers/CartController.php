@@ -93,8 +93,7 @@ class CartController extends Controller
            for($x=1 ;$x<count($array); $x++){
              $image_id.=$array[$x];
            }
-           dd($image_id);
-          return  $image = ProductLayerImage::find($array[1]);
+            $image = ProductLayerImage::find($array[1]);
             $total+=$image->item_price;
             if($i+1 == count($items)){
                 $url .=$array[0].'.'.$array[1];
