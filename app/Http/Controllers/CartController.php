@@ -14,7 +14,7 @@ class CartController extends Controller
 {
   public function AddToCart(Request $request,$id,$id2){
     $Product = Product::find($id);
-    $price="";
+    $price=0;
     $suk = $Product->id;
     $feature =$Product->name;
     foreach(explode("&",$id2) as $key=>$data){
