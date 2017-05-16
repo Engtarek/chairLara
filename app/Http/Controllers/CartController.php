@@ -84,12 +84,12 @@ class CartController extends Controller
     $layers = array();
     $total=0;
     $url="";
-    dd($items);
     for($i=0 ;$i<count($items); $i++){
         if($i == 0){
             $product_id =  $items[0];
           }else{
-            return $array  = array_map('intval', str_split($items[$i]));
+           $array  = array_map('intval', str_split($items[$i]));
+           dd($array);
           return  $image = ProductLayerImage::find($array[1]);
             $total+=$image->item_price;
             if($i+1 == count($items)){
