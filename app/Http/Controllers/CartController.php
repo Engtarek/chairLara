@@ -70,7 +70,6 @@ class CartController extends Controller
   public function test(Request $request){
     $customer = Customer::create($request->all());
     $cart = Cart::getContent();
-    dd($cart);
     $order =[
       'order_number'=>rand(),
       'details'=>serialize($cart),
@@ -85,6 +84,7 @@ class CartController extends Controller
     $layers = array();
     $total=0;
     $url="";
+    dd($items);
     for($i=0 ;$i<count($items); $i++){
         if($i == 0){
             $product_id =  $items[0];
