@@ -82,7 +82,7 @@ class CartController extends Controller
     $items = explode("-",$value->id);
     $product_id="";
     $layers = array();
-    $total=0;
+    $total="";
     $url="";
     $image_id="";
     for($i=0 ;$i<count($items); $i++){
@@ -94,7 +94,6 @@ class CartController extends Controller
              $image_id.=$array[$x];
            }
             $image = ProductLayerImage::find($image_id);
-            dd($image->item_price);
             $total+=$image->item_price;
             if($i+1 == count($items)){
                 $url .=$array[0].'.'.$array[1];
