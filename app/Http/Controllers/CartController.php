@@ -101,6 +101,7 @@ class CartController extends Controller
             }else{
                 $url .=$array[0].'.'.$image_id.'&';
             }
+            dd($image);
             $array2= [
                'id'=>$array[0],
                'rank'=>ProductLayer::find($array[0])->rank,
