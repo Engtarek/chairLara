@@ -8,6 +8,24 @@
   .table-striped>tbody>tr:nth-child(odd)>th {
   	background-color: #ddd;
   }
+  .table-striped>tbody>tr:nth-child(even)>td,
+  .table-striped>tbody>tr:nth-child(even)>th {
+    background-color: #eee;
+  }
+  .parent{
+    width:65px;
+    height:85px;
+    display:inline-block;
+  }
+  .chair{
+    width: 575px;
+    height: 655px;
+    position: absolute;
+    transform: scale(.13);
+    margin-left: -245px;
+    margin-top: -283px;
+    background-position: 0px 0px;
+  }
 </style>
 @endsection
 
@@ -18,6 +36,7 @@
             <table class="table table-striped table-condensed">
                 <thead>
                     <tr class="cart_menu">
+                      <th></th>
                       <th class="description">Product Name</th>
                       <th class="price">Price</th>
                       <th class="quantity">Quantity</th>
@@ -28,6 +47,13 @@
                 <tbody>
                   @foreach($items as $item)
                     <tr>
+                      <td>
+                        <div class="parent">
+                          @foreach($item->attributes as $layer)
+                          <div class="chair" style="background: url(/products/{{$layer['product_id']}}/image/{{$layer['image']}});z-index:{{$layer['rank']}}"></div>
+                          @endforeach
+                        </div>
+                      </td>
                       <td class="cart_description">
                           <h4>{{$item->name}}</h4>
                       </td>

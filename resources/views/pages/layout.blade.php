@@ -58,7 +58,9 @@
             @foreach(Cart::getContent() as $cart)
             <li>
               <p style="text-align:center">{{$cart->name}}</p>
-              <p style="text-align:center">{{$cart->quantity}} <i class="fa fa-times" aria-hidden="true"></i> {{$cart->price}}</p>
+              <p style="display:inline-block;float:left"> QTY : {{$cart->quantity}}</p>
+              <p style="display:inline-block;float:right">Price : {{$cart->price}}</p>
+              <p style="clear:both"></p>
             </li>
               <li role="separator" class="divider"></li>
             @endforeach
@@ -69,6 +71,19 @@
               @else
               <a href="{{url('/checkout')}}" style="text-align:center" class="btn btn-default">Check Out</a>
               @endif
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            @if(Auth::check()) {{Auth::user()->name}} @else Account @endif
+            <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+              @if(Auth::check())
+            <li><a href="{{ url('/user/logout') }}">Logout</a></li>
+            @else
+            <li><a href="{{url('/user/login')}}">Login</a></li>
+            @endif
           </ul>
         </li>
       </ul>

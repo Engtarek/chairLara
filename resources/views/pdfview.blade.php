@@ -34,8 +34,10 @@
 
   </head>
   <body>
+
     @foreach($order as $data)
     <p>Product : {{$data['name']}}</p>
+    <p>quantity: {{$data['quantity']}}</p>
     <p>Total Price : {{$data['total']}}</p>
     <p>Images : </p>
 

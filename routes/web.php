@@ -11,7 +11,7 @@
 |
 */
 Auth::routes();
-Route::group(['prefix' => 'admin','middleware'=>'auth'], function () {
+Route::group(['prefix' => 'admin','middleware' => ['auth', 'is-admin']], function () {
   Route::get('/products/data','ProductController@data');
   Route::resource('/products','ProductController');
 
@@ -37,7 +37,7 @@ Route::get('/','TestController@show_product');
 Route::get('/product/{id}/{id2?}','TestController@product');
 
 //Cart
-Route::get('/add/{id}/{id2}', 'CartController@AddToCart');
+Route::get('/add/{id}/{id2}/{id3}', 'CartController@AddToCart');
 Route::get('/cart', [
   'uses'=>'CartController@Cart',
   'as'=>'cart.show'
@@ -70,5 +70,13 @@ Route::post('test', [
 //create PDF
 Route::get('/order','TestController@order');
 Route::get('/orderpdf','TestController@orderpdf');
+
+//user
+
+Route::get('/user/login', 'UserController@login');
+Route::post('/user/login', 'UserController@save_login');
+Route::get('/user/register', 'UserController@register');
+Route::post('/user/register', 'UserController@save_register');
+Route::get('/user/logout', 'UserController@logout');
 
 Route::get('/home', 'HomeController@index');

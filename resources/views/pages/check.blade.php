@@ -10,8 +10,9 @@
 @section('content')
 <div class="container">
 <form method="post" action="{{url('/test')}}">
-  <input type="hidden" name="_token" value="{{csrf_token()}}">
-  <div class="form-group required">
+  <p>Payment Section</p>
+   <input type="hidden" name="_token" value="{{csrf_token()}}">
+  <!-- <div class="form-group required">
     <label for="">FIRST NAME </label>
     <input type="text"  name="first_name" class="form-control"  placeholder="" required>
   </div>
@@ -46,7 +47,7 @@
   <div class="form-group required">
     <label for="">POSTCODE / ZIP </label>
     <input type="text" name="ZIP" class="form-control"  placeholder="" required>
-  </div>
+  </div> -->
   <h2>Your Order</h2>
     <table class="table table-bordered">
      <thead>
@@ -70,7 +71,7 @@
        </tr>
      </tfoot>
    </table>
-  <button type="submit" class="btn btn-defaults">Place order</button>
+  <button type="submit" class="btn btn-defaults">Download Order</button>
 </form>
 
  </div>
