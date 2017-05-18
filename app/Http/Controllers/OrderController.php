@@ -24,7 +24,7 @@ class OrderController extends Controller
         return $model->order_number;
      })
      ->editColumn('total',function($model){
-        $price = "";
+        $price = 0;
         foreach (unserialize($model->details) as $key => $value) {
           $price += $value->quantity * $value->price;
         }
