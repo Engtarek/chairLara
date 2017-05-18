@@ -107,6 +107,7 @@
     <script src="/js/custom.js"></script>
     <script src="/js/touch.js"></script>
     <script src="/js/social.js"></script>
+    <script src="/js/hend.js"></script>
     <script>
     $(document).ready(function(){
       $('.cart_quantity_up').click( function(e) {
@@ -192,6 +193,9 @@
         <?php }?>
         <?php foreach($layers as $data){?>
           clicktouch("img_<?php echo $data->rank; ?>","<?php echo $data->product_id;?>");
+        <?php }?>
+        <?php foreach($layers as $data){?>
+            touchchair("img_<?php echo $data->rank; ?>");
         <?php }?>
       }else{
         //change position of product
