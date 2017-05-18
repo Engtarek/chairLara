@@ -7,12 +7,6 @@
   <link rel="stylesheet" type="text/css" href="\css\jssocials.css" />
   <link rel="stylesheet" type="text/css" href="\css\jssocials-theme-minima.css" />
   <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.css" />
-  <script>
-      $(document).bind('mobileinit',function(){
-          $.mobile.keepNative = "select,input,div";
-      });
-  </script>
-  <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
 
 @endsection
 
@@ -102,7 +96,12 @@
   </div>
 @endsection
 @section('script')
-
+<script>
+    $(document).bind('mobileinit',function(){
+        $.mobile.keepNative = "select,input,div";
+    });
+</script>
+<script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
     <script src="/js/jssocials.min.js"></script>
     <script src="/js/chair.js"></script>
     <script src="/js/custom.js"></script>
