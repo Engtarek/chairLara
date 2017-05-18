@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.css" />
   <script>
       $(document).bind('mobileinit',function(){
-          $.mobile.keepNative = "select,input,div";
+          //$.mobile.keepNative = "select,input,div";
       });
   </script>
   <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
@@ -182,7 +182,7 @@
       function isTouchDevice(){
           return true == ("ontouchstart" in window || window.DocumentTouch && document instanceof DocumentTouch);
       }
-      
+
       if(isTouchDevice()===true) {
         <?php foreach($layers as $data){?>
           lefttouch("img_<?php echo $data->rank; ?>","<?php echo $data->product_id;?>");
