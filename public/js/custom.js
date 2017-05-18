@@ -9,8 +9,10 @@ function chair(param2){
       down=true;
       if(e.type == 'mousedown'){
           startPoint=e.clientX;
+          alert(startPoint);
       }else if(e.type == 'touchstart'){
           startPoint=e.originalEvent.touches[0].clientX;
+          alert(startPoint);
       }
 
 
