@@ -9,6 +9,7 @@
         "barryvdh/laravel-dompdf": "^0.8.0",
         "chencha/share": "^5.2",
         "darryldecode/cart": "~3.0",
+        "doctrine/dbal": "^2.5",
         "guzzlehttp/guzzle": "^6.2",
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",

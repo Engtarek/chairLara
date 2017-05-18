@@ -81,6 +81,7 @@ function chair(param2){
       down=false;
       startPoint=null;
   });
+
 //   let down=false;
 //   let startPoint=null;
 //   let x=0;
