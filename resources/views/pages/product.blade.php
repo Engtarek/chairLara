@@ -12,7 +12,7 @@
           $.mobile.keepNative = "select,input,div";
       });
   </script>
-
+  <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
 
 @endsection
 
@@ -102,7 +102,7 @@
   </div>
 @endsection
 @section('script')
-  <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+
     <script src="/js/jssocials.min.js"></script>
     <script src="/js/chair.js"></script>
     <script src="/js/custom.js"></script>
