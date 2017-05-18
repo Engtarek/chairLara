@@ -196,10 +196,11 @@
         <?php }?>
       }else{
         //change position of product
+      }
         <?php foreach($layers as $data){?>
             changepostion("img_<?php echo $data->rank; ?>","<?php echo $data->product_id;?>");
         <?php }?>
         //end position
-      }
+      
     </script>
 @endsection
