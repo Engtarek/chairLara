@@ -1,5 +1,6 @@
 let param2;
 function chair(param2){
+  alert('fgdjfghdfj');
   let down=false;
   let startPoint=null;
   let x=0;
