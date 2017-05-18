@@ -96,11 +96,11 @@
   </div>
 @endsection
 @section('script')
-<!-- <script>
+ <script>
     $(document).bind('mobileinit',function(){
         $.mobile.keepNative = "select,input,div";
     });
-</script> -->
+</script>
 <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
     <script src="/js/jssocials.min.js"></script>
     <script src="/js/chair.js"></script>
