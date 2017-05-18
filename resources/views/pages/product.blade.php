@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.css" />
   <script>
       $(document).bind('mobileinit',function(){
-          //$.mobile.keepNative = "select,input,div";
+          $.mobile.keepNative = "select,input,div";
       });
   </script>
 
