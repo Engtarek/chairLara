@@ -12,6 +12,7 @@
          $.mobile.keepNative = "select,input,div";
      });
  </script>
+ <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
  <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
 
 @endsection
@@ -201,6 +202,6 @@
             changepostion("img_<?php echo $data->rank; ?>","<?php echo $data->product_id;?>");
         <?php }?>
         //end position
-      
+
     </script>
 @endsection
