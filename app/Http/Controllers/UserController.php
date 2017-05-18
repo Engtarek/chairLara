@@ -27,6 +27,7 @@ class UserController extends Controller
       $user->role= 0;
       $user->password=Hash::make($request->password);
       $user->save();
+      Auth::login($user);
        return redirect()->intended('/cart');
     }
     public function logout(){
