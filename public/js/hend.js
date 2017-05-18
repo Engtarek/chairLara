@@ -17,11 +17,11 @@ function touchchair(param3){
               if(x===-2100){
                   x=0;
                   y-=700;
-                  $(this).find('.'+param2+'').css('background-position',x +'px '+y+'px');
+                  $(this).find('.'+param3+'').css('background-position',x +'px '+y+'px');
 
               }else{
                   x-=700;
-                  $(this).find('.'+param2+'').css('background-position',x +'px '+y+'px');
+                  $(this).find('.'+param3+'').css('background-position',x +'px '+y+'px');
               }
 
           }else if((e.originalEvent.touches[0].pageX-startPoint)+offset<0){
@@ -29,11 +29,11 @@ function touchchair(param3){
             if(x===0){
                 x-=2100;
                 y-=700;
-                $(this).find('.'+param2+'').css('background-position',x +'px '+y+'px');
+                $(this).find('.'+param3+'').css('background-position',x +'px '+y+'px');
 
             }else{
                 x+=700;
-                $(this).find('.'+param2+'').css('background-position',x +'px '+y+'px');
+                $(this).find('.'+param3+'').css('background-position',x +'px '+y+'px');
             }
           }
 
