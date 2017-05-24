@@ -128,7 +128,7 @@ class CartController extends Controller
         'name'=>Auth::user()->name,
         'email'=>Auth::user()->email,
         'phone'=>Auth::user()->phone,
-        'country'=>Auth::user()->country,
+        'country'=>Auth::user()->Country,
         'city'=>Auth::user()->city,
         'address'=>Auth::user()->address,
         'lat'=>$lat,

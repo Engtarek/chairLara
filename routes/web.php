@@ -93,7 +93,7 @@ Route::get('/home', 'HomeController@index');
 Route::get('/status',function(){
   $array=['new','confirmed','canceled','making','delivery','delivered'];
   foreach($array as $data){
-    $status = new App\OrderStatus;
+    $status = new App\OrderStatus();
     $status->name = $data;
     $status->save();
   }
