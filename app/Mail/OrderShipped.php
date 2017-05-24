@@ -17,16 +17,17 @@ class OrderShipped extends Mailable
      *
      * @return void
      */
-      public function __construct($output){
-          $this->output = $output;
+      public function __construct($customer,$order_pdf,$order){
+          $this->customer = $customer;
+          $this->order_pdf = $order_pdf;
+          $this->order = $order;
       }
-
     /**
      * Build the message.
      *
      * @return $this
      */
     public function build(){
-      return $this->view('mail')->attachData($this->output, 'name.pdf', ['mime' => 'application/pdf']);
+      return $this->view('mail')->with(['customer' => $this->customer,'order'=>$this->order])->attachData($this->order_pdf, 'name.pdf', ['mime' => 'application/pdf']);
     }
 }

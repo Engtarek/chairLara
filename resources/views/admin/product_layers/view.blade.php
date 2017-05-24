@@ -12,9 +12,9 @@
 @section('content')
 <section class="content-header">
   <ol class="breadcrumb">
-    <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-    <li><a href ="">Products</a></li>
-    <li class="active">Product layer</li>
+    <li><a href="{{url('/admin/home')}}"><i class="fa fa-dashboard"></i> Home</a></li>
+    <li><a href ="{{url('/admin/product_layers')}}">Layers</a></li>
+    <li class="active">{{$layer->rankname}}</li>
   </ol>
 </section>
 <hr>

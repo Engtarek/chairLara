@@ -98,6 +98,22 @@
 								<input type="text" name="last_name" placeholder="Enter Last Name Here.." class="form-control">
 							</div>
 						</div>
+            <div class="form-group">
+  						<label>Phone</label>
+  						<input type="text" name="phone" placeholder="Enter Phone Here.." class="form-control">
+  					</div>
+            <div class="form-group">
+  						<label>Country</label>
+  						<input type="text" name="country" placeholder="Enter Country Here.." class="form-control">
+  					</div>
+            <div class="form-group">
+  						<label>City</label>
+  						<input type="text" name="city" placeholder="Enter City Here.." class="form-control">
+  					</div>
+            <div class="form-group">
+  						<label>Address</label>
+  						<input type="text" name="address" placeholder="Enter Address Here.." class="form-control">
+  					</div>
   					<div class="form-group">
   						<label>Email Address</label>
   						<input type="text" name="email" placeholder="Enter Email Address Here.." class="form-control">

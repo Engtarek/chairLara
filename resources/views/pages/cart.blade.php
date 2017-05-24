@@ -68,7 +68,7 @@
                           </div>
                       </td>
                        <td class="cart_total">
-                          <p class="cart_total_price">{{ $item->quantity * $item->price }}</p>
+                          <p class="cart_total_price_{{$item->id}}">{{ $item->quantity * $item->price }}</p>
                       </td>
                       <td class="cart_delete">
                           <a class="cart_quantity_delete" href="{{route('item.delete',['id'=>$item->id])}}"><i class="glyphicon glyphicon-remove"></i></a>
@@ -78,11 +78,11 @@
               </tbody>
           </table>
           <div class="col-sm-12">
-          <button class="update_cart" style="float:right">Update Cart</button>
         </div>
           <div class="col-sm-6" style="border-top:1px solid #ddd;margin-top:10px;float:right">
-              <p>Cart Sub Total <span>{{Cart::getSubTotal()}}</span></p>
-              <p>Total <span>{{Cart::getTotal()}}</span></p>
+              <!-- <p>Cart Sub Total <span>{{Cart::getSubTotal()}}</span></p> -->
+              <p class="total">Total : <span>{{Cart::getTotal()}}</span></p>
+              <a class="btn btn-default check_out" href="{{url('/')}}">Continue Shopping</a>
               <a class="btn btn-default update" href="{{route('cart.clear')}}">Clear Cart</a>
               <a class="btn btn-default check_out" href="{{url('/checkout')}}">Check Out</a>
           </div>
@@ -99,21 +99,27 @@ $(document).ready(function(){
       e.preventDefault();
       var id = $(this).attr('data-id');
       $.ajax({url: "/increase_qty/"+id, success: function(result){
-       $(".qty_"+id).val(result);
+      $(".qty_"+id).val(result.single.quantity);
+      $(".cart_total_price_"+id).text(result.single.quantity * result.single.price);
+      $("p.total").find("span").text(result.total);
+      $(".dropdown").find("a.cart_count").find("span.badge").text(result.total_quantity);
+      $(".dropdown-menu").find(".quantity_"+id).find("span").text(result.single.quantity);
+      $(".dropdown-menu").find(".price_"+id).find("span").text(result.single.quantity * result.single.price);
      }});
     });
     $(".cart_quantity_down").click(function(e){
       e.preventDefault();
       var id = $(this).attr('data-id');
       $.ajax({url: "/decrease_qty/"+id, success: function(result){
-        console.log("qty"+id);
-       $(".qty_"+id).val(result);
+        $(".qty_"+id).val(result.single.quantity);
+        $(".cart_total_price_"+id).text(result.single.quantity * result.single.price);
+        $("p.total").find("span").text(result.total);
+        $(".dropdown").find("a.cart_count").find("span.badge").text(result.total_quantity);
+        $(".dropdown-menu").find(".quantity_"+id).find("span").text(result.single.quantity);
+        $(".dropdown-menu").find(".price_"+id).find("span").text(result.single.quantity * result.single.price);
      }});
     });
-    $('.update_cart').click(function(e){
-        e.preventDefault();
-        location.reload();
-    });
+
 });
 </script>
 @endsection

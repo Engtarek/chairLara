@@ -10,7 +10,7 @@
 @section('content')
 <section class="content-header">
   <ol class="breadcrumb">
-    <li><a href="{{url('/admin')}}"><i class="fa fa-dashboard"></i> Home</a></li>
+    <li><a href="{{url('/admin/home')}}"><i class="fa fa-dashboard"></i> Home</a></li>
     <li class="active">Products</li>
   </ol>
 </section>

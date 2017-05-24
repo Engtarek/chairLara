@@ -49,7 +49,7 @@
               @endif
             </div>
             <div class="form-group {{ $errors->has('item_distributer_name') ? ' has-error' : '' }}">
-              {!! Form::label('item_distributer_name', 'Item Distributer Name')!!}
+              {!! Form::label('item_details_name', 'Item Details')!!}
               {!!Form::text('item_distributer_name',null,['class'=>'form-control'])!!}
               @if ($errors->has('item_distributer_name'))
                 <span class="help-block">

@@ -47,24 +47,18 @@
       <ul class="nav navbar-nav navbar-right">
         <li><a href="{{url('/')}}">Products</a></li>
         <li class="dropdown">
-          <?php
-            $i =0;
-            foreach (Cart::getContent() as $cart) {
-              $i += $cart->quantity;
-            }
-            ?>
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-lg fa-shopping-bag" aria-hidden="true"></i><span class="badge badge-notify">{{$i}}</span> <span class="caret"></span></a>
+          <a href="#" class="dropdown-toggle cart_count" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-lg fa-shopping-bag" aria-hidden="true"></i><span class="badge badge-notify">{{Cart::getTotalQuantity()}}</span> <span class="caret"></span></a>
           <ul class="dropdown-menu">
             @foreach(Cart::getContent() as $cart)
             <li>
               <p style="text-align:center">{{$cart->name}}</p>
-              <p style="display:inline-block;float:left"> QTY : {{$cart->quantity}}</p>
-              <p style="display:inline-block;float:right">Price : {{$cart->price}}</p>
+              <p style="display:inline-block;float:left" class="quantity_{{$cart->id}}"> QTY : <span>{{$cart->quantity}}</span></p>
+              <p style="display:inline-block;float:right" class="price_{{$cart->id}}">Price : <span>{{$cart->price}}</span></p>
               <p style="clear:both"></p>
             </li>
               <li role="separator" class="divider"></li>
             @endforeach
-            <p>Total : {{Cart::getTotal()}}</p>
+            <p class="total">Total : <span>{{Cart::getTotal()}}<span></p>
             <a href="{{route('cart.show')}}" style="text-align:center" class=" btn btn-default">View Cart</a>
             @if(Cart::getContent()->count() == 0)
               <a href="{{route('cart.show')}}" style="text-align:center" class="btn btn-default">Check Out</a>

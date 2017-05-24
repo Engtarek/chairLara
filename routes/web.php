@@ -12,6 +12,7 @@
 */
 Auth::routes();
 Route::group(['prefix' => 'admin','middleware' => ['auth', 'is-admin']], function () {
+
   Route::get('/products/data','ProductController@data');
   Route::resource('/products','ProductController');
 
@@ -29,7 +30,15 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'is-admin']], functio
   Route::resource('/customers','CustomerController');
 
   Route::get('/orders/data','OrderController@data');
+  Route::get('/orders/items/{id}','OrderController@items');
+    Route::get('/orders/details/{id}','OrderController@details');
+    Route::get('/orders/assign/{id}','OrderController@assignOrder');
+    Route::post('/orders/assign','OrderController@saveAssignOrder');
   Route::resource('/orders','OrderController');
+
+  Route::get('/employees/data','EmployeeController@data');
+  Route::resource('/employees','EmployeeController');
+
 });
 
 //product
@@ -80,3 +89,12 @@ Route::post('/user/register', 'UserController@save_register');
 Route::get('/user/logout', 'UserController@logout');
 
 Route::get('/home', 'HomeController@index');
+
+Route::get('/status',function(){
+  $array=['new','confirmed','canceled','making','delivery','delivered'];
+  foreach($array as $data){
+    $status = new App\OrderStatus;
+    $status->name = $data;
+    $status->save();
+  }
+});

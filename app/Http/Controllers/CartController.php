@@ -11,8 +11,12 @@ use App\Order;
 use App\ProductLayerImage;
 use PDF;
 use Auth;
+use App\Mail\OrderShipped;
+use Illuminate\Support\Facades\Mail;
+
 class CartController extends Controller
 {
+  // add new element to cart
   public function AddToCart(Request $request,$id,$id2,$id3){
     $Product = Product::find($id);
     $price=0;
@@ -50,33 +54,58 @@ class CartController extends Controller
     return redirect('/cart');
 
   }
+
+  //get all elements in the cart
   public function Cart(){
    $items = Cart::getContent();
    return view('pages.cart',compact('items'));
   }
+
+  //delete the specified element from cart
   public function DeleteCartItem($id){
     Cart::remove($id);
     return redirect()->back();
   }
+
+  // subtract the quantity by one
   public function DecreaseQty($id){
     Cart::update($id, array(
       'quantity' => -1,
     ));
-    return Cart::get($id)->quantity;
-    //return redirect()->back();
+    $total=0;
+    foreach (Cart::getContent() as $key => $cart) {
+      $total += $cart->quantity * $cart->price;
+    }
+    return $array = [
+      'single'=>Cart::get($id),
+      'total'=>$total,
+      'total_quantity'=>Cart::getTotalQuantity(),
+    ];
   }
+
+  //add the quantity by one
   public function IncreaseQty($id){
     Cart::update($id, array(
       'quantity' => +1,
     ));
-    return Cart::get($id)->quantity;
-    //return redirect()->back();
+    $total=0;
+    foreach (Cart::getContent() as $key => $cart) {
+      $total += $cart->quantity * $cart->price;
+    }
+    return $array = [
+      'single'=>Cart::get($id),
+      'total'=>$total,
+      'total_quantity'=>Cart::getTotalQuantity(),
+    ];
   }
+
+  //delete all elements in the cart
   public function Clear(){
     Cart::clear();
     return redirect()->back();
   }
 
+  //check if user login=>make checkout else make login or register
   public function checkout(Request $request){
      if(Auth::check()){
         $cart = Cart::getContent();
@@ -86,20 +115,38 @@ class CartController extends Controller
      }
 
   }
+
+  //save customer ,order,create pdf and send email to customer
   public function test(Request $request){
       //save customer
-      // $customer = Customer::create($request->all());
-      // //save order
-       $cart = Cart::getContent();
-      // $order =[
-      //   'order_number'=>rand(),
-      //   'details'=>serialize($cart),
-      //   'total'=>Cart::getTotal(),
-      //   'customer_id'=>$customer->id,
-      // ];
-      // Order::create($order);
+       $param = array("address"=>Auth::user()->country." ".Auth::user()->city." ".Auth::user()->address);
+       $response = \Geocoder::geocode('json', $param);
+       $a = json_decode($response);
+       $lat = $a->results[0]->geometry->location->lat;
+       $lang = $a->results[0]->geometry->location->lng;
+      $data=[
+        'name'=>Auth::user()->name,
+        'email'=>Auth::user()->email,
+        'phone'=>Auth::user()->phone,
+        'country'=>Auth::user()->country,
+        'city'=>Auth::user()->city,
+        'address'=>Auth::user()->address,
+        'lat'=>$lat,
+        'lng'=>$lang,
+      ];
 
-       // pdf download
+     $customer = Customer::create($data);
+     //save order
+      $cart = Cart::getContent();
+      $order =[
+        'order_number'=>rand(),
+        'items'=>serialize($cart),
+        'total'=>Cart::getTotal(),
+        'customer_id'=>$customer->id,
+        'status_id'=>1,
+      ];
+      Order::create($order);
+       //pdf download
        $order=array();
        foreach ($cart as $key => $value) {
           $items = explode("-",$value->id);
@@ -126,56 +173,11 @@ class CartController extends Controller
         }
         view()->share('order',$order);
        //return view('test');
-       $pdf = PDF::loadView('test');
-       // $output = $pdf->output();
-       //Mail::to('sabryhend170@gmail.com')->send(new OrderShipped($output));
-        return $pdf->download('pdfview.pdf');
-
-      // pdf download
-      // $order = array();
-      // foreach ($cart as $key => $value) {
-      //    $items = explode("-",$value->id);
-      //    $product_id = $items[0];
-      //    $layers=array();
-      //    $url="";
-      //    $total=0;
-      //     for($i=1 ;$i<count($items); $i++){
-      //       $array  = array_map('intval', str_split($items[$i]));
-      //       $layer_id = $array[0];
-      //       $image_id ="";
-      //       for($x=1 ;$x<count($array); $x++){
-      //         $image_id.=$array[$x];
-      //       }
-      //       $image =ProductLayerImage::find($image_id);
-      //         $array2= [
-      //           'id'=>$layer_id,
-      //           'rank'=>ProductLayer::find($layer_id)->rank,
-      //           'image'=>$image->image,
-      //           'color'=>$image->color,
-      //           'item_name'=>$image->item_name,
-      //           'item_distributer_name'=>$image->item_distributer_name,
-      //           'item_price'=>$image->item_price,
-      //         ];
-      //         array_push($layers,$array2);
-      //          $total+=$image->item_price;
-      //         if($i+1 == count($items)){
-      //           $url .=$array[0].'.'.$image_id;
-      //        }else{
-      //          $url .=$array[0].'.'.$image_id.'&';
-      //      }
-      //       }
-      //       $items = [
-      //         'id'=>$product_id,
-      //         'name'=>Product::find($product_id)->name,
-      //         'url'=>$request->root().'/product/'.$product_id.'/'.$url,
-      //         'layers'=>$layers,
-      //         'total' =>$total * $value->quantity,
-      //         'quantity' =>$value->quantity,
-      //      ];
-      //    array_push($order,$items);
-      //  }
-
-
+      $pdf = PDF::loadView('test');
+      $order_pdf = $pdf->output();
+       Mail::to($customer->email)->send(new OrderShipped($customer,$order_pdf,$cart));
+       Cart::clear();
+       return " your order send successufelly ,please check your email";
   }
 
 

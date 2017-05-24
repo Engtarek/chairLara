@@ -13,7 +13,7 @@
 <section class="content-header">
   <ol class="breadcrumb">
     <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-    <li><a href ="">Products</a></li>
+    <li><a href ="{{url('/admin/products')}}">Products</a></li>
     <li class="active">{{$product->name}}</li>
   </ol>
 </section>

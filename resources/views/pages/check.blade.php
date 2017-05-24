@@ -53,13 +53,15 @@
      <thead>
        <tr>
          <th>Product</th>
+         <th>Quantity</th>
          <th>Total</th>
        </tr>
      </thead>
      <tbody>
        @foreach($cart as $data)
        <tr>
-         <td>{{$data->name }}<i class="fa fa-times" aria-hidden="true"></i>{{ $data->quantity}}</td>
+         <td>{{$data->name }}</td>
+         <td>{{ $data->quantity}}</td>
          <td>{{$data->price * $data->quantity}}</td>
        </tr>
        @endforeach
@@ -67,11 +69,11 @@
      <tfoot>
        <tr>
          <th>Total</th>
-         <th>{{Cart::getTotal()}}</th>
+         <th colspan="2" style="text-align:center">{{Cart::getTotal()}}</th>
        </tr>
      </tfoot>
    </table>
-  <button type="submit" class="btn btn-defaults">Download Order</button>
+  <button type="submit" class="btn btn-defaults">Finish Order</button>
 </form>
 
  </div>

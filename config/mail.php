@@ -1,17 +1,33 @@
 <?php
+// return array(
+//   "driver" => "smtp",
+//   "host" => "smtp.mailtrap.io",
+//   "port" => 2525,
+//   "from" => array(
+//       "address" => "from@example.com",
+//       "name" => "Example"
+//   ),
+//   "username" => "2efec61ca0abe1",
+//   "password" => "1fbb4b93ec04e4",
+//   "sendmail" => "/usr/sbin/sendmail -bs",
+//   "pretend" => false
+// );
 return array(
   "driver" => "smtp",
-  "host" => "smtp.mailtrap.io",
-  "port" => 2525,
+  "host" => "smtp.gmail.com",
+  "port" => 587,
   "from" => array(
-      "address" => "from@example.com",
+      "address" => "sabryhend170@gmail.com",
       "name" => "Example"
   ),
-  "username" => "2efec61ca0abe1",
-  "password" => "1fbb4b93ec04e4",
+  'encryption' => "tls",
+  "username" => "sabryhend170@gmail.com",
+  "password" => "hend661993",
   "sendmail" => "/usr/sbin/sendmail -bs",
   "pretend" => false
 );
+
+
 
 // return [
 //

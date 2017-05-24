@@ -40,7 +40,7 @@ class LayerController extends Controller
     return view('admin.product_layers.view',compact('layer'));
   }
 
-  //edit exiting product
+  //edit exiting layer
   public function update(Request $request, $id)
   {
     $this->validate($request,[
@@ -54,7 +54,7 @@ class LayerController extends Controller
     return redirect()->route("product_layers.show",$id)->with("success","The Layer updated successfully");
   }
 
-  //delete product
+  //delete layer
   public function destroy($id){
       $layer = ProductLayer::find($id);
 

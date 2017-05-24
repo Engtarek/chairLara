@@ -26,6 +26,10 @@ class UserController extends Controller
       $user->email=$request->email;
       $user->role= 0;
       $user->password=Hash::make($request->password);
+      $user->phone=$request->phone;
+      $user->country=$request->country;
+      $user->city=$request->city;
+      $user->address=$request->address;
       $user->save();
       Auth::login($user);
        return redirect()->intended('/cart');

@@ -33,7 +33,12 @@
             <th> Order Code </th>
             <th> Total </th>
             <th> Customer </th>
+            <th>Items</th>
+            <th>Date</th>
+            <th>Status</th>
             <th>Details</th>
+            <th>View</th>
+            <th>Assign Order</th>
           </tr>
         </thead>
         <tbody>
@@ -62,7 +67,12 @@ var table = $('#data').DataTable({
         {data: 'order_code', name: 'order_code'},
         {data: 'total', name: 'total'},
         {data: 'customer', name: 'customer'},
+        {data: 'items', name: 'items'},
+        {data: 'date', name: 'date'},
+        {data: 'status', name: 'status'},
         {data: 'details', name: 'details'},
+        {data: 'view', name: 'view'},
+        {data: 'assign_order', name: 'assign_order'},
     ],
     "language": {
       //if use english get another link

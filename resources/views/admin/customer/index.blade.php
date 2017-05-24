@@ -30,15 +30,13 @@
         <thead>
           <tr>
             <th> # </th>
-            <th> First Name </th>
-            <th> Last Name </th>
-            <th> Company Name </th>
+            <th> Name </th>
             <th> Email Address </th>
             <th> Phone </th>
-            <th> Address </th>
+            <th> Country </th>
             <th> City </th>
-            <th> state </th>
-              <th> Zip </th>
+            <th> Address </th>
+            <th> view </th>
           </tr>
         </thead>
         <tbody>
@@ -65,15 +63,13 @@ var table = $('#data').DataTable({
     ajax: "{{ url('/admin/customers/data') }}",//url get all data
     columns: [// the number of columns you have
         {data: 'id', name: 'id'},
-        {data: 'first_name', name: 'first_name'},
-        {data: 'last_name', name: 'last_name'},
-        {data: 'company_name', name: 'company_name'},
+        {data: 'name', name: 'name'},
         {data: 'email', name: 'email'},
         {data: 'phone', name: 'phone'},
-        {data: 'address', name: 'address'},
+        {data: 'country', name: 'country'},
         {data: 'city', name: 'city'},
-        {data: 'state', name: 'state'},
-        {data: 'zip', name: 'zip'},
+        {data: 'address', name: 'address'},
+        {data: 'view', name: 'view'},
     ],
     "language": {
       //if use english get another link

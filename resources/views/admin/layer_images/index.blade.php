@@ -10,8 +10,8 @@
 @section('content')
 <section class="content-header">
   <ol class="breadcrumb">
-    <li><a href="{{url('/admin')}}"><i class="fa fa-dashboard"></i> Home</a></li>
-    <li><a href="{{url('/admin')}}"><i class="fa fa-dashboard"></i> layers </a></li>
+    <li><a href="{{url('/admin/home')}}"><i class="fa fa-dashboard"></i> Home</a></li>
+    <li><a href="{{url('/admin/product_layers')}}"><i class="fa fa-dashboard"></i> layers </a></li>
     <li class="active">images</li>
   </ol>
 </section>
@@ -44,8 +44,9 @@
             <th> Image </th>
             <th> Color </th>
             <th> Item Name </th>
-            <th> Item Distributer </th>
+            <th> Item Details </th>
             <th> Item Price </th>
+            <th> View </th>
           </tr>
         </thead>
         <tbody>
@@ -79,6 +80,7 @@ var table = $('#data').DataTable({
         {data: 'item_name', name: 'item_name'},
         {data: 'item_dist', name: 'item_dist'},
         {data: 'item_price', name: 'item_price'},
+        {data: 'view', name: 'view'},
     ],
     "language": {
       //if use english get another link

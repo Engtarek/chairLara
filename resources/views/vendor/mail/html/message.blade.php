@@ -7,7 +7,7 @@
     @endslot
 
     {{-- Body --}}
-    {{ $slot }}
+    <!-- {{ $slot }} -->
 
     {{-- Subcopy --}}
     @if (isset($subcopy))
@@ -16,7 +16,7 @@
                 {{ $subcopy }}
             @endcomponent
         @endslot
-    @endif
+    @endifzzzz
 
     {{-- Footer --}}
     @slot('footer')

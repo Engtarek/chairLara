@@ -181,6 +181,7 @@ return [
         Chencha\Share\ShareServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
         Darryldecode\Cart\CartServiceProvider::class,
+        Alexpechkarev\GoogleGeocoder\GoogleGeocoderServiceProvider::class,
     ],
 
     /*

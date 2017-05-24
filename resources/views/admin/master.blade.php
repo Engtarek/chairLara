@@ -140,6 +140,11 @@
             <i class="fa fa-users"></i> <span>Orders</span>
           </a>
         </li>
+        <li class="treeview">
+          <a href="{{url('/admin/employees')}}">
+            <i class="fa fa-users"></i> <span>Employees</span>
+          </a>
+        </li>
       </ul>
     </section>
     <!-- /.sidebar -->
@@ -163,7 +168,8 @@
 <!-- ./wrapper -->
 
 <!-- jQuery 2.2.3 -->
-{!! Html::script('admin/plugins/jQuery/jquery-2.2.3.min.js')!!}
+
+ {!! Html::script('admin/plugins/jQuery/jquery-2.2.3.min.js')!!}
 <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
 <script>
   $.widget.bridge('uibutton', $.ui.button);
