@@ -115,8 +115,8 @@ class OrderController extends Controller
       }
 
       view()->share('order',$order_array);
-    // return view('order_pdf');
-    $pdf = PDF::loadView('order_pdf');
+    // return view('order-pdf');
+    $pdf = PDF::loadView('order-pdf');
     $order_pdf = $pdf->output();
     $customer = Customer::find($order->customer_id);
      Mail::to($employee_email)->send(new OrderShipped($customer,$order_pdf,$cart));
