@@ -44,6 +44,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'is-admin']], functio
 //product
 Route::get('/','TestController@show_product');
 Route::get('/product/{id}/{id2?}','TestController@product');
+Route::get('/change_image/{id}/{id2}','TestController@change_image');
 
 //Cart
 Route::get('/add/{id}/{id2}/{id3}', 'CartController@AddToCart');
@@ -77,8 +78,8 @@ Route::post('test', [
   'uses'=>'CartController@test',
 ]);
 //create PDF
-Route::get('/order','TestController@order');
-Route::get('/orderpdf','TestController@orderpdf');
+// Route::get('/order','TestController@order');
+// Route::get('/orderpdf','TestController@orderpdf');
 
 //user
 

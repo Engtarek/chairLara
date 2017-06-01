@@ -1,5 +1,5 @@
-let param2;
-function chair(param2){
+
+function chair(){
   let down=false;
   let startPoint=null;
   let x=0;
@@ -23,11 +23,11 @@ function chair(param2){
                 if(x===-2100){
                     x=0;
                     y-=700;
-                    $(this).find('.'+param2+'').css('background-position',x +'px '+y+'px');
+                    $(this).find('div').css('background-position',x +'px '+y+'px');
 
                 }else{
                     x-=700;
-                    $(this).find('.'+param2+'').css('background-position',x +'px '+y+'px');
+                    $(this).find('div').css('background-position',x +'px '+y+'px');
                 }
 
             }else if((e.clientX-startPoint)+offset<0){
@@ -35,11 +35,11 @@ function chair(param2){
               if(x===0){
                   x-=2100;
                   y-=700;
-                  $(this).find('.'+param2+'').css('background-position',x +'px '+y+'px');
+                  $(this).find('div').css('background-position',x +'px '+y+'px');
 
               }else{
                   x+=700;
-                  $(this).find('.'+param2+'').css('background-position',x +'px '+y+'px');
+                  $(this).find('div').css('background-position',x +'px '+y+'px');
               }
             }
 
@@ -52,11 +52,11 @@ function chair(param2){
                 if(x===-2100){
                     x=0;
                     y-=700;
-                    $(this).find('.'+param2+'').css('background-position',x +'px '+y+'px');
+                    $(this).find('div').css('background-position',x +'px '+y+'px');
 
                 }else{
                     x-=700;
-                    $(this).find('.'+param2+'').css('background-position',x +'px '+y+'px');
+                    $(this).find('div').css('background-position',x +'px '+y+'px');
                 }
 
             }else if((e.originalEvent.touches[0].clientX-startPoint)+offset<0){
@@ -64,11 +64,11 @@ function chair(param2){
               if(x===0){
                   x-=2100;
                   y-=700;
-                  $(this).find('.'+param2+'').css('background-position',x +'px '+y+'px');
+                  $(this).find('div').css('background-position',x +'px '+y+'px');
 
               }else{
                   x+=700;
-                  $(this).find('.'+param2+'').css('background-position',x +'px '+y+'px');
+                  $(this).find('div').css('background-position',x +'px '+y+'px');
               }
             }
 

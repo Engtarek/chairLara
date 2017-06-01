@@ -82,7 +82,6 @@ class CartController extends Controller
       'total_quantity'=>Cart::getTotalQuantity(),
     ];
   }
-
   //add the quantity by one
   public function IncreaseQty($id){
     Cart::update($id, array(
@@ -98,13 +97,11 @@ class CartController extends Controller
       'total_quantity'=>Cart::getTotalQuantity(),
     ];
   }
-
   //delete all elements in the cart
   public function Clear(){
     Cart::clear();
     return redirect()->back();
   }
-
   //check if user login=>make checkout else make login or register
   public function checkout(Request $request){
      if(Auth::check()){
@@ -113,17 +110,15 @@ class CartController extends Controller
      }else{
        return view('pages.login');
      }
-
   }
-
   //save customer ,order,create pdf and send email to customer
   public function test(Request $request){
       //save customer
-       $param = array("address"=>Auth::user()->country." ".Auth::user()->city." ".Auth::user()->address);
-       $response = \Geocoder::geocode('json', $param);
-       $a = json_decode($response);
-       $lat = $a->results[0]->geometry->location->lat;
-       $lang = $a->results[0]->geometry->location->lng;
+        $param = array("address"=>Auth::user()->country." ".Auth::user()->city." ".Auth::user()->address);
+        $response = \Geocoder::geocode('json', $param);
+        $a = json_decode($response);
+        $lat = $a->results[0]->geometry->location->lat;
+        $lang = $a->results[0]->geometry->location->lng;
       $data=[
         'name'=>Auth::user()->name,
         'email'=>Auth::user()->email,
@@ -131,8 +126,8 @@ class CartController extends Controller
         'country'=>Auth::user()->Country,
         'city'=>Auth::user()->city,
         'address'=>Auth::user()->address,
-        'lat'=>$lat,
-        'lng'=>$lang,
+         'lat'=>$lat,
+         'lng'=>$lang,
       ];
 
      $customer = Customer::create($data);
@@ -172,8 +167,8 @@ class CartController extends Controller
           array_push($order,$array);
         }
         view()->share('order',$order);
-       //return view('test');
-      $pdf = PDF::loadView('test');
+    //   return view('order-pdf');
+      $pdf = PDF::loadView('order-pdf');
       $order_pdf = $pdf->output();
        Mail::to($customer->email)->send(new OrderShipped($customer,$order_pdf,$cart));
        Cart::clear();

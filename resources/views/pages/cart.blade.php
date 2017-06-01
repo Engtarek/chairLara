@@ -46,12 +46,15 @@
                 </thead>
                 <tbody>
                   @foreach($items as $item)
+                  <?php
+                      $imagename="";
+                      $array = explode("-",$item->id);
+                      foreach ($array as $value){ $product_id=$array[0]; $imagename .= $value; }
+                  ?>
                     <tr>
                       <td>
                         <div class="parent">
-                          @foreach($item->attributes as $layer)
-                          <div class="chair" style="background: url(/products/{{$layer['product_id']}}/image/{{$layer['image']}});z-index:{{$layer['rank']}}"></div>
-                          @endforeach
+                          <div class="chair" style="background: url(/products/{{$product_id}}/history/{{$imagename}}.png)"></div>
                         </div>
                       </td>
                       <td class="cart_description">

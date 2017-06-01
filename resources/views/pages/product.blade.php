@@ -74,10 +74,8 @@
 @section('content')
   <div class="container2">
     <h1>{{$product->name}}</h1>
-     <div id="chair" class="parent">
-      @foreach($defaultimages as $value)
-        <div class="chair img_{{$value['rank']}}"  style="position:absolute;z-index:{{$value['rank']}};background-image: url('/products/{{$product->id}}/image/{{$value['image']['image']}}')"></div>
-      @endforeach
+    <div class="parent">
+      <div class="chair"  style="background-image: url('/products/{{$product->id}}/history/{{$image_name}}.png')"></div>
     </div>
     <div class="social"></div>
     <div class="colors">
@@ -90,7 +88,7 @@
        @endforeach
     </div>
   </div>
-  <div style="text-align:center">
+   <div style="text-align:center">
     <div class="cart_quantity_button" style="display:inline-block;padding-right:30px">
         <a class="cart_quantity_up"   href=""> + </a>
         <input style="text-align:center" class="cart_quantity_input" type="text" name="quantity" value="1" autocomplete="off" size="2">
@@ -102,104 +100,94 @@
   </div>
 @endsection
 @section('script')
+<script src="/js/jssocials.min.js"></script>
+  <script src="/js/social.js"></script>
+  <script src="/js/chair-click.js"></script>
+  <script src="/js/chair-move.js"></script>
 
-    <script src="/js/jssocials.min.js"></script>
-    <script src="/js/chair.js"></script>
-    <script src="/js/custom.js"></script>
-    <script src="/js/touch.js"></script>
-    <script src="/js/social.js"></script>
-    <script>
-    $(document).ready(function(){
-      $('.cart_quantity_up').click( function(e) {
-          e.preventDefault();
-          var counter = $('.cart_quantity_input').val();
-          counter++ ;
-          $('.cart_quantity_input').val(counter);
-          var qty= $('.cart_quantity_input').val();
-           $(".add-to-cart").attr("href", url+"/"+qty);
+  <script>
+    // 360° rotation when mouse move in mobile and desktop
+    chair();
+
+    //360° rotation when click in mobile and desktop
+    changepostion();
+
+    //second parameter contain layer_id and image_id
+    var default_param = "<?php echo $id2; ?>";
+
+   $(".img-circle").click(function(){
+      //layer_id.image_id
+      var layer_id = $(this).find("img").attr("id");
+      //product_id
+      var product_id = $(this).find("img").attr("data-product");
+      // return url in array such as  ["", "product", "product id", "layer_id.image_id&layer_id.image_id&..."]
+      var url = window.location.pathname.split('/');
+      //assign layer_id.image_id to url
+      if(url.length === 4 && url[3] === ""){
+        url[3] = default_param;
+      }else if(url.length === 3){
+        url[3] = default_param;
+      }
+      var last_element_in_url = url[3];
+      var  ch_layer_id="/product/"+product_id+'/';
+      var  ch_layer_id2="";
+      //change the value of layer_id.image_id  when click
+       for (var i=0; i<last_element_in_url.split('&').length; i++){
+         if(last_element_in_url.split('&')[i].split('.')[0] == layer_id.split('.')[0]){
+           ch_layer_id += layer_id;
+           ch_layer_id2 += layer_id;
+         }else{
+           ch_layer_id += last_element_in_url.split('&')[i];
+           ch_layer_id2 += last_element_in_url.split('&')[i];
+         }
+         if(i < last_element_in_url.split('&').length -1 ){
+           ch_layer_id +="&";
+           ch_layer_id2 +="&";
+         }
+       }
+       history.pushState(null, null,ch_layer_id);
+       //change image
+       $.ajax({url: "/change_image/"+product_id+"/"+ch_layer_id2+"", success: function(result){
+         $('.chair').css('background-image','url(/products/'+product_id+'/history/'+result+'.png)');
+        }
       });
-       $('.cart_quantity_down').click( function(e) {
-         e.preventDefault();
-            var counter = $('.cart_quantity_input').val();
-           if(counter >1){
-             counter-- ;
-           }
-         $('.cart_quantity_input').val(counter);
-         var qty= $('.cart_quantity_input').val();
-          $(".add-to-cart").attr("href", url+"/"+qty);
-       });
-        var url = $(".add-to-cart").attr("href");
+      social(window.location.href,product_name);
+      var qty= $('.cart_quantity_input').val();
+      $(".add-to-cart").attr("href", "/add/"+product_id+"/"+ch_layer_id2+"/"+qty);
+});
+
+social(window.location.href,product_name);
+</script>
+<script>
+  $(document).ready(function(){
+    $('.cart_quantity_up').click( function(e) {
+        e.preventDefault();
+        var counter = $('.cart_quantity_input').val();
+        counter++ ;
+        $('.cart_quantity_input').val(counter);
         var qty= $('.cart_quantity_input').val();
          $(".add-to-cart").attr("href", url+"/"+qty);
-
-   });
-       </script>
-       <script>
-    var default_param = "<?php echo $id2; ?>";
-     var url4 ="";
-    $(".img-circle").click(function(){
-        var layer_id = $(this).find("img").attr("id");
-        var product_id = $(this).find("img").attr("data-product");
-        var url = window.location.pathname.split('/');
-        if(url.length === 4 && url[3] === ""){
-          url[3] = default_param;
-        }else if(url.length === 3){
-          url[3] = default_param;
-        }
-        var last_element_in_url = url[3];
-        var  ch_layer_id="/product/"+product_id+'/';
-        var  ch_layer_id2="";
-        for (var i=0; i<last_element_in_url.split('&').length; i++){
-          if(last_element_in_url.split('&')[i].split('.')[0] == layer_id.split('.')[0]){
-            ch_layer_id += layer_id;
-            ch_layer_id2 += layer_id;
-          }else{
-            ch_layer_id += last_element_in_url.split('&')[i];
-            ch_layer_id2 += last_element_in_url.split('&')[i];
-          }
-          if(i < last_element_in_url.split('&').length -1 ){
-            ch_layer_id +="&";
-            ch_layer_id2 +="&";
-          }
-        }
-        history.pushState(null, null,ch_layer_id);
-        social(window.location.href,product_name);
-        var qty= $('.cart_quantity_input').val();
-        $(".add-to-cart").attr("href", "/add/"+product_id+"/"+ch_layer_id2+"/"+qty);
     });
-    social(window.location.href,product_name);
-    //  start code for change image
-      <?php foreach($layers as $key=>$data){if($key == 0){?>
-          changeimage("color_<?php echo $data->rank; ?>","img_<?php echo $data->rank; ?>",'jpg','<?php echo $data->product_id;?>');
-      <?php  }else{?>
-          changeimage("color_<?php echo $data->rank; ?>","img_<?php echo $data->rank; ?>",'png','<?php echo $data->product_id;?>');
-      <?php  } }?>
-    //  end change image
+     $('.cart_quantity_down').click( function(e) {
+       e.preventDefault();
+          var counter = $('.cart_quantity_input').val();
+         if(counter >1){
+           counter-- ;
+         }
+       $('.cart_quantity_input').val(counter);
+       var qty= $('.cart_quantity_input').val();
+        $(".add-to-cart").attr("href", url+"/"+qty);
+     });
+      var url = $(".add-to-cart").attr("href");
+      var qty= $('.cart_quantity_input').val();
+      $(".add-to-cart").attr("href", url+"/"+qty);
+  });
+       </script>
 
-      <?php foreach($layers as $data){?>
-          chair("img_<?php echo $data->rank; ?>");
-      <?php }?>
-      //check if device touch or not
-      function isTouchDevice(){
-          return true == ("ontouchstart" in window || window.DocumentTouch && document instanceof DocumentTouch);
-      }
 
-      if(isTouchDevice()===true) {
-        <?php foreach($layers as $data){?>
-          lefttouch("img_<?php echo $data->rank; ?>","<?php echo $data->product_id;?>");
-        <?php }?>
-        <?php foreach($layers as $data){?>
-          righttouch("img_<?php echo $data->rank; ?>","<?php echo $data->product_id;?>");
-        <?php }?>
-        <?php foreach($layers as $data){?>
-          clicktouch("img_<?php echo $data->rank; ?>","<?php echo $data->product_id;?>");
-        <?php }?>
-      }else{
-        //change position of product
-      }
-        <?php foreach($layers as $data){?>
-            changepostion("img_<?php echo $data->rank; ?>","<?php echo $data->product_id;?>");
-        <?php }?>
-        //end position
-    </script>
+
+
+
+
+
 @endsection

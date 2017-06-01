@@ -42,8 +42,7 @@ class ProductController extends Controller
 
     //delete product
     public function destroy($id){
-
-         $product = Product::find($id);
+        $product = Product::find($id);
         foreach($product->layers as $layer){
           foreach($layer->images as $image){
             File::delete(public_path('products/'.$id.'/image/'.$image->image));

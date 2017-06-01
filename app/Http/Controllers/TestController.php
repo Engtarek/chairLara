@@ -28,6 +28,7 @@ class TestController extends Controller
           ];
           array_push($defaultimages,$array);
         }
+        $image_name = merge_image($defaultimages,$id);
       }else{
         foreach($layers as $key=>$layer){
           $array =[
@@ -41,45 +42,23 @@ class TestController extends Controller
           }
           array_push($defaultimages,$array);
         }
+        $image_name = merge_image($defaultimages,$id);
       }
-
-      $fb_button = Share::load($request->url(), $product->name)->facebook();
-      $tweet_button = Share::load($request->url(), $product->name)->twitter();
-      $gplus_button = Share::load($request->url(), $product->name)->gplus();
-      $paint_button = Share::load($request->url(), $product->name)->pinterest();
-      return view('pages.product',compact('id2','product','layers','defaultimages','fb_button','tweet_button','gplus_button','paint_button'));
+      return view('pages.product',compact('id2','product','layers','image_name'));
     }
-    public function order(){
-       return '<a href="'.url("/orderpdf").'" class="btn btn-lg">Download PDF</a>';
-   }
-   public function orderpdf(Request $request){
-     $item = Product::find(1);
-     $layers = array();
-     foreach($item->layers as $layer){
-       $layer_image = $layer->images()->first();
-       $array= [
-         'id'=>$layer->id,
-         'rank'=>$layer->rank,
-         'image'=>$layer_image->image,
-         'color'=>$layer_image->color,
-         'item_name'=>$layer_image->item_name,
-         'item_distributer_name'=>$layer_image->item_distributer_name,
-         'item_price'=>$layer_image->item_price,
-       ];
-       array_push($layers,$array);
-     }
-     $items = [
-       'id'=>$item->id,
-       'name'=>$item->name,
-       'url'=>$request->root().'/product/1',
-       'layers'=>$layers,
-     ];
-    view()->share('items',$items);
-  // return view('pdfview');
-    $pdf = PDF::loadView('pdfview');
-    // $output = $pdf->output();
-    //Mail::to('sabryhend170@gmail.com')->send(new OrderShipped($output));
-    return $pdf->download('pdfview.pdf');
-   }
+    public function change_image($product_id,$id2){
+      $product = Product::find($product_id);
+      $defaultimages = [];
+      foreach(explode('&',$id2) as $data){
+        $layer = $product->layers->find(explode('.',$data)[0]);
+        $array =[
+          'rank'=>$layer->rank,
+          'image'=>$layer->Images->find(explode('.',$data)[1]),
+        ];
+        array_push($defaultimages,$array);
+      }
+      return  merge_image($defaultimages,$product_id);
+
+    }
 
 }
