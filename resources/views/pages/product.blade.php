@@ -157,10 +157,10 @@
        var spinner = new Spinner().spin(target);
        $.ajax({url: "/change_image/"+product_id+"/"+ch_layer_id2+"", success: function(result){
          $('.chair').css('background-image','url(/products/'+product_id+'/history/'+result+'.png)');
+           $('.chair').load(function(){
+               $('#foo').hide();
+           });
 
-         $(window).load(function() {
-            $('#foo').hide();
-          });
         }
       });
       social(window.location.href,product_name);
