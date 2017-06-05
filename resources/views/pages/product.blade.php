@@ -156,8 +156,16 @@
        var target = document.getElementById('foo')
        var spinner = new Spinner().spin(target);
        $.ajax({url: "/change_image/"+product_id+"/"+ch_layer_id2+"", success: function(result){
-         $('.chair').css('background-image','url(/products/'+product_id+'/history/'+result+'.png)');
-               $('#foo').hide();
+               let img=new Image();
+               img.onload=function(){
+                  $('.chair').css('background-image','url('+$(this).attr("src")+')');
+                  $('#foo').hide();
+                 //console.log(img);
+                // console.log($(this).attr('src'));
+
+               }
+               img.src='/products/'+product_id+'/history/'+result+'.png';
+               //$('#foo').hide();
 
         }
       });
