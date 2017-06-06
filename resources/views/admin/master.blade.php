@@ -25,6 +25,7 @@
       @yield('header')
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
+
 <div class="wrapper">
 
   <header class="main-header">
@@ -176,6 +177,7 @@
 </script>
 {!! Html::script('admin/bootstrap/js/bootstrap.min.js')!!}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+<!-- {!! Html::script('admin/plugins/morris/morris.min.js')!!} -->
 {!! Html::script('admin/plugins/sparkline/jquery.sparkline.min.js')!!}
 {!! Html::script('admin/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js')!!}
 {!! Html::script('admin/plugins/jvectormap/jquery-jvectormap-world-mill-en.js')!!}
@@ -187,7 +189,7 @@
 {!! Html::script('admin/plugins/slimScroll/jquery.slimscroll.min.js')!!}
 {!! Html::script('admin/plugins/fastclick/fastclick.js')!!}
 {!! Html::script('admin/dist/js/app.min.js')!!}
-<!-- {!! Html::script('admin/dist/js/pages/dashboard.js')!!} -->
+{!! Html::script('admin/dist/js/pages/dashboard.js')!!}
 {!! Html::script('admin/dist/js/demo.js')!!}
   @yield('footer')
 </body>
