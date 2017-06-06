@@ -91,36 +91,36 @@
 						<div class="row">
 							<div class="col-sm-6 form-group">
 								<label>First Name</label>
-								<input type="text" name="first_name" placeholder="Enter First Name Here.." class="form-control">
+								<input type="text" name="first_name" placeholder="Enter First Name Here.." class="form-control" required>
 							</div>
 							<div class="col-sm-6 form-group">
 								<label>Last Name</label>
-								<input type="text" name="last_name" placeholder="Enter Last Name Here.." class="form-control">
+								<input type="text" name="last_name" placeholder="Enter Last Name Here.." class="form-control" required>
 							</div>
 						</div>
             <div class="form-group">
   						<label>Phone</label>
-  						<input type="text" name="phone" placeholder="Enter Phone Here.." class="form-control">
+  						<input type="text" name="phone" placeholder="Enter Phone Here.." class="form-control" required>
   					</div>
             <div class="form-group">
   						<label>Country</label>
-  						<input type="text" name="country" placeholder="Enter Country Here.." class="form-control">
+  						<input type="text" name="country" placeholder="Enter Country Here.." class="form-control" required>
   					</div>
             <div class="form-group">
   						<label>City</label>
-  						<input type="text" name="city" placeholder="Enter City Here.." class="form-control">
+  						<input type="text" name="city" placeholder="Enter City Here.." class="form-control" required>
   					</div>
             <div class="form-group">
   						<label>Address</label>
-  						<input type="text" name="address" placeholder="Enter Address Here.." class="form-control">
+  						<input type="text" name="address" placeholder="Enter Address Here.." class="form-control" required>
   					</div>
   					<div class="form-group">
   						<label>Email Address</label>
-  						<input type="text" name="email" placeholder="Enter Email Address Here.." class="form-control">
+  						<input type="text" name="email" placeholder="Enter Email Address Here.." class="form-control" required>
   					</div>
   					<div class="form-group">
   						<label>password</label>
-  						<input type="password" name="password" placeholder="Enter Password Here.." class="form-control">
+  						<input type="password" name="password" placeholder="Enter Password Here.." class="form-control" required >
   					</div>
             	<input type="submit" name="login" class="btn" style="background-color:#357ae8" value="Register">
 					</div>
