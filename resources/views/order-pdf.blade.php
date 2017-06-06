@@ -49,13 +49,13 @@
       ?>
 
       <div class="parent">
-        <div class="chair" style="background: url(/products/{{$product_id}}/history/{{$imagename}}.png);background-position: 0px -700px"></div>
+        <div class="chair" style="background: url(/products/{{$product_id}}/history/{{$imagename}}.jpg);background-position: 0px -700px"></div>
       </div>
       <div class="parent">
-        <div class="chair" style="background: url(/products/{{$product_id}}/history/{{$imagename}}.png);background-position: 0px 0px"></div>
+        <div class="chair" style="background: url(/products/{{$product_id}}/history/{{$imagename}}.jpg);background-position: 0px 0px"></div>
       </div>
       <div class="parent">
-        <div class="chair" style="background: url(/products/{{$product_id}}/history/{{$imagename}}.png);background-position: -700px 0px;"></div>
+        <div class="chair" style="background: url(/products/{{$product_id}}/history/{{$imagename}}.jpg);background-position: -700px 0px;"></div>
       </div>
       <p>Details </p>
       <table class="table">

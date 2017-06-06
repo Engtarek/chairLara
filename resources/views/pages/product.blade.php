@@ -75,7 +75,7 @@
   <div class="container2">
     <h1>{{$product->name}}</h1>
     <div class="parent">
-      <div class="chair"  style="background-image: url('/products/{{$product->id}}/history/{{$image_name}}.png')"></div>
+      <div class="chair"  style="background-image: url('/products/{{$product->id}}/history/{{$image_name}}.jpg')"></div>
     </div>
     <div class="social"></div>
     <div class="colors">
@@ -108,9 +108,6 @@
   <script src="/js/spin.min.js"></script>
 
   <script>
-
-
-
     // 360° rotation when mouse move in mobile and desktop
     chair();
 
@@ -120,7 +117,7 @@
     //second parameter contain layer_id and image_id
     var default_param = "<?php echo $id2; ?>";
 
-   $(".img-circle").click(function(){
+    $(".img-circle").click(function(){
       //layer_id.image_id
       var layer_id = $(this).find("img").attr("id");
       //product_id
@@ -137,8 +134,8 @@
       var  ch_layer_id="/product/"+product_id+'/';
       var  ch_layer_id2="";
       //change the value of layer_id.image_id  when click
-       for (var i=0; i<last_element_in_url.split('&').length; i++){
-         if(last_element_in_url.split('&')[i].split('.')[0] == layer_id.split('.')[0]){
+      for (var i=0; i<last_element_in_url.split('&').length; i++){
+        if(last_element_in_url.split('&')[i].split('.')[0] == layer_id.split('.')[0]){
            ch_layer_id += layer_id;
            ch_layer_id2 += layer_id;
          }else{
@@ -152,21 +149,16 @@
        }
        history.pushState(null, null,ch_layer_id);
        //change image
-        $('#foo').show();
+       $('#foo').show();
        var target = document.getElementById('foo')
        var spinner = new Spinner().spin(target);
        $.ajax({url: "/change_image/"+product_id+"/"+ch_layer_id2+"", success: function(result){
-               let img=new Image();
-               img.onload=function(){
-                  $('.chair').css('background-image','url('+$(this).attr("src")+')');
-                  $('#foo').hide();
-                 //console.log(img);
-                // console.log($(this).attr('src'));
-
-               }
-               img.src='/products/'+product_id+'/history/'+result+'.png';
-               //$('#foo').hide();
-
+         let img=new Image();
+         img.onload=function(){
+            $('.chair').css('background-image','url('+$(this).attr("src")+')');
+            $('#foo').hide();
+          }
+          img.src='/products/'+product_id+'/history/'+result+'.jpg';
         }
       });
       social(window.location.href,product_name);
@@ -188,13 +180,13 @@ social(window.location.href,product_name);
     });
      $('.cart_quantity_down').click( function(e) {
        e.preventDefault();
-          var counter = $('.cart_quantity_input').val();
-         if(counter >1){
-           counter-- ;
-         }
+       var counter = $('.cart_quantity_input').val();
+       if(counter >1){
+         counter-- ;
+       }
        $('.cart_quantity_input').val(counter);
        var qty= $('.cart_quantity_input').val();
-        $(".add-to-cart").attr("href", url+"/"+qty);
+       $(".add-to-cart").attr("href", url+"/"+qty);
      });
       var url = $(".add-to-cart").attr("href");
       var qty= $('.cart_quantity_input').val();

@@ -54,7 +54,7 @@
                     <tr>
                       <td>
                         <div class="parent">
-                          <div class="chair" style="background: url(/products/{{$product_id}}/history/{{$imagename}}.png)"></div>
+                          <div class="chair" style="background: url(/products/{{$product_id}}/history/{{$imagename}}.jpg)"></div>
                         </div>
                       </td>
                       <td class="cart_description">

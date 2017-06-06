@@ -63,12 +63,13 @@ function merge_image($images,$product_id){
     if (!file_exists('products/'.$product_id.'/history')) {
         mkdir('products/'.$product_id.'/history', 0777, true);
     }
-    if(file_exists($imagename.'.png')){
-        File::delete(public_path('products/'.$product_id.'/history/'.$imagename.'.png'));
-       imagepng($outputImage, 'products/'.$product_id.'/history/' .$imagename.'.png');
-    }else{
-       imagepng($outputImage, 'products/'.$product_id.'/history/' .$imagename.'.png');
-    }
+    imagejpeg($outputImage, 'products/'.$product_id.'/history/' .$imagename.'.jpg',50);
+    // if(file_exists($imagename.'.png')){
+    //     File::delete(public_path('products/'.$product_id.'/history/'.$imagename.'.png'));
+    //     imagejpeg($outputImage, 'products/'.$product_id.'/history/' .$imagename.'.jpg',50)
+    // }else{
+    //    imagepng($outputImage, 'products/'.$product_id.'/history/' .$imagename.'.png',9);
+    // }
    return $imagename;
 
 }
