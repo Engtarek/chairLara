@@ -108,17 +108,10 @@
   </div>
 @endsection
 @section('script')
-<script>
-window.Laravel = {!! json_encode([
-    'csrfToken' => csrf_token(),
-]) !!};
-</script>
-<script src="/js/app.js"></script>
 <script src="/js/jssocials.min.js"></script>
   <script src="/js/social.js"></script>
   <script src="/js/chair-click.js"></script>
   <script src="/js/chair-move.js"></script>
-  <script src="/js/spin.min.js"></script>
 
   <script>
 
