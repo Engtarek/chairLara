@@ -63,7 +63,7 @@ function merge_image($images,$product_id){
     if (!file_exists('products/'.$product_id.'/history')) {
         mkdir('products/'.$product_id.'/history', 0777, true);
     }
-    imagejpeg($outputImage, 'products/'.$product_id.'/history/' .$imagename.'.jpg',30);
+    imagejpeg($outputImage, 'products/'.$product_id.'/history/' .$imagename.'.jpg',40);
     // if(file_exists($imagename.'.png')){
     //     File::delete(public_path('products/'.$product_id.'/history/'.$imagename.'.png'));
     //     imagejpeg($outputImage, 'products/'.$product_id.'/history/' .$imagename.'.jpg',50)
