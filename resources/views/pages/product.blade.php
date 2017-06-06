@@ -32,6 +32,13 @@
     left: 50%;
     margin-left: -350px;
   }
+  #foo{
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+  }
   .chair{
     height: 100%;
     width: 100%;
@@ -76,6 +83,7 @@
     <h1>{{$product->name}}</h1>
     <div class="parent">
       <div class="chair"  style="background-image: url('/products/{{$product->id}}/history/{{$image_name}}.jpg')"></div>
+        <div id="foo"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i></div>
     </div>
     <div class="social"></div>
     <div class="colors">
@@ -98,7 +106,6 @@
       <i class="fa fa-shopping-cart"></i>Add to cart
     </a>
   </div>
-  <div id="foo"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i></div>
 @endsection
 @section('script')
 <script src="/js/jssocials.min.js"></script>
@@ -150,13 +157,13 @@
        history.pushState(null, null,ch_layer_id);
        //change image
        $('#foo').show();
-       var target = document.getElementById('foo')
-       var spinner = new Spinner().spin(target);
+      //  var target = document.getElementById('foo')
+      //  var spinner = new Spinner().spin(target);
        $.ajax({url: "/change_image/"+product_id+"/"+ch_layer_id2+"", success: function(result){
          let img=new Image();
          img.onload=function(){
             $('.chair').css('background-image','url('+$(this).attr("src")+')');
-            //$('#foo').hide();
+            $('#foo').hide();
           }
           img.src='/products/'+product_id+'/history/'+result+'.jpg';
         }
