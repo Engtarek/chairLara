@@ -12,7 +12,7 @@
          $.mobile.keepNative = "select,input,div";
      });
  </script> -->
- <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+ <!-- <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script> -->
 
 @endsection
 
@@ -98,7 +98,7 @@
       <i class="fa fa-shopping-cart"></i>Add to cart
     </a>
   </div>
-  <div id="foo"></div>
+  <div id="foo"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i></div>
 @endsection
 @section('script')
 <script src="/js/jssocials.min.js"></script>
@@ -156,7 +156,7 @@
          let img=new Image();
          img.onload=function(){
             $('.chair').css('background-image','url('+$(this).attr("src")+')');
-            $('#foo').hide();
+            //$('#foo').hide();
           }
           img.src='/products/'+product_id+'/history/'+result+'.jpg';
         }
