@@ -187,7 +187,7 @@
 {!! Html::script('admin/plugins/slimScroll/jquery.slimscroll.min.js')!!}
 {!! Html::script('admin/plugins/fastclick/fastclick.js')!!}
 {!! Html::script('admin/dist/js/app.min.js')!!}
-{!! Html::script('admin/dist/js/pages/dashboard.js')!!}
+<!-- {!! Html::script('admin/dist/js/pages/dashboard.js')!!} -->
 {!! Html::script('admin/dist/js/demo.js')!!}
   @yield('footer')
 </body>
