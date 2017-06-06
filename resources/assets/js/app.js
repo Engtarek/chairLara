@@ -14,19 +14,3 @@ import VueRouter from 'vue-router';
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-
-Vue.component('Chair', require('./components/Chair.vue'));
-const Color = Vue.component('Color', require('./components/Color.vue'));
-
-
-const app = new Vue({
-    el: '#app',
-     router
-});
-const routes = [
- { path: ':id', component: Color }
-];
-const router = new VueRouter({
-  mode:'history',
- routes
-});

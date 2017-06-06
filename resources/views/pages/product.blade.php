@@ -108,6 +108,12 @@
   </div>
 @endsection
 @section('script')
+<script>
+window.Laravel = {!! json_encode([
+    'csrfToken' => csrf_token(),
+]) !!};
+</script>
+<script src="/js/app.js"></script>
 <script src="/js/jssocials.min.js"></script>
   <script src="/js/social.js"></script>
   <script src="/js/chair-click.js"></script>
@@ -115,6 +121,7 @@
   <script src="/js/spin.min.js"></script>
 
   <script>
+
     // 360° rotation when mouse move in mobile and desktop
     chair();
 
@@ -159,6 +166,7 @@
        $('#foo').show();
       //  var target = document.getElementById('foo')
       //  var spinner = new Spinner().spin(target);
+
        $.ajax({url: "/change_image/"+product_id+"/"+ch_layer_id2+"", success: function(result){
          let img=new Image();
          img.onload=function(){
@@ -166,7 +174,7 @@
             $('#foo').hide();
           }
           img.src='/products/'+product_id+'/history/'+result+'.jpg';
-        }
+        },
       });
       social(window.location.href,product_name);
       var qty= $('.cart_quantity_input').val();
