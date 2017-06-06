@@ -47,9 +47,16 @@
                 <tbody>
                   @foreach($items as $item)
                   <?php
+
                       $imagename="";
                       $array = explode("-",$item->id);
-                      foreach ($array as $value){ $product_id=$array[0]; $imagename .= $value; }
+
+                      foreach ($array as $value){
+                        $product_id=$array[0];
+                        foreach(explode(".",$value) as $data){
+                          $imagename .= $data;
+                        }
+                     }
                   ?>
                     <tr>
                       <td>

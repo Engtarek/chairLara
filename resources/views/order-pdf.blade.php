@@ -45,7 +45,12 @@
       <?php
           $imagename="";
           $array = explode("-",$data['cart']['id']);
-          foreach ($array as $value){ $product_id=$array[0]; $imagename .= $value; }
+          foreach ($array as $value){
+            $product_id=$array[0];
+            foreach(explode(".",$value) as $name){
+              $imagename .= $name;
+            }
+         }
       ?>
 
       <div class="parent">

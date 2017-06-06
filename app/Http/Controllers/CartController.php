@@ -37,7 +37,7 @@ class CartController extends Controller
       ];
       array_push($layers,$array);
       $price +=  $layer->images()->find($items[1])->item_price;
-      $suk .= "-".$items[0].$items[1];
+      $suk .= "-".$items[0].".".$items[1];
       if($key == 0){
           $feature =$feature." with ".$layer->images()->find($items[1])->item_name;
       }else{
@@ -51,6 +51,7 @@ class CartController extends Controller
       'quantity' => $id3,
       'attributes'=>$layers,
     ));
+
     return redirect('/cart');
 
   }
@@ -145,21 +146,16 @@ class CartController extends Controller
        $order=array();
        foreach ($cart as $key => $value) {
           $items = explode("-",$value->id);
-          $url="";
-          for($i=1 ;$i<count($items); $i++){
-             $array  = array_map('intval', str_split($items[$i]));
-             $layer_id = $array[0];
-             $image_id ="";
-             for($x=1 ;$x<count($array); $x++){
-               $image_id.=$array[$x];
-             }
-            if($i+1 == count($items)){
-              $url .=$array[0].'.'.$image_id;
+          foreach ($items as $k => $data) {
+            if($k==0){
+              $url=$data.'/';
+            }elseif($k == count($items)-1){
+              $url.=$data;
             }else{
-              $url .=$array[0].'.'.$image_id.'&';
+              $url.=$data.'&';
             }
           }
-          $product_url =$request->root().'/product/'.$items[0].'/'.$url;
+          $product_url =$request->root().'/product/'.$url;
           $array = [
             'cart'=>$value,
             'url'=>$product_url,
@@ -167,8 +163,8 @@ class CartController extends Controller
           array_push($order,$array);
         }
         view()->share('order',$order);
-    //   return view('order-pdf');
-      $pdf = PDF::loadView('order-pdf');
+      //return view('order-pdf');
+     $pdf = PDF::loadView('order-pdf');
       $order_pdf = $pdf->output();
        Mail::to($customer->email)->send(new OrderShipped($customer,$order_pdf,$cart));
        Cart::clear();
