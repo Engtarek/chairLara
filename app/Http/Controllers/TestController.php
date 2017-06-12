@@ -28,7 +28,8 @@ class TestController extends Controller
           ];
           array_push($defaultimages,$array);
         }
-        $image_name = merge_image($defaultimages,$id);
+        $image_pos = "0px 0px";
+        $image_name = merge_image($defaultimages,$id,$image_pos);
       }else{
         foreach($layers as $key=>$layer){
           $array =[
@@ -42,11 +43,13 @@ class TestController extends Controller
           }
           array_push($defaultimages,$array);
         }
-        $image_name = merge_image($defaultimages,$id);
+          $image_pos = "0px 0px";
+        $image_name = merge_image($defaultimages,$id,$image_pos);
       }
+
       return view('pages.product',compact('id2','product','layers','image_name'));
     }
-    public function change_image($product_id,$id2){
+    public function change_image($product_id,$id2,$image_pos){
       $product = Product::find($product_id);
       $defaultimages = [];
       foreach(explode('&',$id2) as $data){
@@ -57,7 +60,8 @@ class TestController extends Controller
         ];
         array_push($defaultimages,$array);
       }
-      return  merge_image($defaultimages,$product_id);
+
+       return  merge_image($defaultimages,$product_id,$image_pos);
 
     }
 

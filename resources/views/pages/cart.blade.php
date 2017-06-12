@@ -71,14 +71,20 @@
                           <p>{{$item->price}}</p>
                       </td>
                       <td class="cart_quantity">
+                        <?php foreach (explode("-",$item->id) as $key => $first_id) {
+                           if($key==0){$item_id = $first_id;}
+                           else{foreach (explode(".",$first_id) as $key => $second_id) {
+                             $item_id .= $second_id;
+                           }}
+                        }?>
                           <div class="cart_quantity_button">
-                              <a class="cart_quantity_up" data-id="{{$item->id}}"  href="{{route('increase.qty',['id'=>$item->id])}}"> + </a>
-                              <input style="text-align:center" class="cart_quantity_input qty_{{$item->id}}" type="text" name="quantity" value="{{$item->quantity}}" autocomplete="off" size="2">
-                              <a class="cart_quantity_down"  data-id="{{$item->id}}"  href="{{route('decrease.qty',['id'=>$item->id])}}"> - </a>
+                              <a class="cart_quantity_up" data-mergeid="{{$item_id}}" data-id="{{$item->id}}"  href="{{route('increase.qty',['id'=>$item->id])}}"> + </a>
+                              <input style="text-align:center" class="cart_quantity_input qty_{{$item_id}}" type="text" name="quantity" value="{{$item->quantity}}" autocomplete="off" size="2">
+                              <a class="cart_quantity_down" data-mergeid="{{$item_id}}" data-id="{{$item->id}}"  href="{{route('decrease.qty',['id'=>$item->id])}}"> - </a>
                           </div>
                       </td>
                        <td class="cart_total">
-                          <p class="cart_total_price_{{$item->id}}">{{ $item->quantity * $item->price }}</p>
+                          <p class="cart_total_price_{{$item_id}}">{{ $item->quantity * $item->price }}</p>
                       </td>
                       <td class="cart_delete">
                           <a class="cart_quantity_delete" href="{{route('item.delete',['id'=>$item->id])}}"><i class="glyphicon glyphicon-remove"></i></a>
@@ -108,25 +114,27 @@ $(document).ready(function(){
     $(".cart_quantity_up").click(function(e){
       e.preventDefault();
       var id = $(this).attr('data-id');
+      var mergeid = $(this).attr('data-mergeid');
       $.ajax({url: "/increase_qty/"+id, success: function(result){
-      $(".qty_"+id).val(result.single.quantity);
-      $(".cart_total_price_"+id).text(result.single.quantity * result.single.price);
+      $(".qty_"+mergeid).val(result.single.quantity);
+      $(".cart_total_price_"+mergeid).text(result.single.quantity * result.single.price);
       $("p.total").find("span").text(result.total);
       $(".dropdown").find("a.cart_count").find("span.badge").text(result.total_quantity);
-      $(".dropdown-menu").find(".quantity_"+id).find("span").text(result.single.quantity);
-      $(".dropdown-menu").find(".price_"+id).find("span").text(result.single.quantity * result.single.price);
+      $(".dropdown-menu").find(".quantity_"+mergeid).find("span").text(result.single.quantity);
+      $(".dropdown-menu").find(".price_"+mergeid).find("span").text(result.single.quantity * result.single.price);
      }});
     });
     $(".cart_quantity_down").click(function(e){
       e.preventDefault();
       var id = $(this).attr('data-id');
+      var mergeid = $(this).attr('data-mergeid');
       $.ajax({url: "/decrease_qty/"+id, success: function(result){
-        $(".qty_"+id).val(result.single.quantity);
-        $(".cart_total_price_"+id).text(result.single.quantity * result.single.price);
+        $(".qty_"+mergeid).val(result.single.quantity);
+        $(".cart_total_price_"+mergeid).text(result.single.quantity * result.single.price);
         $("p.total").find("span").text(result.total);
         $(".dropdown").find("a.cart_count").find("span.badge").text(result.total_quantity);
-        $(".dropdown-menu").find(".quantity_"+id).find("span").text(result.single.quantity);
-        $(".dropdown-menu").find(".price_"+id).find("span").text(result.single.quantity * result.single.price);
+        $(".dropdown-menu").find(".quantity_"+mergeid).find("span").text(result.single.quantity);
+        $(".dropdown-menu").find(".price_"+mergeid).find("span").text(result.single.quantity * result.single.price);
      }});
     });
 

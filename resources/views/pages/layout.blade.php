@@ -50,10 +50,16 @@
           <a href="#" class="dropdown-toggle cart_count" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-lg fa-shopping-bag" aria-hidden="true"></i><span class="badge badge-notify">{{Cart::getTotalQuantity()}}</span> <span class="caret"></span></a>
           <ul class="dropdown-menu">
             @foreach(Cart::getContent() as $cart)
+            <?php foreach (explode("-",$cart->id) as $key => $first_id) {
+               if($key==0){$item_id = $first_id;}
+               else{foreach (explode(".",$first_id) as $key => $second_id) {
+                 $item_id .= $second_id;
+               }}
+            }?>
             <li>
               <p style="text-align:center">{{$cart->name}}</p>
-              <p style="display:inline-block;float:left" class="quantity_{{$cart->id}}"> QTY : <span>{{$cart->quantity}}</span></p>
-              <p style="display:inline-block;float:right" class="price_{{$cart->id}}">Price : <span>{{$cart->price}}</span></p>
+              <p style="display:inline-block;float:left" class="quantity_{{$item_id}}"> QTY : <span>{{$cart->quantity}}</span></p>
+              <p style="display:inline-block;float:right" class="price_{{$item_id}}">Price : <span>{{$cart->price}}</span></p>
               <p style="clear:both"></p>
             </li>
               <li role="separator" class="divider"></li>

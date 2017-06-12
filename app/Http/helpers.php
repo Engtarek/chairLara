@@ -39,7 +39,7 @@ function employees(){
 }
 
 //convert layers to one image
-function merge_image($images,$product_id){
+function merge_image($images,$product_id,$image_index){
     $x=2800;
     $y=1400;
     header('Content-Type: image/png');
@@ -64,14 +64,26 @@ function merge_image($images,$product_id){
         mkdir('products/'.$product_id.'/history', 0777, true);
     }
     imagejpeg($outputImage, 'products/'.$product_id.'/history/' .$imagename.'.jpg',40);
-    // if(file_exists($imagename.'.png')){
-    //     File::delete(public_path('products/'.$product_id.'/history/'.$imagename.'.png'));
-    //     imagejpeg($outputImage, 'products/'.$product_id.'/history/' .$imagename.'.jpg',50)
-    // }else{
-    //    imagepng($outputImage, 'products/'.$product_id.'/history/' .$imagename.'.png',9);
-    // }
-   return $imagename;
+    return $array = array(
+                        'image' => cutImage('products/'.$product_id.'/history/' .$imagename.'.jpg',$image_index),
+                        'name'=>$imagename
+                      );
+  //  return $imagename;
 
+}
+function cutImage($src,$image_index){
+    $position =explode(" ",$image_index);
+    $startX = abs(substr($position[0], 0, -2));
+    $startY = abs(substr($position[1], 0, -2));
+
+    $image = imagecreatefromjpeg($src);
+    $cropImage = imagecrop($image,['x'=>$startX,'y'=>$startY,'width'=>700,'height'=>700]);
+    ob_start();
+    imagejpeg($cropImage);
+    $data=ob_get_contents();
+    ob_end_clean();
+    $data='data:image/jpg;base64,'.base64_encode($data);
+    return $data;
 }
 
 ?>

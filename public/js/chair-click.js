@@ -22,4 +22,5 @@ function changepostion(){
        $(this).find("div").css("background-position", myPos[0]+'px ' + myPos[1] + 'px');
     }
   });
+
 }

@@ -7,13 +7,6 @@
   <link rel="stylesheet" type="text/css" href="\css\jssocials.css" />
   <link rel="stylesheet" type="text/css" href="\css\jssocials-theme-minima.css" />
   <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.css" />
-  <!-- <script>
-     $(document).bind('mobileinit',function(){
-         $.mobile.keepNative = "select,input,div";
-     });
- </script> -->
- <!-- <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script> -->
-
 @endsection
 
 @section('style')
@@ -32,7 +25,7 @@
     left: 50%;
     margin-left: -350px;
   }
-  #foo{
+  #load{
     display: none;
     position: absolute;
     top: 50%;
@@ -82,8 +75,8 @@
   <div class="container2">
     <h1>{{$product->name}}</h1>
     <div class="parent">
-      <div class="chair"  style="background-image: url('/products/{{$product->id}}/history/{{$image_name}}.jpg')"></div>
-        <div id="foo"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i></div>
+      <div class="chair" style="background-image:url('{{$image_name['image']}}')"></div>
+       <div id="load"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i></div>
     </div>
     <div class="social"></div>
     <div class="colors">
@@ -108,10 +101,12 @@
   </div>
 @endsection
 @section('script')
-<script src="/js/jssocials.min.js"></script>
+  <script src="/js/jssocials.min.js"></script>
   <script src="/js/social.js"></script>
   <script src="/js/chair-click.js"></script>
   <script src="/js/chair-move.js"></script>
+  <script src="/js/change-image.js"></script>
+
 
   <script>
 
@@ -123,6 +118,11 @@
 
     //second parameter contain layer_id and image_id
     var default_param = "<?php echo $id2; ?>";
+    var product_id = "<?php echo $product->id;?>";
+    var img_pos = "0px 0px";
+    //change image
+    change_image(product_id,default_param,img_pos);
+
 
     $(".img-circle").click(function(){
       //layer_id.image_id
@@ -156,19 +156,10 @@
        }
        history.pushState(null, null,ch_layer_id);
        //change image
-       $('#foo').show();
-      //  var target = document.getElementById('foo')
-      //  var spinner = new Spinner().spin(target);
+       $('#load').css('display','flex');
+       var img_pos = $(".chair").css('background-position');
+       change_image(product_id,ch_layer_id2,img_pos);
 
-       $.ajax({url: "/change_image/"+product_id+"/"+ch_layer_id2+"", success: function(result){
-         let img=new Image();
-         img.onload=function(){
-            $('.chair').css('background-image','url('+$(this).attr("src")+')');
-            $('#foo').hide();
-          }
-          img.src='/products/'+product_id+'/history/'+result+'.jpg';
-        },
-      });
       social(window.location.href,product_name);
       var qty= $('.cart_quantity_input').val();
       $(".add-to-cart").attr("href", "/add/"+product_id+"/"+ch_layer_id2+"/"+qty);
