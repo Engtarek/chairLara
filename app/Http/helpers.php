@@ -11,7 +11,7 @@ function product(){
 //get the customer name
 function customer_name($id){
   $customer = \App\Customer::find($id);
-  return  $name = $customer->first_name." ". $customer->last_name;
+  return  $name = $customer->name;
 }
 
 //get all status
