@@ -162,13 +162,13 @@ class CartController extends Controller
           ];
           array_push($order,$array);
         }
-        view()->share('order',$order);
+      //  view()->share('order',$order);
       //return view('order-pdf');
-     $pdf = PDF::loadView('order-pdf');
-      $order_pdf = $pdf->output();
-       Mail::to($customer->email)->send(new OrderShipped($customer,$order_pdf,$cart));
+    //  $pdf = PDF::loadView('order-pdf');
+    //   $order_pdf = $pdf->output();
+    //    Mail::to($customer->email)->send(new OrderShipped($customer,$order_pdf,$cart));
        Cart::clear();
-       return " your order send successufelly ,please check your email";
+       return " your order send successufelly";
   }
 
 
