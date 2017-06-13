@@ -115,11 +115,17 @@ class CartController extends Controller
   //save customer ,order,create pdf and send email to customer
   public function test(Request $request){
       //save customer
+      if(Auth::user()->country !="" && Auth::user()->city!="" && Auth::user()->address!=""){
         $param = array("address"=>Auth::user()->country." ".Auth::user()->city." ".Auth::user()->address);
         $response = \Geocoder::geocode('json', $param);
         $a = json_decode($response);
         $lat = $a->results[0]->geometry->location->lat;
         $lang = $a->results[0]->geometry->location->lng;
+      }else{
+        $lat = 24.713552;
+        $lang = 46.675296;
+      }
+
       $data=[
         'name'=>Auth::user()->name,
         'email'=>Auth::user()->email,
