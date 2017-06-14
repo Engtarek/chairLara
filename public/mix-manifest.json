@@ -1,4 +1,9 @@
 {
-  "/js/app.js": "/js/app.js",
-  "/css/app.css": "/css/app.css"
+  "/js/app.js": "/js/app.86ee7a7a54350013687e.js",
+  "/css/app.css": "/css/app.84e4da54a738b2f0137f.css",
+  "/js/bootstrap.js": "/js/bootstrap.ff85cafa11779196540b.js",
+  "/js/jquery.min.js": "/js/jquery.min.dd5f019ae5fa882db919.js",
+  "/js/change-image.js": "/js/change-image.546dc7f0096888ca0122.js",
+  "/js/chair-move.js": "/js/chair-move.2e2dfb122116eff74c46.js",
+  "/js/chair-click.js": "/js/chair-click.2d513301a86405e97b30.js"
 }

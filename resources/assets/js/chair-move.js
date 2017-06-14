@@ -1,4 +1,4 @@
-function chair(){
+window.chair=function(){
   let down=false;
   let startPoint=null;
   let x=0;

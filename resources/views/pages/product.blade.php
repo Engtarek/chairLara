@@ -101,11 +101,11 @@
   </div>
 @endsection
 @section('script')
-  <script src="/js/jssocials.min.js"></script>
-  <script src="/js/social.js"></script>
-  <script src="/js/chair-click.js"></script>
-  <script src="/js/chair-move.js"></script>
-  <script src="/js/change-image.js"></script>
+<script src="/js/jssocials.min.js"></script>
+<script src="{{ mix('/js/chair-click.js') }}"></script>
+<script src="{{ mix('/js/chair-move.js') }}"></script>
+<script src="{{ mix('/js/change-image.js') }}"></script>
+
 
 
   <script>
@@ -121,7 +121,7 @@
     var product_id = "<?php echo $product->id;?>";
     var img_pos = "0px 0px";
     //change image
-    // change_image(product_id,default_param,img_pos);
+     change_image(product_id,default_param,img_pos);
 
 
     $(".img-circle").click(function(){
@@ -160,12 +160,25 @@
        var img_pos = $(".chair").css('background-position');
        change_image(product_id,ch_layer_id2,img_pos);
 
-      social(window.location.href,product_name);
+       $(".social").jsSocials({
+         shares: ["twitter", "facebook", "googleplus", "pinterest"],
+         url: window.location.href,
+         text: "",
+         showLabel: false,
+         showCount: false,
+       });
+
       var qty= $('.cart_quantity_input').val();
       $(".add-to-cart").attr("href", "/add/"+product_id+"/"+ch_layer_id2+"/"+qty);
 });
+$(".social").jsSocials({
+  shares: ["twitter", "facebook", "googleplus", "pinterest"],
+  url: window.location.href,
+  text: "",
+  showLabel: false,
+  showCount: false,
+});
 
-social(window.location.href,product_name);
 </script>
 <script>
   $(document).ready(function(){

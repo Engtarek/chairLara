@@ -1,5 +1,5 @@
 
-function changepostion(){
+window.changepostion=function(){
   $(".parent").click(function(){
       var myPos = $(this).find("div").css("background-position").split(" ");
       myPos[0] = parseInt(myPos[0].replace("px",""));
@@ -23,4 +23,4 @@ function changepostion(){
     }
   });
 
-}
+} 
