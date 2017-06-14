@@ -121,7 +121,7 @@
     var product_id = "<?php echo $product->id;?>";
     var img_pos = "0px 0px";
     //change image
-    change_image(product_id,default_param,img_pos);
+    // change_image(product_id,default_param,img_pos);
 
 
     $(".img-circle").click(function(){
