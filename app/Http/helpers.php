@@ -78,7 +78,7 @@ function cutImage($src,$image_position,$product_id,$imagename){
     if (!file_exists('products/'.$product_id.'/small_image')) {
         mkdir('products/'.$product_id.'/small_image', 0777, true);
     }
-  return  imagejpeg($cropImage,'products/'.$product_id.'/small_image/' .$imagename.'.jpg',40);
+    imagejpeg($cropImage,'products/'.$product_id.'/small_image/' .$imagename.'.jpg',40);
 
 
 }
