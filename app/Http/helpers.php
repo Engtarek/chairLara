@@ -39,7 +39,7 @@ function employees(){
 }
 
 //convert layers to one image
-function merge_image($images,$product_id,$image_index){
+function merge_image($images,$product_id,$image_position){
     $x=2800;
     $y=1400;
     header('Content-Type: image/png');
@@ -64,26 +64,23 @@ function merge_image($images,$product_id,$image_index){
         mkdir('products/'.$product_id.'/history', 0777, true);
     }
     imagejpeg($outputImage, 'products/'.$product_id.'/history/' .$imagename.'.jpg',40);
-    return $array = array(
-                        'image' => cutImage('products/'.$product_id.'/history/' .$imagename.'.jpg',$image_index),
-                        'name'=>$imagename
-                      );
-  //  return $imagename;
+    cutImage('products/'.$product_id.'/history/' .$imagename.'.jpg',$image_position,$product_id,$imagename);
+    return $imagename;
 
 }
-function cutImage($src,$image_index){
-    $position =explode(" ",$image_index);
+function cutImage($src,$image_position,$product_id,$imagename){
+    $position =explode(" ",$image_position);
     $startX = abs(substr($position[0], 0, -2));
     $startY = abs(substr($position[1], 0, -2));
 
     $image = imagecreatefromjpeg($src);
     $cropImage = imagecrop($image,['x'=>$startX,'y'=>$startY,'width'=>700,'height'=>700]);
-    ob_start();
-    imagejpeg($cropImage);
-    $data=ob_get_contents();
-    ob_end_clean();
-    $data='data:image/jpg;base64,'.base64_encode($data);
-    return $data;
+    if (!file_exists('products/'.$product_id.'/small_image')) {
+        mkdir('products/'.$product_id.'/small_image', 0777, true);
+    }
+  return  imagejpeg($cropImage,'products/'.$product_id.'/small_image/' .$imagename.'.jpg',40);
+
+
 }
 
 ?>

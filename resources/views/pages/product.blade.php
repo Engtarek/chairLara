@@ -75,7 +75,7 @@
   <div class="container2">
     <h1>{{$product->name}}</h1>
     <div class="parent">
-      <div class="chair" style="background-image:url('{{$image_name['image']}}')"></div>
+      <div class="chair" style="background-image:url('/products/{{$product->id}}/small_image/{{$image_name}}.jpg')"></div>
        <div id="load"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i></div>
     </div>
     <div class="social"></div>
