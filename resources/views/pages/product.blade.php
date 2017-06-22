@@ -103,7 +103,7 @@
 			<div class="container-fluid hidden-xs">
 				<div class="row">
 					<ol class="breadcrumb">
-					  <li><a href="index.html">Shop</a></li>
+					  <li><a href="{{url('/')}}">Shop</a></li>
 					  <li class="active">{{$product->name}}</li>
 					</ol>
 				</div>
