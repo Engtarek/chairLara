@@ -126,7 +126,7 @@
 					<div class="col-md-4 ">
 						<h2 class="product-title hidden-xs">{{$product->name}}</h2>
 
-						<div class="product-detail">
+						<div class="product-detail hidden-sm hidden-xs">
 								<img src="/products/{{$product->id}}/{{$product->image}}" class="product-img img-responsive" alt="item">
 						</div>
 						<!-- social sharing -->
