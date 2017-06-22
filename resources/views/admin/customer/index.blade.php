@@ -32,10 +32,14 @@
             <th> # </th>
             <th> Name </th>
             <th> Email Address </th>
+            <th> Company </th>
             <th> Phone </th>
             <th> Country </th>
             <th> City </th>
-            <th> Address </th>
+            <th> Address 1 </th>
+            <th> Address 2 </th>
+            <th>State</th>
+              <th> ZIP</th>
             <th> view </th>
           </tr>
         </thead>
@@ -65,10 +69,14 @@ var table = $('#data').DataTable({
         {data: 'id', name: 'id'},
         {data: 'name', name: 'name'},
         {data: 'email', name: 'email'},
+        {data: 'company', name: 'company'},
         {data: 'phone', name: 'phone'},
         {data: 'country', name: 'country'},
         {data: 'city', name: 'city'},
-        {data: 'address', name: 'address'},
+        {data: 'address1', name: 'address1'},
+        {data: 'address2', name: 'address2'},
+          {data: 'state', name: 'state'},
+          {data: 'zip', name: 'zip'},
         {data: 'view', name: 'view'},
     ],
     "language": {

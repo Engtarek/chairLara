@@ -23,8 +23,21 @@ class ProductController extends Controller
     public function store(Request $request){
       $this->validate($request,[
         'name'=>'required|max:255',
+        'image'=>'required',
+        'show'=>'required'
       ]);
-      Product::addProduct($request->name);
+      //image
+      $image = $request->file('image');
+      if($image){
+        $image_name =rand().'.'.$image->getClientOriginalExtension();
+      }
+      $data = array(
+        'name'=>$request->name,
+        'image'=>$image_name,
+        'show'=>$request->show,
+      );
+      $product = Product::create($data);
+      $image->move('products/'.$product->id, $image_name);
       return redirect()->route("products.index")->with("success","The product created successfully");
     }
 
@@ -35,9 +48,22 @@ class ProductController extends Controller
     }
     //edit exiting product
     public function update(Request $request, $id){
-        $product = Product::find($id);
-        Product::editProduct($id,$request->name);
-        return redirect()->route("products.show",$id)->with("success","The product updated successfully");
+      $product = Product::find($id);
+      $image = $request->file('image');
+     if($image){
+       File::delete(public_path('products/'.$product->id.'/'.$product->image));
+       $image_name =rand().'.'.$image->getClientOriginalExtension();
+       $image->move('products/'.$product->id, $image_name);
+    }else{
+         $image_name = $product->image;
+    }
+      $data = array(
+        'name'=>$request->name,
+        'image'=>$image_name,
+        'show'=>$request->show,
+      );
+      $product->update($data);
+       return redirect()->route("products.show",$id)->with("success","The product updated successfully");
     }
 
     //delete product

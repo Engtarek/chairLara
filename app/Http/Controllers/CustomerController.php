@@ -22,12 +22,12 @@ class CustomerController extends Controller
   //edit in the customer data
   public function update($id,Request $request){
     $this->validate($request,[
-      'name' => 'required',
+      'first_name' => 'required',
+      'last_name' => 'required',
       'email' => 'required',
-      'phone' => 'required',
       'country' => 'required',
       'city' => 'required',
-      'address' => 'required',
+      'address1' => 'required',
     ]);
     $customer = Customer::find($id);
     $customer->update($request->all());
@@ -53,11 +53,15 @@ class CustomerController extends Controller
     return DataTables::of($customer)
 
      ->editColumn('name',function($model){
-        return $model->name;
+        return customer_name($model->id);
      })
      ->editColumn('email',function($model){
         return $model->email;
      })
+     ->editColumn('company',function($model){
+        return $model->Company;
+     })
+
      ->editColumn('phone',function($model){
         return $model->phone;
      })
@@ -67,8 +71,14 @@ class CustomerController extends Controller
      ->editColumn('city',function($model){
         return $model->city;
      })
-     ->editColumn('address',function($model){
-        return $model->address;
+     ->editColumn('address1',function($model){
+        return $model->address1;
+     })
+     ->editColumn('address2',function($model){
+        return $model->address2;
+     })
+     ->editColumn('zip',function($model){
+        return $model->zip;
      })
      ->editColumn('view',function($model){
        return \Html::link('/admin/customers/'.$model->id,'view');

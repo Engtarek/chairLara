@@ -50,3 +50,14 @@
     </span>
   @endif
 </div>
+@if(!empty($image))
+<div class="form-group {{ $errors->has('product_layers_id') ? ' has-error' : '' }}">
+  {!! Form::label('product_layers_id', 'Layer Name')!!}
+  {!!Form::select('product_layers_id',layers(),null,['class'=>'form-control'])!!}
+  @if ($errors->has('product_layers_id'))
+    <span class="help-block">
+    <strong>{{ $errors->first('product_layers_id') }}</strong>
+    </span>
+  @endif
+</div>
+@endif

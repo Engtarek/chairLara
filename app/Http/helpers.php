@@ -11,7 +11,7 @@ function product(){
 //get the customer name
 function customer_name($id){
   $customer = \App\Customer::find($id);
-  return  $name = $customer->name;
+  return  $name = $customer->first_name ." ". $customer->last_name;
 }
 
 //get all status
@@ -21,6 +21,14 @@ function status(){
     $status[$value->id] = $value->name;
   }
   return $status;
+}
+//get all layers
+function layers(){
+  $layers = [];
+  foreach(\App\ProductLayer::all() as $value){
+    $layers[$value->id] = $value->rankname;
+  }
+  return $layers;
 }
 
 //get the order status name
@@ -37,7 +45,14 @@ function employees(){
   }
   return $employees;
 }
-
+//product appearnce
+function appearnce(){
+  $appearnce = [
+    0=>'hide',
+    1=>'show'
+  ];
+  return $appearnce;
+}
 //convert layers to one image
 function merge_image($images,$product_id,$image_position){
     $x=2800;

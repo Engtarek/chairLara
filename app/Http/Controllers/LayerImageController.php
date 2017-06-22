@@ -25,31 +25,55 @@ class LayerImageController extends Controller
   public function update($id,Request $request){
     $image_layer = ProductLayerImage::find($id);
     $product_id = ProductLayer::find($image_layer->product_layers_id)->product_id;
+    $new_product_id = ProductLayer::find($request->product_layers_id)->product_id;
     $image = $request->file('image');
     $color = $request->file('color');
     $name = time().rand();
-   if($image){
-     File::delete(public_path('products/'.$product_id.'/image/'.$image_layer->image));
-     $image_name =$name.'.'.$image->getClientOriginalExtension();
-     $image->move('products/'.$product_id.'/image', $image_name);
-  }else{
-       $image_name = $image_layer->image;
-  }
-   if($color){
+    if($product_id != $new_product_id){
+      if($image){
+        File::delete(public_path('products/'.$product_id.'/image/'.$image_layer->image));
+        $image_name =$name.'.'.$image->getClientOriginalExtension();
+        $image->move('products/'.$new_product_id.'/image', $image_name);
+     }else{
+       copy('products/'.$product_id.'/image/'.$image_layer->image,'products/'.$new_product_id.'/image/'.$image_layer->image);
+      File::delete(public_path('products/'.$product_id.'/image/'.$image_layer->image));
+         $image_name = $image_layer->image;
+     }
+      if($color){
+           File::delete(public_path('products/'.$product_id.'/color/'.$image_layer->color));
+        $color_name =$name.'.'.$color->getClientOriginalExtension();
+        $color->move('products/'.$new_product_id.'/color', $color_name);
+      }else{
+        copy('products/'.$product_id.'/color/'.$image_layer->color,'products/'.$new_product_id.'/color/'.$image_layer->color);
         File::delete(public_path('products/'.$product_id.'/color/'.$image_layer->color));
 
-     $color_name =$name.'.'.$color->getClientOriginalExtension();
-     $color->move('products/'.$product_id.'/color', $color_name);
-   }else{
-     $color_name = $image_layer->color;
-   }
+    $color_name = $image_layer->color;
+
+      }
+    }else{
+      if($image){
+        File::delete(public_path('products/'.$product_id.'/image/'.$image_layer->image));
+        $image_name =$name.'.'.$image->getClientOriginalExtension();
+        $image->move('products/'.$product_id.'/image', $image_name);
+     }else{
+          $image_name = $image_layer->image;
+     }
+      if($color){
+           File::delete(public_path('products/'.$product_id.'/color/'.$image_layer->color));
+
+        $color_name =$name.'.'.$color->getClientOriginalExtension();
+        $color->move('products/'.$product_id.'/color', $color_name);
+      }else{
+        $color_name = $image_layer->color;
+      }
+    }
 
    $image_layer->image = $image_name;
    $image_layer->color = $color_name;
    $image_layer->item_name = $request->item_name;
    $image_layer->item_distributer_name = $request->item_distributer_name;
    $image_layer->item_price = $request->item_price;
-   $image_layer->product_layers_id =$image_layer->product_layers_id ;
+   $image_layer->product_layers_id =$request->product_layers_id ;
    $image_layer->save();
     return redirect()->route("layer_images.show",$id)->with("success","The  image updated successfully");
   }

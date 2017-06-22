@@ -13,26 +13,33 @@ class UserController extends Controller
       return view('pages.login');
     }
     public function register(){
-      return view('pages.register');
+      return view('pages.login');
     }
     public function save_login(Request $request){
-      if (Auth::attempt(['email' => $request->email, 'password' => $request->password]) ){
+      $remember = $request->remember;
+      if (Auth::attempt(['email' => $request->email, 'password' => $request->password],$remember) ){
          return redirect()->intended(Session::get('backUrl'));
+       }else{
+         return redirect()->back()->with('fail','Your Email or Password wrong .');
        }
     }
     public function save_register(Request $request){
-      $user = new User;
-      $user->name=$request->first_name." ".$request->last_name;
-      $user->email=$request->email;
-      $user->role= 0;
-      $user->password=Hash::make($request->password);
-      $user->phone=$request->phone;
-      $user->country=$request->country;
-      $user->city=$request->city;
-      $user->address=$request->address;
-      $user->save();
+      $this->validate($request,[
+        'name'=>'required|max:255',
+        'last_name'=>'required|max:255',
+        'email'=>'required|email|unique:users',
+        'password'=>'required|min:6'
+      ]);
+      $data =array(
+        'name'=>$request->name,
+        'last_name'=>$request->last_name,
+        'email'=>$request->email,
+        'password'=>Hash::make($request->password),
+        'role'=>0
+      );
+      $user = User::create($data);
       Auth::login($user);
-       return redirect()->intended('/cart');
+      return redirect()->intended(Session::get('backUrl'));
     }
     public function logout(){
       Auth::logout();
