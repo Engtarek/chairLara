@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProductLayer extends Model
 {
+  protected $fillable = ['rank','rankname','image','product_id'];
   public function product()
   {
      return $this->belongsTo('App\Product');

@@ -93,9 +93,35 @@
 .social a{
 	padding: 10px;
 }
-
-
-
+.product-colors{
+	padding-top: 0px;
+	margin-bottom: 0px;
+}
+.panel-group .panel-body{
+	padding: 5px 0;
+}
+.panel-group .panel-collapse{
+	padding: 0 5px;
+}
+.panel-group .panel + .panel{
+	margin-top: 7px;
+}
+.panel-group .panel{
+	border:1px solid #ddd;
+	border-radius: 3px;
+	-webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
+	box-shadow: 0 1px 1px rgba(0,0,0,.05);
+}
+.panel-title{
+	color:#000;
+	display: inline-block;
+}
+.product-btn{
+	margin-top: 10px;
+}
+.panel-heading{
+	padding: 7px 10px;
+}
 </style>
 @endsection
 @section('content')
@@ -103,12 +129,12 @@
 			<div class="container-fluid hidden-xs">
 				<div class="row">
 					<ol class="breadcrumb">
-					  <li><a href="{{url('/')}}">Shop</a></li>
+					  <li><a href="{{url('/')}}">Shop </a></li>
 					  <li class="active">{{$product->name}}</li>
 					</ol>
 				</div>
 			</div>
-
+			
 			<div class="container-fluid product">
 				<div class="row visible-xs product-mobile">
 					<div class="col-xs-12 text-center">
@@ -125,66 +151,74 @@
 					</div>
 					<div class="col-md-4 ">
 						<h2 class="product-title hidden-xs">{{$product->name}}</h2>
-
-						<div class="product-detail hidden-sm hidden-xs">
+						<!-- <div class="product-detail hidden-sm hidden-xs">
 								<img src="/products/{{$product->id}}/{{$product->image}}" class="product-img img-responsive" alt="item">
-						</div>
+						</div> -->
 						<!-- social sharing -->
 						<div class="social"></div>
 						<!-- increase or decrease quantity -->
 						<div class="cart_quantity_button">
-				        <span class="cart_quantity_up"> + </span>
-				        <input class="cart_quantity_input" type="text" name="quantity" value="1" autocomplete="off" size="2">
-				        <span class="cart_quantity_down"> - </span>
+				      <span class="cart_quantity_up"> + </span>
+				      <input class="cart_quantity_input" type="text" name="quantity" value="1" autocomplete="off" size="2">
+				      <span class="cart_quantity_down"> - </span>
 				    </div>
               <!-- layers -->
-              @foreach($layers as $data)
-              <div class="panel panel-default">
-                <div class="panel-heading">
-                  <h4 class="panel-title">
-                  <a data-toggle="collapse" data-parent="#accordion" href="#{{$data->id}}">
-                      {{$data->rankname}}
-                  </a>
-                  </h4>
-                  </div>
-                  <div id="{{$data->id}}" class="panel-collapse collapse">
-                    <div class="panel-body">
-											<ul class="product-colors">
-                       @foreach($data->images as $key=>$image)
-
-														<li class="img-circle color_{{$data->rank}}">
-															<img data-product='{{$product->id}}' class="{{$data->id}}{{$image->id}}" id="{{$data->id}}.{{$image->id}}" src="/products/{{$product->id}}/color/{{$image->color}}">
-														</li>
-
-                      @endforeach
-	</ul>
-                    </div>
-                  </div>
-              </div>
-
-              @endforeach
-
-
+							<div class="panel-group" id="accordion">
+								 @foreach($layers as $key=>$data)
+										<div class="panel panel-default">
+											<a data-toggle="collapse" data-parent="#accordion" href="#{{$data->id}}">
+												<div class="panel-heading">
+													@if(!empty($data->image))
+													<img src="/products/{{$data->product_id}}/layers/{{$data->image}}" width:"25" height="25">
+													@endif
+													<h4 class="panel-title">{{$data->rankname}}</h4>
+												</div>
+											</a>
+											@if($key == 0)
+											<div id="{{$data->id}}" class="panel-collapse collapse in">
+											  <div class="panel-body">
+													<ul class="product-colors">
+													 @foreach($data->images as $key=>$image)
+															<li class="img-circle color_{{$data->rank}}">
+																<img data-product='{{$product->id}}' class="{{$data->id}}{{$image->id}}" id="{{$data->id}}.{{$image->id}}" src="/products/{{$product->id}}/color/{{$image->color}}">
+															</li>
+													@endforeach
+													</ul>
+											  </div>
+											</div>
+											@else
+											<div id="{{$data->id}}" class="panel-collapse collapse ">
+												<div class="panel-body">
+													<ul class="product-colors">
+													 @foreach($data->images as $key=>$image)
+																<li class="img-circle color_{{$data->rank}}">
+																	<img data-product='{{$product->id}}' class="{{$data->id}}{{$image->id}}" id="{{$data->id}}.{{$image->id}}" src="/products/{{$product->id}}/color/{{$image->color}}">
+																</li>
+													@endforeach
+													</ul>
+												</div>
+											</div>
+											@endif
+										</div>
+									@endforeach
+								</div>
 							<div class="product-btn">
 								<a href="/add/{{$product->id}}/{{$id2}}" class="btn add-to-cart" data-role="none">Add To Cart </a>
 							</div>
-
 					</div>
 				</div>
 				<div class="row">
-						<div class="col-sm-8 ">
-								<div class="paging clearfix">
-@if($last != "")
-									<a class="btn btn-outline pull-left" href="{{url('/product/'.$last)}}"><i class="icon-arrow-left2 left"></i><span>Previous</span><span class="hidden-xs"> Product</span></a>
-									@endif
-									@if($next != "")
-									<a class="btn btn-outline pull-right" href="{{url('/product/'.$next)}}"><span>Next</span><span class="hidden-xs"> Product</span><i class="icon-arrow-right2 right"></i></a>
-									@endif
-
-								</div>
+					<div class="col-sm-8 ">
+							<div class="paging clearfix">
+								@if($last != "")
+								<a class="btn btn-outline pull-left" href="{{url('/product/'.$last)}}"><i class="icon-arrow-left2 left"></i><span>Previous</span><span class="hidden-xs"> Product</span></a>
+								@endif
+								@if($next != "")
+								<a class="btn btn-outline pull-right" href="{{url('/product/'.$next)}}"><span>Next</span><span class="hidden-xs"> Product</span><i class="icon-arrow-right2 right"></i></a>
+								@endif
 							</div>
 						</div>
-
+					</div>
 			</div>
 
 @endsection

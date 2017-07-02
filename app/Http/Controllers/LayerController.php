@@ -25,14 +25,25 @@ class LayerController extends Controller
       'rank' => 'required|integer',
       'rankname' => 'required|max:255',
     ]);
-
-    $Product_layer= new ProductLayer;
-    $Product_layer->rank= $request->rank;
-    $Product_layer->rankname= $request->rankname;
-    $Product_layer->product_id=  $request->product_id;
-    $Product_layer->save();
-
-   return redirect()->route("product_layers.index")->with("success","The Layer created successfully");
+    $image = $request->file('image');
+    if($image){
+      $image_name =time().rand().'.'.$image->getClientOriginalExtension();
+      $image->move('products/'.$request->product_id.'/layers', $image_name);
+      $data =[
+        'rank'=>$request->rank,
+        'rankname'=>$request->rankname,
+        'image'=>$image_name,
+        'product_id'=>$request->product_id
+      ];
+    }else{
+      $data =[
+        'rank'=>$request->rank,
+        'rankname'=>$request->rankname,
+        'product_id'=>$request->product_id
+      ];
+    }
+    ProductLayer::create($data);
+    return redirect()->route("product_layers.index")->with("success","The Layer created successfully");
   }
   //show form to delete&edit layer
   public function show($id){
@@ -48,9 +59,22 @@ class LayerController extends Controller
       'rankname'=>'required',
     ]);
     $layer = ProductLayer::find($id);
-    $layer->rank = $request->rank;
-    $layer->rankname = $request->rankname;
-    $layer->save();
+    $image = $request->file('image');
+    if($image){
+      File::delete(public_path('products/'.$layer->product_id.'/layers/'.$layer->image));
+      $image_name =rand().time().'.'.$image->getClientOriginalExtension();
+      $image->move('products/'.$layer->product_id.'/layers', $image_name);
+    }else{
+      $image_name =$layer->image;
+    }
+    $data =[
+      'rank'=>$request->rank,
+      'rankname'=>$request->rankname,
+      'image'=>$image_name,
+      'product_id'=>$layer->product_id
+    ];
+
+    $layer->update($data);
     return redirect()->route("product_layers.show",$id)->with("success","The Layer updated successfully");
   }
 
@@ -63,6 +87,7 @@ class LayerController extends Controller
         File::delete(public_path('products/'.$layer->product_id.'/color/'.$image->color));
           $image->delete();
       }
+      File::delete(public_path('products/'.$layer->product_id.'/layers/'.$layer->image));
       $layer->delete();
       return redirect()->route("product_layers.index")->with("success","The Layer deleted successfully");
   }
