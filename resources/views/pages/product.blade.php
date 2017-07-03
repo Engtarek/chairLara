@@ -134,7 +134,7 @@
 					</ol>
 				</div>
 			</div>
-			
+
 			<div class="container-fluid product">
 				<div class="row visible-xs product-mobile">
 					<div class="col-xs-12 text-center">
@@ -259,10 +259,11 @@ $(document).ready(function(){
 	    //change image
 	     change_image(product_id,default_param,img_pos);
 
-
+			 var last_pro =  default_param;
 	    $(".img-circle").click(function(){
 	      //layer_id.image_id
 	      var layer_id = $(this).find("img").attr("id");
+
 	      //product_id
 	      var product_id = $(this).find("img").attr("data-product");
 	      // return url in array such as  ["", "product", "product id", "layer_id.image_id&layer_id.image_id&..."]
@@ -294,7 +295,36 @@ $(document).ready(function(){
 	       //change image
 	       $('#load').css('display','flex');
 	       var img_pos = $(".chair").css('background-position');
-	       change_image(product_id,ch_layer_id2,img_pos);
+	      // change_image(product_id,ch_layer_id2,img_pos);
+				// change_imag
+				$.ajax({url: "/test",data:{
+					last_pro:last_pro,
+					ch_layer_id2: ch_layer_id2,
+					product_id:product_id,
+					layer_id:layer_id,
+					img_pos:img_pos
+
+
+				}, success: function(result){
+					last_pro=ch_layer_id2;
+
+			let sm_img =new Image();
+				sm_img.onload=function(){
+				 $('.chair').css('background-image','url('+$(this).attr("src")+')');
+					$('#load').css('display','none');
+					 let img=new Image();
+					 img.onload=function(){
+						 $('.chair').css('background-image','url('+$(this).attr("src")+')');
+						 }
+					 img.src='/products/'+product_id+'/history/'+result+'.png';
+
+				 }
+					sm_img.src='/products/'+product_id+'/small_image/'+result+'.jpg';
+
+			}
+			 });
+				/* ---------------------*/
+
 				 //add select class
 				 //add select class
 				  $(".img-circle").removeClass("selected");

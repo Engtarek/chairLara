@@ -86,6 +86,7 @@ Route::get('/showmore','PagesController@showmore');
 Route::get('/product/{id}/{id2?}','PagesController@product');
 //change image
 Route::get('/change_image/{id}/{id2}/{image_index}','PagesController@change_image');
+Route::get('/test','PagesController@test');
 //checkout
 Route::get('/checkout','PagesController@checkout');
 Route::post('/checkout','PagesController@get_checkout_data');

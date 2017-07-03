@@ -78,8 +78,8 @@ function merge_image($images,$product_id,$image_position){
     if (!file_exists('products/'.$product_id.'/history')) {
         mkdir('products/'.$product_id.'/history', 0777, true);
     }
-    imagejpeg($outputImage, 'products/'.$product_id.'/history/' .$imagename.'.jpg',40);
-    cutImage('products/'.$product_id.'/history/' .$imagename.'.jpg',$image_position,$product_id,$imagename);
+    imagepng($outputImage, 'products/'.$product_id.'/history/' .$imagename.'.png');
+    cutImage('products/'.$product_id.'/history/' .$imagename.'.png',$image_position,$product_id,$imagename);
     return $imagename;
 
 }
@@ -88,7 +88,7 @@ function cutImage($src,$image_position,$product_id,$imagename){
     $startX = abs(substr($position[0], 0, -2));
     $startY = abs(substr($position[1], 0, -2));
 
-    $image = imagecreatefromjpeg($src);
+    $image = imagecreatefrompng($src);
     $cropImage = imagecrop($image,['x'=>$startX,'y'=>$startY,'width'=>700,'height'=>700]);
     if (!file_exists('products/'.$product_id.'/small_image')) {
         mkdir('products/'.$product_id.'/small_image', 0777, true);
