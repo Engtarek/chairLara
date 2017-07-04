@@ -145,7 +145,7 @@
 					<div class="col-md-8 " >
 						<!-- chair -->
 						<div class="parent">
-							<div class="chair" style="background-image:url('/products/{{$product->id}}/small_image/{{$image_name}}.jpg')"></div>
+							<div class="chair" style="background-image:url('/products/{{$product->id}}/history/init_image.png')"></div>
 							 <div id="load"><img src="/img/loading.gif"></div>
 						</div>
 					</div>
@@ -250,14 +250,14 @@ $(document).ready(function(){
 	    var product_id = "<?php echo $product->id;?>";
 	    var img_pos = "0px 0px";
 			//add select class
-			$(".img-circle").removeClass("selected");
-		  default_param.split("&").forEach(function(element,index) {
-				var param = element.split(".");
-				console.log(	$("."+param[0]+param[1]).parent());
-				$("."+param[0]+param[1]).parent().addClass("selected");
-			});
+			// $(".img-circle").removeClass("selected");
+		  // default_param.split("&").forEach(function(element,index) {
+			// 	var param = element.split(".");
+			// 	console.log(	$("."+param[0]+param[1]).parent());
+			// 	$("."+param[0]+param[1]).parent().addClass("selected");
+			// });
 	    //change image
-	     change_image(product_id,default_param,img_pos);
+	    //  change_image(product_id,default_param,img_pos);
 
 			 var last_pro =  default_param;
 	    $(".img-circle").click(function(){

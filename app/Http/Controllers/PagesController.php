@@ -60,7 +60,7 @@ class PagesController extends Controller
             array_push($defaultimages,$array);
           }
           $image_pos = "0px 0px";
-          $image_name = merge_image($defaultimages,$id,$image_pos);
+        //  $image_name = merge_image($defaultimages,$id,$image_pos);
         }else{
           foreach($layers as $key=>$layer){
             $array =[
@@ -75,7 +75,7 @@ class PagesController extends Controller
             array_push($defaultimages,$array);
           }
             $image_pos = "0px 0px";
-          $image_name = merge_image($defaultimages,$id,$image_pos);
+          //$image_name = merge_image($defaultimages,$id,$image_pos);
         }
         $last="";
         $next="";
@@ -85,7 +85,7 @@ class PagesController extends Controller
         if(!empty(Product::find($id-1))){
                 $last=$id-1;
         }
-              return view('pages.product',compact('id2','product','layers','image_name','last','next'));
+              return view('pages.product',compact('id2','product','layers','last','next'));
       }else{
         return view('pages.404');
       }
@@ -120,8 +120,14 @@ class PagesController extends Controller
           $last_pro_name .=$value;
         }
       }
-      $name= imagecreatefrompng('products/'.$request->product_id.'/history/'.$last_pro_name.'.png');
-      imagecopyresized($outputImage,$name,0,0,0,0, $x, $y,$x,$y);
+      if(file_exists('products/'.$request->product_id.'/history/'.$last_pro_name.'.png')){
+        $name= imagecreatefrompng('products/'.$request->product_id.'/history/'.$last_pro_name.'.png');
+        imagecopyresized($outputImage,$name,0,0,0,0, $x, $y,$x,$y);
+      }else{
+        $name= imagecreatefrompng('products/'.$request->product_id.'/history/init_image.png');
+        imagecopyresized($outputImage,$name,0,0,0,0, $x, $y,$x,$y);
+      }
+
       $imagename = $request->product_id;
         foreach(explode("&",$request->ch_layer_id2)as $data2){
           foreach (explode(".",$data2) as $value2) {
@@ -156,8 +162,7 @@ class PagesController extends Controller
             mkdir('products/'.$request->product_id.'/small_image', 0777, true);
         }
        imagejpeg($cropImage,'products/'.$request->product_id.'/small_image/' .$imagename.'.jpg',40);
-      //
-      // // cutImage('products/'.$product_id.'/history/' .$imagename.'.jpg',$image_position,$product_id,$imagename);
+      // cutImage('products/'.$product_id.'/history/' .$imagename.'.jpg',$image_position,$product_id,$imagename);
        return $imagename;
 
     }

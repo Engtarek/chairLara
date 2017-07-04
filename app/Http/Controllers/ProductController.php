@@ -24,20 +24,28 @@ class ProductController extends Controller
       $this->validate($request,[
         'name'=>'required|max:255',
         'image'=>'required',
-        'show'=>'required'
+        'show'=>'required',
+        'init_image'=>'required',
       ]);
       //image
       $image = $request->file('image');
       if($image){
         $image_name =rand().'.'.$image->getClientOriginalExtension();
       }
+      //init_image
+      $init_image = $request->file('init_image');
+      if($init_image){
+        $init_image_name ='init_image.'.$init_image->getClientOriginalExtension();
+      }
       $data = array(
         'name'=>$request->name,
         'image'=>$image_name,
         'show'=>$request->show,
+        'init_image'=>$init_image_name,
       );
       $product = Product::create($data);
       $image->move('products/'.$product->id, $image_name);
+      $init_image->move('products/'.$product->id.'/history', $init_image_name);
       return redirect()->route("products.index")->with("success","The product created successfully");
     }
 
@@ -50,17 +58,28 @@ class ProductController extends Controller
     public function update(Request $request, $id){
       $product = Product::find($id);
       $image = $request->file('image');
-     if($image){
-       File::delete(public_path('products/'.$product->id.'/'.$product->image));
-       $image_name =rand().'.'.$image->getClientOriginalExtension();
-       $image->move('products/'.$product->id, $image_name);
-    }else{
+      $init_image = $request->file('init_image');
+      //image
+      if($image){
+        File::delete(public_path('products/'.$product->id.'/'.$product->image));
+        $image_name =rand().'.'.$image->getClientOriginalExtension();
+        $image->move('products/'.$product->id, $image_name);
+      }else{
          $image_name = $product->image;
-    }
+      }
+      //init_image
+      if($init_image){
+        File::delete(public_path('products/'.$product->id.'/history'.$product->init_image));
+        $init_image_name ='init_image.'.$init_image->getClientOriginalExtension();
+        $init_image->move('products/'.$product->id.'/history', $init_image_name);
+      }else{
+        $init_image_name = $product->init_image;
+      }
       $data = array(
         'name'=>$request->name,
         'image'=>$image_name,
         'show'=>$request->show,
+        'init_image'=>$init_image_name,
       );
       $product->update($data);
        return redirect()->route("products.show",$id)->with("success","The product updated successfully");
