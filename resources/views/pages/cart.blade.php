@@ -17,7 +17,7 @@
 }
 /*            */
 .cart_quantity_input{
-	width: 70%;
+	width: 60%;
 	/*padding: 0 12px;*/
 	vertical-align: top;
 	text-align: center;
@@ -34,7 +34,7 @@
 .cart_quantity_up ,
 .cart_quantity_down {
   display: inline-block;
-  width: 15px;
+  width: 20%;
   line-height: 38px;
   background: #f1f1f1;
   color: #444;
@@ -80,17 +80,17 @@
 			<div class="container-fluid cart-list" ng-controller="cartController">
           @if(count($items))
 				<div class="row">
-					<div class="col-sm-8">
+					<div class="col-sm-8 table-responsive">
 
-						<table class="table table-responsive" style="width:100%;overflow: auto;">
+						<table class="table" style="overflow: auto;">
 						  <thead>
 							<tr>
-                <th class="hidden-xs"></th>
-							  <th>Item</th>
-							  <th>Unit Cost</th>
+                <th class="hidden-xs text-center"></th>
+							  <th class="text-center">Item</th>
+							  <th class="text-center">Unit Cost</th>
 							  <th class="text-center">Quantity</th>
-							  <th class="text-right">Total</th>
-							  <th></th>
+							  <th class="text-center">Total</th>
+							  <th class="text-center"></th>
 							</tr>
 						  </thead>
 						  <tbody>
@@ -111,23 +111,23 @@
                     <div class="chair" style="background: url(/products/{{$product_id}}/history/{{$imagename}}.png)"></div>
                   </div>
                 </td>
-	  	 					<td class="vert-align">{{$item->name}}</td>
-								<td class="vert-align">{{$item->price}}</td>
-								<td class="text-center vert-align cart_quantity">
+	  	 					<td class="text-center">{{$item->name}}</td>
+								<td class="text-center">{{$item->price}}</td>
+								<td class="text-center cart_quantity">
                   <?php foreach (explode("-",$item->id) as $key => $first_id) {
                      if($key==0){$item_id = $first_id;}
                      else{foreach (explode(".",$first_id) as $key => $second_id) {
                        $item_id .= $second_id;
                      }}
                   }?>
-                    <div class="cart_quantity_button">
+                    <div class="cart_quantity_button" style="white-space: nowrap;">
                         <a class="cart_quantity_up" data-mergeid="{{$item_id}}" data-id="{{$item->id}}"  href="{{route('increase.qty',['id'=>$item->id])}}"> + </a>
                         <input class="cart_quantity_input qty_{{$item_id}}" type="text" name="quantity" value="{{$item->quantity}}" autocomplete="off" size="2">
                         <a class="cart_quantity_down" data-mergeid="{{$item_id}}" data-id="{{$item->id}}"  href="{{route('decrease.qty',['id'=>$item->id])}}"> - </a>
                     </div>
                 </td>
-								<td class="text-right vert-align cart_total_price_{{$item_id}}"> {{ $item->quantity * $item->price }}</td>
-                <td class="cart_delete text-center vert-align">
+								<td class="text-center cart_total_price_{{$item_id}}"> {{ $item->quantity * $item->price }}</td>
+                <td class="cart_delete text-center">
                     <a class="cart_quantity_delete remove-item" href="{{route('item.delete',['id'=>$item->id])}}"><i class="icon-close"></i></a>
                 </td>
 							</tr>

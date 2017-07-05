@@ -236,26 +236,28 @@ $(document).ready(function(){
 	    //360° rotation when click in mobile and desktop
 	    changepostion();
 
-			//social sharing
-			$(".social").jsSocials({
-				shares: ["twitter", "facebook", "googleplus", "pinterest"],
-				url: window.location.href,
-				text: "",
-				showLabel: false,
-				showCount: false,
-			});
 
 	    //second parameter contain layer_id and image_id
 	    var default_param = "<?php echo $id2; ?>";
 	    var product_id = "<?php echo $product->id;?>";
 	    var img_pos = "0px 0px";
+
+			//social sharing
+			$(".social").jsSocials({
+				shares: ["twitter", "facebook", "googleplus", "pinterest"],
+				url: window.location.origin+"/product/"+product_id+"/"+default_param,
+				text: "",
+				showLabel: false,
+				showCount: false,
+			});
+
 			//add select class
-			// $(".img-circle").removeClass("selected");
-		  // default_param.split("&").forEach(function(element,index) {
-			// 	var param = element.split(".");
-			// 	console.log(	$("."+param[0]+param[1]).parent());
-			// 	$("."+param[0]+param[1]).parent().addClass("selected");
-			// });
+			$(".img-circle").removeClass("selected");
+		  default_param.split("&").forEach(function(element,index) {
+				var param = element.split(".");
+				console.log(	$("."+param[0]+param[1]).parent());
+				$("."+param[0]+param[1]).parent().addClass("selected");
+			});
 	    //change image
 	    //  change_image(product_id,default_param,img_pos);
 
