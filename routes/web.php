@@ -101,3 +101,5 @@ Route::get('/status',function(){
     $status->save();
   }
 });
+Route::get('/hend','PagesController@testing');
+Route::get('/sabry','PagesController@upload_testing');

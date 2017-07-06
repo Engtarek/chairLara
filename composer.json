@@ -16,7 +16,8 @@
         "laravelcollective/html": "^5.4",
         "nesbot/carbon": "^1.22",
         "yajra/laravel-datatables-oracle": "7.2",
-        "alexpechkarev/google-geocoder": "dev-master"
+        "alexpechkarev/google-geocoder": "dev-master",
+        "cloudinary/cloudinary_php": "dev-master"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

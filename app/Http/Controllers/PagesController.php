@@ -233,5 +233,16 @@ class PagesController extends Controller
         return view('pages.order_success');
         }
     }
+    //test
+    public function testing(){
+      return view('test');
+    }
+    public function upload_testing( Request $request){
+      parent::__construct();
+  //  \Cloudinary\Uploader::upload("s3://my-bucket/my-path/sample.jpg");
 
+   $name = $request->file('file');
+    \Cloudinary\Uploader::upload($name);
+    return "done";
+    }
 }
