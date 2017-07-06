@@ -242,7 +242,7 @@ class PagesController extends Controller
   //  \Cloudinary\Uploader::upload("s3://my-bucket/my-path/sample.jpg");
 //return ;
 //dd($request->file('image')->getRealPath());
-      \Cloudinary\Uploader::upload( $request->file('image')->getRealPath());
+      \Cloudinary\Uploader::upload( $request->file('image')->getRealPath(),array("public_id" => "my_folder/my_sub_folder/my_name"));
     //  return "done";
     }
 }
