@@ -242,7 +242,7 @@ class PagesController extends Controller
   //  \Cloudinary\Uploader::upload("s3://my-bucket/my-path/sample.jpg");
 
    $name = $request->file('file');
-    \Cloudinary\Uploader::upload($name);
+    \Cloudinary\Uploader::upload($name,array("public_id" => "sampled_id"));
     return "done";
     }
 }
