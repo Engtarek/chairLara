@@ -102,4 +102,4 @@ Route::get('/status',function(){
   }
 });
 Route::get('/hend','PagesController@testing');
-Route::get('/sabry','PagesController@upload_testing');
+Route::post('/sabry','PagesController@upload_testing');

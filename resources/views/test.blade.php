@@ -80,8 +80,9 @@
             <div class="content">
                 <div class="title m-b-md">
                     Laravel
-                    <form method="get" action="{{url('/sabry')}}">
-                      <input id="upload-img" type="file" name="file">
+                    <form method="post" action="{{url('/sabry')}}" enctype="multipart/form-data">
+                      <input type="file" name="image">
+                        <input type="text" name="text">
                       <input type="hidden" name="_token" value="{{csrf_token()}}">
                       <input type="submit" name="submit" value="ok">
 
