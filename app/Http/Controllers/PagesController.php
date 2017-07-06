@@ -242,7 +242,21 @@ class PagesController extends Controller
   //  \Cloudinary\Uploader::upload("s3://my-bucket/my-path/sample.jpg");
 
    $name = $request->file('file');
-    \Cloudinary\Uploader::upload($name,array('timestamp' => 1499355013, 'public_id' => 'sampled_id', 'signature' => '353ac777761985cacd0201764f28efcacf10a46d', 'api_key' => '631229188976387'));
+    \Cloudinary\Uploader::upload($name,array(
+
+      'public_id' => 'c87hg9xfxrd4itiim3t0',
+      'version' => 1371995958,
+      'signature' => 'f8645b000be7d717599affc89a068157e4748276',
+      'width'=> 864,
+      'height' => 576,
+      'format' => 'jpg',
+      'resource_type' => 'image',
+      'created_at' => '2013-06-23T13:59:18Z',
+      'bytes' => 120253,
+      'type' => 'upload',
+      'url' => 'http://res.cloudinary.com/demo/image/upload/v1371995958/c87hg9xfxrd4itiim3t0.jpg',
+      'secure_url' => 'https://res.cloudi'
+     ));
     return "done";
     }
 }
