@@ -253,8 +253,7 @@ display: block;
 									@endforeach
 								</div>
 								<!-- Slider of color -->
-								<div class="box-rounded attributes" style="@if($setting->slider_show == 1) display:block @else display:none @endif">
-										<!-- Farbkonfigurator -->
+								 <div class="box-rounded attributes" style="@if($setting->slider_show == 1) display:block @else display:none @endif">
 										<div class="next-attribute" data-count="{{count($layers)}}">
 											<img src="http://urbike.de/wp-content/themes/urbike/img/arrow-right.svg" width="32" height="32">
 										</div>
@@ -263,10 +262,8 @@ display: block;
 										</div>
 										@foreach($layers as $key=>$data)
 
-													<div class="attribute @if($key == 0) active2 @endif" id="{{$key+1}}">
-														@if(!empty($data->image))
-														<img src="/products/{{$data->product_id}}/layers/{{$data->image}}" width:"25" height="25">
-														@endif
+													<div class="attribute @if($key == 0) active2 @endif" data-key="{{$key+1}}" id="attr_{{$key+1}}">
+
 														<h4>{{$data->rankname}}</h4>
 														<div class="configurations">
 															<ul class="product-colors">
@@ -281,6 +278,7 @@ display: block;
 										 @endforeach
 
 									</div>
+
 								<!-- ++++++++++++++ -->
 							<div class="product-btn">
 								<a href="" class="btn add-to-cart" data-role="none">Add To Cart </a>
@@ -311,20 +309,20 @@ display: block;
 $(document).ready(function(){
 	//color of slider
 	$(".next-attribute").click(function(){
-			var id =  $(".active2").attr("id");
+			var id =  $(".active2").attr("data-key");
 			var id2 = parseInt(id) + 1;
-			var count = $(this).attr("data-count");
-			if(id2 > count){id2 =1;}
-			$("#"+id).removeClass("active2");
-			$("#"+id2).addClass("active2");
+			 var count = $(this).attr("data-count");
+			 if(id2 > count){id2 =1;}
+			$("#attr_"+id).removeClass("active2");
+			$("#attr_"+id2).addClass("active2");
 		});
 	$(".prev-attribute").click(function(){
-			var id =  $(".active2").attr("id");
+			var id =  $(".active2").attr("data-key");
 			var id2 = parseInt(id) - 1;
 			var count = $(this).attr("data-count");
 			if(id2 == 0){id2 =count;}
-			$("#"+id).removeClass("active2");
-			$("#"+id2).addClass("active2");
+			$("#attr_"+id).removeClass("active2");
+			$("#attr_"+id2).addClass("active2");
 		});
 
 		// 360° rotation when mouse move in mobile and desktop
@@ -349,10 +347,10 @@ $(document).ready(function(){
 
 		//add select class
 		$(".img-circle").removeClass("selected");
-				default_param.split("&").forEach(function(element,index) {
-				var param = element.split(".");
-				$("."+param[0]+param[1]).parent().addClass("selected");
-			});
+		default_param.split("&").forEach(function(element,index) {
+			var param = element.split(".");
+			$("."+param[0]+param[1]).parent().addClass("selected");
+		});
 			//change image
 			var last_pro =  default_param;
 			$(".img-circle").click(function(){
