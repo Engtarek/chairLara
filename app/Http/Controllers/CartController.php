@@ -17,42 +17,42 @@ use Illuminate\Support\Facades\Mail;
 class CartController extends Controller
 {
   // add new element to cart
-  public function AddToCart(Request $request,$id,$id2,$id3){
-    $Product = Product::find($id);
-    $price=0;
-    $suk = $Product->id;
-    $feature =$Product->name;
-    $layers = array();
-    foreach(explode("&",$id2) as $key=>$data){
-      $items = explode(".",$data);
-      $layer=ProductLayer::find($items[0]);
-      $array= [
-        'id'=>$layer->id,
-        'rank'=>$layer->rank,
-        'image'=>$layer->images()->find($items[1])->image,
-        'item_name'=>$layer->images()->find($items[1])->item_name,
-        'item_distributer_name'=>$layer->images()->find($items[1])->item_distributer_name,
-        'item_price'=>$layer->images()->find($items[1])->item_price,
-        'product_id'=> $Product->id,
-      ];
-      array_push($layers,$array);
-      $price +=  $layer->images()->find($items[1])->item_price;
-      $suk .= "-".$items[0].".".$items[1];
-      if($key == 0){
-          $feature =$feature." with ".$layer->images()->find($items[1])->item_name;
-      }else{
-          $feature =$feature." and ".$layer->images()->find($items[1])->item_name;
-      }
+  public function AddToCart(Request $request){
+    $Product = Product::find($request->product_id);
+  $price=0;
+  $suk = $Product->id;
+  $feature =$Product->name;
+  $layers = array();
+  foreach(explode("&",$request->id2) as $key=>$data){
+    $items = explode(".",$data);
+    $layer=ProductLayer::find($items[0]);
+    $array= [
+      'id'=>$layer->id,
+      'rank'=>$layer->rank,
+      'image'=>$layer->images()->find($items[1])->image,
+      'item_name'=>$layer->images()->find($items[1])->item_name,
+      'item_distributer_name'=>$layer->images()->find($items[1])->item_distributer_name,
+      'item_price'=>$layer->images()->find($items[1])->item_price,
+      'product_id'=> $Product->id,
+    ];
+    array_push($layers,$array);
+    $price +=  $layer->images()->find($items[1])->item_price;
+    $suk .= "-".$items[0].".".$items[1];
+    if($key == 0){
+        $feature =$feature." with ".$layer->images()->find($items[1])->item_name;
+    }else{
+        $feature =$feature." and ".$layer->images()->find($items[1])->item_name;
     }
-    Cart::add(array(
-      'id' => $suk,
-      'name' =>$feature,
-      'price' =>$price,
-      'quantity' => $id3,
-      'attributes'=>$layers,
-    ));
+  }
+  Cart::add(array(
+    'id' => $suk."&".$request->size,
+    'name' =>$feature,
+    'price' =>$price,
+    'quantity' => $request->quantity,
+    'attributes'=> array('layers' => $layers,'size'=>$request->size ),
+  ));
 
-    return redirect('/cart');
+  return '/cart';
 
   }
 
@@ -104,6 +104,6 @@ class CartController extends Controller
     return redirect()->back();
   }
 
-  
+
 
 }

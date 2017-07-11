@@ -88,6 +88,7 @@
                 <th class="hidden-xs text-center"></th>
 							  <th class="text-center">Item</th>
 							  <th class="text-center">Unit Cost</th>
+                <th class="text-center">Size</th>
 							  <th class="text-center">Quantity</th>
 							  <th class="text-center">Total</th>
 							  <th class="text-center"></th>
@@ -96,8 +97,9 @@
 						  <tbody>
               @foreach($items as $item)
               <?php
+                  $id = explode("&",$item->id)[0];
                   $imagename="";
-                  $array = explode("-",$item->id);
+                  $array = explode("-",$id);
                   foreach ($array as $value){
                     $product_id=$array[0];
                     foreach(explode(".",$value) as $data){
@@ -113,6 +115,7 @@
                 </td>
 	  	 					<td class="text-center">{{$item->name}}</td>
 								<td class="text-center">{{$item->price}}</td>
+                <td class="text-center">{{$item->attributes['size']}}</td>
 								<td class="text-center cart_quantity">
                   <?php foreach (explode("-",$item->id) as $key => $first_id) {
                      if($key==0){$item_id = $first_id;}

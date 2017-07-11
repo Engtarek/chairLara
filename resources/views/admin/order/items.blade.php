@@ -29,6 +29,7 @@
             <th> # </th>
             <th> Product Name </th>
             <th> Price </th>
+              <th> Size </th>
             <th> Quantity </th>
             <th> Total </th>
           </tr>
@@ -40,6 +41,7 @@
             <td> {{$i++}} </td>
             <td> {{$data->name}}</td>
             <td> {{$data->price}}</td>
+            <td> {{$data->attributes['size']}}</td>
             <td> {{$data->quantity}}</td>
             <td> {{$data->quantity * $data->price}} </td>
           </tr>

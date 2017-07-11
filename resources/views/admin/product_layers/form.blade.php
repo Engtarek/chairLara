@@ -1,4 +1,4 @@
- <div class="form-group {{ $errors->has('product_id') ? ' has-error' : '' }}">
+ <div class="form-group {{ $errors->has('rankname') ? ' has-error' : '' }}">
   <label for="">Layer Name</label>
   {!!Form::text('rankname',null,['class'=>'form-control','placeholder'=>'Enter Layer Name'])!!}
   @if ($errors->has('rankname'))

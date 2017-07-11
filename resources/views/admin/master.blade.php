@@ -146,6 +146,11 @@
             <i class="fa fa-users"></i> <span>Employees</span>
           </a>
         </li>
+        <li class="treeview">
+          <a href="{{url('/admin/setting')}}">
+            <i class="fa fa-users"></i> <span>Setting</span>
+          </a>
+        </li>
       </ul>
     </section>
     <!-- /.sidebar -->

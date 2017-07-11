@@ -97,6 +97,13 @@ class LayerController extends Controller
   }
   //save layer image
   public function save_image(Request $request){
+    $this->validate($request,[
+      'image' => 'required',
+      'color' => 'required',
+      'item_name' => 'required',
+      'item_distributer_name' => 'required',
+      'item_price' => 'required',
+    ]);
      $product_id = ProductLayer::find($request->layer_id)->product_id;
      $image = $request->file('image');
      $color = $request->file('color');

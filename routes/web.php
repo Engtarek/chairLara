@@ -39,10 +39,12 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'is-admin']], functio
   Route::get('/employees/data','EmployeeController@data');
   Route::resource('/employees','EmployeeController');
 
+  Route::resource('/setting','SettingController');
+
 });
 
 //Cart
-Route::get('/add/{id}/{id2}/{id3}', 'CartController@AddToCart');
+Route::get('/add', 'CartController@AddToCart');
 Route::get('/cart', ['uses'=>'CartController@Cart','as'=>'cart.show']);
 Route::get('/delete_item/{id}', ['uses'=>'CartController@DeleteCartItem','as'=>'item.delete']);
 Route::get('/decrease_qty/{id}', ['uses'=>'CartController@DecreaseQty','as'=>'decrease.qty']);
@@ -86,7 +88,7 @@ Route::get('/showmore','PagesController@showmore');
 Route::get('/product/{id}/{id2?}','PagesController@product');
 //change image
 Route::get('/change_image/{id}/{id2}/{image_index}','PagesController@change_image');
-Route::get('/test','PagesController@test');
+Route::get('/change_image','PagesController@change_image');
 //checkout
 Route::get('/checkout','PagesController@checkout');
 Route::post('/checkout','PagesController@get_checkout_data');

@@ -122,6 +122,47 @@
 .panel-heading{
 	padding: 7px 10px;
 }
+/* Start the slider */
+.box-rounded{
+	background-color: #ebebeb;
+	border: 1px solid #ddd;
+	border-radius: 3px;
+
+	margin-bottom: 15px;
+	clear: both;
+}
+.attributes{
+			position: relative;
+}
+.attributes .next-attribute{
+	right: 15px;
+}
+.attributes .next-attribute, .attributes .prev-attribute{
+	position: absolute;
+	top: 3px;
+	z-index: 1000;
+	cursor: pointer;
+}
+.attributes .prev-attribute {
+left: 15px;
+}
+.attribute h4 {
+	display: block;
+}
+.box-rounded h4{
+text-align: center;
+}
+.attribute{
+display:none;
+}
+.active2{
+display: block;
+}
+.configurations{
+	background: #fff;
+		padding: 15px;
+}
+/* End the slider */
 </style>
 @endsection
 @section('content')
@@ -145,25 +186,34 @@
 					<div class="col-md-8 " >
 						<!-- chair -->
 						<div class="parent">
-							<div class="chair" style="background-image:url('/products/{{$product->id}}/history/init_image.png')"></div>
+							<div class="chair" style="background-image:url('/products/{{$product->id}}/history/{{$imagename}}.png')"></div>
 							 <div id="load"><img src="/img/loading.gif"></div>
 						</div>
 					</div>
 					<div class="col-md-4 ">
 						<h2 class="product-title hidden-xs">{{$product->name}}</h2>
-						<!-- <div class="product-detail hidden-sm hidden-xs">
-								<img src="/products/{{$product->id}}/{{$product->image}}" class="product-img img-responsive" alt="item">
-						</div> -->
 						<!-- social sharing -->
 						<div class="social"></div>
+						<!-- Size -->
+						<div class="form-group clearfix">
+							<!-- <label class="control-label">Size</label> -->
+							<select class="form-control">
+								<option value="40">40</option>
+								<option value="41">41</option>
+								<option value="42">42</option>
+								<option value="43">43</option>
+								<option value="44">44</option>
+								<option value="45">45</option>
+							</select>
+						</div>
 						<!-- increase or decrease quantity -->
 						<div class="cart_quantity_button">
 				      <span class="cart_quantity_up"> + </span>
 				      <input class="cart_quantity_input" type="text" name="quantity" value="1" autocomplete="off" size="2">
 				      <span class="cart_quantity_down"> - </span>
 				    </div>
-              <!-- layers -->
-							<div class="panel-group" id="accordion">
+              <!-- layers of color -->
+							<div class="panel-group" id="accordion" style="@if($setting->slider_show == 2) display:block @else display:none @endif">
 								 @foreach($layers as $key=>$data)
 										<div class="panel panel-default">
 											<a data-toggle="collapse" data-parent="#accordion" href="#{{$data->id}}">
@@ -202,8 +252,38 @@
 										</div>
 									@endforeach
 								</div>
+								<!-- Slider of color -->
+								<div class="box-rounded attributes" style="@if($setting->slider_show == 1) display:block @else display:none @endif">
+										<!-- Farbkonfigurator -->
+										<div class="next-attribute" data-count="{{count($layers)}}">
+											<img src="http://urbike.de/wp-content/themes/urbike/img/arrow-right.svg" width="32" height="32">
+										</div>
+										<div class="prev-attribute" data-count="{{count($layers)}}">
+											<img src="http://urbike.de/wp-content/themes/urbike/img/arrow-left.svg" width="32" height="32">
+										</div>
+										@foreach($layers as $key=>$data)
+
+													<div class="attribute @if($key == 0) active2 @endif" id="{{$key+1}}">
+														@if(!empty($data->image))
+														<img src="/products/{{$data->product_id}}/layers/{{$data->image}}" width:"25" height="25">
+														@endif
+														<h4>{{$data->rankname}}</h4>
+														<div class="configurations">
+															<ul class="product-colors">
+															 @foreach($data->images as $key=>$image)
+																		<li class="img-circle color_{{$data->rank}}">
+																			<img data-product='{{$product->id}}' class="{{$data->id}}{{$image->id}}" id="{{$data->id}}.{{$image->id}}" src="/products/{{$product->id}}/color/{{$image->color}}">
+																		</li>
+															@endforeach
+															</ul>
+														</div>
+													 </div>
+										 @endforeach
+
+									</div>
+								<!-- ++++++++++++++ -->
 							<div class="product-btn">
-								<a href="/add/{{$product->id}}/{{$id2}}" class="btn add-to-cart" data-role="none">Add To Cart </a>
+								<a href="" class="btn add-to-cart" data-role="none">Add To Cart </a>
 							</div>
 					</div>
 				</div>
@@ -229,147 +309,149 @@
 <script src="{{ mix('/custom/js/change-image.js') }}"></script>
 <script>
 $(document).ready(function(){
+	//color of slider
+	$(".next-attribute").click(function(){
+			var id =  $(".active2").attr("id");
+			var id2 = parseInt(id) + 1;
+			var count = $(this).attr("data-count");
+			if(id2 > count){id2 =1;}
+			$("#"+id).removeClass("active2");
+			$("#"+id2).addClass("active2");
+		});
+	$(".prev-attribute").click(function(){
+			var id =  $(".active2").attr("id");
+			var id2 = parseInt(id) - 1;
+			var count = $(this).attr("data-count");
+			if(id2 == 0){id2 =count;}
+			$("#"+id).removeClass("active2");
+			$("#"+id2).addClass("active2");
+		});
 
-	    // 360° rotation when mouse move in mobile and desktop
-	    chair();
+		// 360° rotation when mouse move in mobile and desktop
+		chair();
 
-	    //360° rotation when click in mobile and desktop
-	    changepostion();
+		//360° rotation when click in mobile and desktop
+		changepostion();
 
+		//second parameter contain layer_id and image_id
+		var default_param = "<?php echo $id2; ?>";
+		var product_id = "<?php echo $product->id;?>";
+		var img_pos = "0px 0px";
 
-	    //second parameter contain layer_id and image_id
-	    var default_param = "<?php echo $id2; ?>";
-	    var product_id = "<?php echo $product->id;?>";
-	    var img_pos = "0px 0px";
+		//social sharing
+		$(".social").jsSocials({
+			shares: ["twitter", "facebook", "googleplus", "pinterest"],
+			url: window.location.origin+"/product/"+product_id+"/"+default_param,
+			text: "",
+			showLabel: false,
+			showCount: false,
+		});
 
-			//social sharing
-			$(".social").jsSocials({
-				shares: ["twitter", "facebook", "googleplus", "pinterest"],
-				url: window.location.origin+"/product/"+product_id+"/"+default_param,
-				text: "",
-				showLabel: false,
-				showCount: false,
-			});
-
-			//add select class
-			$(".img-circle").removeClass("selected");
-		  default_param.split("&").forEach(function(element,index) {
+		//add select class
+		$(".img-circle").removeClass("selected");
+				default_param.split("&").forEach(function(element,index) {
 				var param = element.split(".");
-				console.log(	$("."+param[0]+param[1]).parent());
 				$("."+param[0]+param[1]).parent().addClass("selected");
 			});
-	    //change image
-	    //  change_image(product_id,default_param,img_pos);
+			//change image
+			var last_pro =  default_param;
+			$(".img-circle").click(function(){
+				//layer_id.image_id
+				var layer_id = $(this).find("img").attr("id");
+				//product_id
+				var product_id = $(this).find("img").attr("data-product");
+				// return url in array such as  ["", "product", "product id", "layer_id.image_id&layer_id.image_id&..."]
+				var url = window.location.pathname.split('/');
+				//assign layer_id.image_id to url
+				if(url.length === 4 && url[3] === ""){
+					url[3] = default_param;
+				}else if(url.length === 3){
+					url[3] = default_param;
+				}
+				var last_element_in_url = url[3];
+				var  ch_layer_id="/product/"+product_id+'/';
+				var  ch_layer_id2="";
+				//change the value of layer_id.image_id  when click
+				for (var i=0; i<last_element_in_url.split('&').length; i++){
+					if(last_element_in_url.split('&')[i].split('.')[0] == layer_id.split('.')[0]){
+						ch_layer_id += layer_id;
+						ch_layer_id2 += layer_id;
+					}else{
+						ch_layer_id += last_element_in_url.split('&')[i];
+						ch_layer_id2 += last_element_in_url.split('&')[i];
+					}
+					if(i < last_element_in_url.split('&').length -1 ){
+						ch_layer_id +="&";
+						ch_layer_id2 +="&";
+					}
+				}
+				history.pushState(null, null,ch_layer_id);
+				//change image
+				$('#load').css('display','flex');
+				var img_pos = $(".chair").css('background-position');
+				$.ajax({url: "/change_image",data:{last_pro:last_pro,ch_layer_id2: ch_layer_id2,product_id:product_id,layer_id:layer_id,img_pos:img_pos},
+					success: function(result){
+						last_pro=ch_layer_id2;
+						let sm_img =new Image();
+						sm_img.onload=function(){
+							$('.chair').css('background-image','url('+$(this).attr("src")+')');
+							$('#load').css('display','none');
+							let img=new Image();
+							img.onload=function(){
+								$('.chair').css('background-image','url('+$(this).attr("src")+')');
+							}
+							img.src='/products/'+product_id+'/history/'+result+'.png';
+						}
+						sm_img.src='/products/'+product_id+'/small_image/'+result+'.jpg';
+					}
+				});
 
-			 var last_pro =  default_param;
-	    $(".img-circle").click(function(){
-	      //layer_id.image_id
-	      var layer_id = $(this).find("img").attr("id");
+				//add select class
+				$(".img-circle").removeClass("selected");
+				ch_layer_id2.split("&").forEach(function(element,index) {
+					var param = element.split(".");
+					$("."+param[0]+param[1]).parent().addClass("selected");
+				});
+				//social
+				$(".social").jsSocials({
+					shares: ["twitter", "facebook", "googleplus", "pinterest"],
+					url: window.location.href,
+					text: "",
+					showLabel: false,
+					showCount: false,
+				});
+			});
 
-	      //product_id
-	      var product_id = $(this).find("img").attr("data-product");
-	      // return url in array such as  ["", "product", "product id", "layer_id.image_id&layer_id.image_id&..."]
-	      var url = window.location.pathname.split('/');
-	      //assign layer_id.image_id to url
-	      if(url.length === 4 && url[3] === ""){
-	        url[3] = default_param;
-	      }else if(url.length === 3){
-	        url[3] = default_param;
-	      }
-	      var last_element_in_url = url[3];
-	      var  ch_layer_id="/product/"+product_id+'/';
-	      var  ch_layer_id2="";
-	      //change the value of layer_id.image_id  when click
-	      for (var i=0; i<last_element_in_url.split('&').length; i++){
-	        if(last_element_in_url.split('&')[i].split('.')[0] == layer_id.split('.')[0]){
-	           ch_layer_id += layer_id;
-	           ch_layer_id2 += layer_id;
-	         }else{
-	           ch_layer_id += last_element_in_url.split('&')[i];
-	           ch_layer_id2 += last_element_in_url.split('&')[i];
-	         }
-	         if(i < last_element_in_url.split('&').length -1 ){
-	           ch_layer_id +="&";
-	           ch_layer_id2 +="&";
-	         }
-	       }
-	       history.pushState(null, null,ch_layer_id);
-	       //change image
-	       $('#load').css('display','flex');
-	       var img_pos = $(".chair").css('background-position');
-	      // change_image(product_id,ch_layer_id2,img_pos);
-				// change_imag
-				$.ajax({url: "/test",data:{
-					last_pro:last_pro,
-					ch_layer_id2: ch_layer_id2,
-					product_id:product_id,
-					layer_id:layer_id,
-					img_pos:img_pos
+			//quantity
+			$('.cart_quantity_up').click( function(e) {
+				e.preventDefault();
+				var counter = $('.cart_quantity_input').val();
+				counter++ ;
+				$('.cart_quantity_input').val(counter);
+			});
+			$('.cart_quantity_down').click( function(e) {
+				e.preventDefault();
+				var counter = $('.cart_quantity_input').val();
+				if(counter > 1){counter-- ;}
+				$('.cart_quantity_input').val(counter);
+			});
+			//add to cart
+			$(".add-to-cart").click(function(e){
+				e.preventDefault();
+				var size = $("select").val();
+				if(window.location.pathname.split('/').length == 3){
+					var id2 = default_param;
+				}else{
+					var id2 = window.location.pathname.split('/')[3];
+				}
+				var qty = $('.cart_quantity_input').val();
+				$.ajax({url: "/add",data:{size:size,product_id:product_id,id2:id2,quantity:qty},
+					success: function(result){
+						window.location.href=result;
+					}
+				});
+			});
+		});
 
-
-				}, success: function(result){
-					last_pro=ch_layer_id2;
-
-			let sm_img =new Image();
-				sm_img.onload=function(){
-				 $('.chair').css('background-image','url('+$(this).attr("src")+')');
-					$('#load').css('display','none');
-					 let img=new Image();
-					 img.onload=function(){
-						 $('.chair').css('background-image','url('+$(this).attr("src")+')');
-						 }
-					 img.src='/products/'+product_id+'/history/'+result+'.png';
-
-				 }
-					sm_img.src='/products/'+product_id+'/small_image/'+result+'.jpg';
-
-			}
-			 });
-				/* ---------------------*/
-
-				 //add select class
-				 //add select class
-				  $(".img-circle").removeClass("selected");
-		 		  ch_layer_id2.split("&").forEach(function(element,index) {
-		 				var param = element.split(".");
-		 				$("."+param[0]+param[1]).parent().addClass("selected");
-		 			});
-				 //social
-	       $(".social").jsSocials({
-	         shares: ["twitter", "facebook", "googleplus", "pinterest"],
-	         url: window.location.href,
-	         text: "",
-	         showLabel: false,
-	         showCount: false,
-	       });
-
-	      var qty= $('.cart_quantity_input').val();
-	      $(".add-to-cart").attr("href", "/add/"+product_id+"/"+ch_layer_id2+"/"+qty);
-	});
-
-//quantity
-$('.cart_quantity_up').click( function(e) {
-		e.preventDefault();
-		var counter = $('.cart_quantity_input').val();
-		counter++ ;
-		$('.cart_quantity_input').val(counter);
-		var qty= $('.cart_quantity_input').val();
-		 $(".add-to-cart").attr("href", url+"/"+qty);
-});
- $('.cart_quantity_down').click( function(e) {
-	 e.preventDefault();
-	 var counter = $('.cart_quantity_input').val();
-	 if(counter >1){
-		 counter-- ;
-	 }
-	 $('.cart_quantity_input').val(counter);
-	 var qty= $('.cart_quantity_input').val();
-	 $(".add-to-cart").attr("href", url+"/"+qty);
- });
-	var url = $(".add-to-cart").attr("href");
-	var qty= $('.cart_quantity_input').val();
-	$(".add-to-cart").attr("href", url+"/"+qty);
-
-});
 </script>
 @endsection

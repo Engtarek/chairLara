@@ -9,25 +9,39 @@ use Session;
 use App\Customer;
 use App\Order;
 use App\ProductLayer;
+use Illuminate\Support\Facades\Cache;
+use App\Settings;
 
 class PagesController extends Controller
 {
+    //faq page
     public function faq(){
       return view('pages.faq');
     }
+
+    //privacy page
     public function privacy(){
       return view('pages.privacy');
     }
+
+    //terms_conditions page
     public function terms_conditions(){
       return view('pages.terms-conditions');
     }
+
+    //about page
     public function about(){
       return view('pages.about');
     }
+
+    //contact page
     public function contact(){
       return view('pages.contact');
     }
+
+    //index page
     public function shop(){
+    //Cache::flush();
       $products = Product::where('show',1)->take(8)->get();
       if(count($products) < 8 || count(Product::where('show',1)->skip(8)->take(8)->get()) == 0 ){
         $more=0;
@@ -36,6 +50,8 @@ class PagesController extends Controller
       }
       return view('pages.index',compact('products','more'));
     }
+
+    //get more data in index page
     public function showmore(Request $request){
         $products = Product::where('show',1)->skip($request->numofelement)->take(8)->get();
       if(count(Product::where('show',1)->skip($request->numofelement + 8)->take(8)->get()) > 0){
@@ -45,28 +61,28 @@ class PagesController extends Controller
       }
       return $array=array('products'=>$products,'more'=>$more);
     }
+
+    //product page
     public function product($id,$id2="",Request $request){
+      //setting
+      $setting = Settings::find(1);
+
       $product = Product::find($id);
       if($product->show == 1){
         $layers = $product->layers()->orderBy('rank','asc')->get();
-        $defaultimages = [];
         if(!empty($id2)){
-          foreach(explode('&',$id2) as $data){
-            $layer = $product->layers->find(explode('.',$data)[0]);
-            $array =[
-              'rank'=>$layer->rank,
-              'image'=>$layer->Images->find(explode('.',$data)[1]),
-            ];
-            array_push($defaultimages,$array);
-          }
-          $image_pos = "0px 0px";
-        //  $image_name = merge_image($defaultimages,$id,$image_pos);
+            $imagename = $id;
+            foreach(explode("&",$id2)as $data){
+              foreach (explode(".",$data) as $value) {
+                $imagename .=$value;
+              }
+            }
         }else{
+          $defaultimages=[];
           foreach($layers as $key=>$layer){
             $array =[
               'rank'=>$layer->rank,
               'image'=>$layer->Images->first(),
-
             ];
             $id2 .= $layer->id.'.'.$layer->Images->first()->id;
             if( $key != ( count( $layers ) - 1 ) ){
@@ -74,8 +90,9 @@ class PagesController extends Controller
             }
             array_push($defaultimages,$array);
           }
-            $image_pos = "0px 0px";
-          //$image_name = merge_image($defaultimages,$id,$image_pos);
+          $image_pos = "0px 0px";
+          merge_image($defaultimages,$id,$image_pos);
+          $imagename="init_image";
         }
         $last="";
         $next="";
@@ -83,87 +100,126 @@ class PagesController extends Controller
           $next=$id+1;
         }
         if(!empty(Product::find($id-1))){
-                $last=$id-1;
+          $last=$id-1;
         }
-              return view('pages.product',compact('id2','product','layers','last','next'));
+        return view('pages.product',compact('id2','product','imagename','layers','last','next','setting'));
       }else{
         return view('pages.404');
       }
     }
-    public function change_image($product_id,$id2,$image_pos){
-      $product = Product::find($product_id);
-      $defaultimages = [];
-      foreach(explode('&',$id2) as $data){
-        $layer = $product->layers->find(explode('.',$data)[0]);
-        $array =[
-          'rank'=>$layer->rank,
-          'image'=>$layer->Images->find(explode('.',$data)[1]),
-        ];
-        array_push($defaultimages,$array);
-      }
 
-       return  merge_image($defaultimages,$product_id,$image_pos);
+    // public function change_image($product_id,$id2,$image_pos){
+      // $product = Product::find($product_id);
+      // $defaultimages = [];
+      // foreach(explode('&',$id2) as $data){
+      //   $layer = $product->layers->find(explode('.',$data)[0]);
+      //   $array =[
+      //     'rank'=>$layer->rank,
+      //     'image'=>$layer->Images->find(explode('.',$data)[1]),
+      //   ];
+      //   array_push($defaultimages,$array);
+      // }
+      //
+      //  return  merge_image($defaultimages,$product_id,$image_pos);
 
-    }
-    public function test(Request $request){
-
-      $x=2800;
-      $y=1400;
-      $outputImage = imagecreatetruecolor(2800, 1400);
-      // set background to white
-      $white = imagecolorallocate($outputImage, 255, 255, 255);
-      imagefill($outputImage, 0, 0, $white);
-
-      $last_pro_name = $request->product_id;
-      foreach(explode("&",$request->last_pro)as $data){
-        foreach (explode(".",$data) as $value) {
-          $last_pro_name .=$value;
-        }
-      }
-      if(file_exists('products/'.$request->product_id.'/history/'.$last_pro_name.'.png')){
-        $name= imagecreatefrompng('products/'.$request->product_id.'/history/'.$last_pro_name.'.png');
-        imagecopyresized($outputImage,$name,0,0,0,0, $x, $y,$x,$y);
-      }else{
-        $name= imagecreatefrompng('products/'.$request->product_id.'/history/init_image.png');
-        imagecopyresized($outputImage,$name,0,0,0,0, $x, $y,$x,$y);
-      }
-
+    // }
+    //change image
+    public function change_image(Request $request){
       $imagename = $request->product_id;
         foreach(explode("&",$request->ch_layer_id2)as $data2){
           foreach (explode(".",$data2) as $value2) {
             $imagename .=$value2;
           }
         }
-       $image = ProductLayer::find(explode(".",$request->layer_id)[0])->images()->find(explode(".",$request->layer_id)[1])->image;
 
-      $ext = pathinfo($image, PATHINFO_EXTENSION);
-      if($ext == 'png'){
-        $name= imagecreatefrompng('products/'.$request->product_id.'/image/'.$image.'');
-        imagecopyresized($outputImage,$name,0,0,0,0, $x, $y,$x,$y);
-      }elseif($ext == 'jpg' || $ext == 'jpeg'){
-        $name="2";
-        $name= imagecreatefromjpeg('products/'.$request->product_id.'/image/'.$image.'');
-        imagecopyresized($outputImage,$name,0,0,0,0, $x, $y,$x,$y);
-      }
-
-      if (!file_exists('products/'.$request->product_id.'/history')) {
-          mkdir('products/'.$request->product_id.'/history', 0777, true);
-      }
-      imagepng($outputImage, 'products/'.$request->product_id.'/history/' .$imagename.'.png');
-        //cut image
-        $position =explode(" ",$request->img_pos);
-        $startX = abs(substr($position[0], 0, -2));
-       $startY = abs(substr($position[1], 0, -2));
-
-        $img = imagecreatefrompng('products/'.$request->product_id.'/history/' .$imagename.'.png');
-        $cropImage = imagecrop($img,['x'=>$startX,'y'=>$startY,'width'=>700,'height'=>700]);
-
-        if (!file_exists('products/'.$request->product_id.'/small_image')) {
-            mkdir('products/'.$request->product_id.'/small_image', 0777, true);
+      if(!Cache::get($imagename) && !file_exists("products/".$request->product_id."/history/".$imagename.".png")){
+        $product = Product::find($request->product_id);
+        $defaultimages = [];
+        foreach(explode('&',$request->ch_layer_id2) as $data){
+          $layer = $product->layers->find(explode('.',$data)[0]);
+          $array =[
+            'rank'=>$layer->rank,
+            'image'=>$layer->Images->find(explode('.',$data)[1]),
+          ];
+          array_push($defaultimages,$array);
         }
-       imagejpeg($cropImage,'products/'.$request->product_id.'/small_image/' .$imagename.'.jpg',40);
-      // cutImage('products/'.$product_id.'/history/' .$imagename.'.jpg',$image_position,$product_id,$imagename);
-       return $imagename;
+        merge_image($defaultimages,$request->product_id,$request->img_pos);
+        Cache::forever($imagename, $imagename);
+        return $imagename;
+      }elseif(Cache::get($imagename) && file_exists("products/".$request->product_id."/history/".$imagename.".png")){
+        return  Cache::get($imagename);
+      }elseif(!Cache::get($imagename) && file_exists("products/".$request->product_id."/history/".$imagename.".png")){
+        Cache::forever($imagename, $imagename);
+        return $imagename;
+      }elseif(Cache::get($imagename) && !file_exists("products/".$request->product_id."/history/".$imagename.".png")){
+        Cache::forget($imagename);
+        $product = Product::find($request->product_id);
+        $defaultimages = [];
+        foreach(explode('&',$request->ch_layer_id2) as $data){
+          $layer = $product->layers->find(explode('.',$data)[0]);
+          $array =[
+            'rank'=>$layer->rank,
+            'image'=>$layer->Images->find(explode('.',$data)[1]),
+          ];
+          array_push($defaultimages,$array);
+        }
+        merge_image($defaultimages,$request->product_id,$request->img_pos);
+        Cache::forever($imagename, $imagename);
+        return $imagename;
+      }
+
+      // $x=2800;
+      // $y=1400;
+      // $outputImage = imagecreatetruecolor(2800, 1400);
+      // // set background to white
+      // $white = imagecolorallocate($outputImage, 255, 255, 255);
+      // imagefill($outputImage, 0, 0, $white);
+      //
+      // $last_pro_name = $request->product_id;
+      // foreach(explode("&",$request->last_pro)as $data){
+      //   foreach (explode(".",$data) as $value) {
+      //     $last_pro_name .=$value;
+      //   }
+      // }
+      // if(file_exists('products/'.$request->product_id.'/history/'.$last_pro_name.'.png')){
+      //   $name= imagecreatefrompng('products/'.$request->product_id.'/history/'.$last_pro_name.'.png');
+      //   imagecopyresized($outputImage,$name,0,0,0,0, $x, $y,$x,$y);
+      // }else{
+      //   $name= imagecreatefrompng('products/'.$request->product_id.'/history/init_image.png');
+      //   imagecopyresized($outputImage,$name,0,0,0,0, $x, $y,$x,$y);
+      // }
+      //
+
+      //  $image = ProductLayer::find(explode(".",$request->layer_id)[0])->images()->find(explode(".",$request->layer_id)[1])->image;
+      //
+      // $ext = pathinfo($image, PATHINFO_EXTENSION);
+      // if($ext == 'png'){
+      //   $name= imagecreatefrompng('products/'.$request->product_id.'/image/'.$image.'');
+      //   imagecopyresized($outputImage,$name,0,0,0,0, $x, $y,$x,$y);
+      // }elseif($ext == 'jpg' || $ext == 'jpeg'){
+      //   $name="2";
+      //   $name= imagecreatefromjpeg('products/'.$request->product_id.'/image/'.$image.'');
+      //   imagecopyresized($outputImage,$name,0,0,0,0, $x, $y,$x,$y);
+      // }
+      //
+      // if (!file_exists('products/'.$request->product_id.'/history')) {
+      //     mkdir('products/'.$request->product_id.'/history', 0777, true);
+      // }
+      // imagepng($outputImage, 'products/'.$request->product_id.'/history/' .$imagename.'.png');
+      //   //cut image
+      //   $position =explode(" ",$request->img_pos);
+      //   $startX = abs(substr($position[0], 0, -2));
+      //  $startY = abs(substr($position[1], 0, -2));
+      //
+      //   $img = imagecreatefrompng('products/'.$request->product_id.'/history/' .$imagename.'.png');
+      //   $cropImage = imagecrop($img,['x'=>$startX,'y'=>$startY,'width'=>700,'height'=>700]);
+      //
+      //   if (!file_exists('products/'.$request->product_id.'/small_image')) {
+      //       mkdir('products/'.$request->product_id.'/small_image', 0777, true);
+      //   }
+      //  imagejpeg($cropImage,'products/'.$request->product_id.'/small_image/' .$imagename.'.jpg',40);
+      // // cutImage('products/'.$product_id.'/history/' .$imagename.'.jpg',$image_position,$product_id,$imagename);
+      //  return $imagename;
 
     }
     public function checkout(){
@@ -223,7 +279,7 @@ class PagesController extends Controller
            ];
            array_push($order,$array);
          }
-       //  view()->share('order',$order);
+      //  view()->share('order',$order);
        //return view('order-pdf');
      //  $pdf = PDF::loadView('order-pdf');
      //   $order_pdf = $pdf->output();
@@ -234,15 +290,15 @@ class PagesController extends Controller
         }
     }
     //test
-    public function testing(){
-      return view('test');
-    }
-    public function upload_testing( Request $request){
-      parent::__construct();
-  //  \Cloudinary\Uploader::upload("s3://my-bucket/my-path/sample.jpg");
-//return ;
-//dd($request->file('image')->getRealPath());
-      \Cloudinary\Uploader::upload( $request->file('image')->getRealPath(),array("public_id" => "my_folder/my_sub_folder/my_name"));
-    //  return "done";
-    }
+//     public function testing(){
+//       return view('test');
+//     }
+//     public function upload_testing( Request $request){
+//       parent::__construct();
+//   //  \Cloudinary\Uploader::upload("s3://my-bucket/my-path/sample.jpg");
+// //return ;
+// //dd($request->file('image')->getRealPath());
+//       \Cloudinary\Uploader::upload( $request->file('image')->getRealPath(),array("public_id" => "my_folder/my_sub_folder/my_name"));
+//     //  return "done";
+//     }
 }
