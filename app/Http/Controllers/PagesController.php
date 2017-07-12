@@ -41,7 +41,7 @@ class PagesController extends Controller
 
     //index page
     public function shop(){
-    //Cache::flush();
+    Cache::flush();
       $products = Product::where('show',1)->take(8)->get();
       if(count($products) < 8 || count(Product::where('show',1)->skip(8)->take(8)->get()) == 0 ){
         $more=0;
@@ -125,14 +125,16 @@ class PagesController extends Controller
     // }
     //change image
     public function change_image(Request $request){
+      //get new imagename
       $imagename = $request->product_id;
         foreach(explode("&",$request->ch_layer_id2)as $data2){
           foreach (explode(".",$data2) as $value2) {
             $imagename .=$value2;
           }
         }
-
+        // make condition
       if(!Cache::get($imagename) && !file_exists("products/".$request->product_id."/history/".$imagename.".png")){
+
         $product = Product::find($request->product_id);
         $defaultimages = [];
         foreach(explode('&',$request->ch_layer_id2) as $data){
@@ -146,9 +148,36 @@ class PagesController extends Controller
         merge_image($defaultimages,$request->product_id,$request->img_pos);
         Cache::forever($imagename, $imagename);
         return $imagename;
+
       }elseif(Cache::get($imagename) && file_exists("products/".$request->product_id."/history/".$imagename.".png")){
+
+        //cut image
+          $position =explode(" ",$request->img_pos);
+          $startX = abs(substr($position[0], 0, -2));
+         $startY = abs(substr($position[1], 0, -2));
+
+          $img = imagecreatefrompng('products/'.$request->product_id.'/history/' .$imagename.'.png');
+          $cropImage = imagecrop($img,['x'=>$startX,'y'=>$startY,'width'=>700,'height'=>700]);
+
+          if (!file_exists('products/'.$request->product_id.'/small_image')) {
+              mkdir('products/'.$request->product_id.'/small_image', 0777, true);
+          }
+         imagejpeg($cropImage,'products/'.$request->product_id.'/small_image/' .$imagename.'.jpg',40);
         return  Cache::get($imagename);
+
       }elseif(!Cache::get($imagename) && file_exists("products/".$request->product_id."/history/".$imagename.".png")){
+        //cut image
+          $position =explode(" ",$request->img_pos);
+          $startX = abs(substr($position[0], 0, -2));
+         $startY = abs(substr($position[1], 0, -2));
+
+          $img = imagecreatefrompng('products/'.$request->product_id.'/history/' .$imagename.'.png');
+          $cropImage = imagecrop($img,['x'=>$startX,'y'=>$startY,'width'=>700,'height'=>700]);
+
+          if (!file_exists('products/'.$request->product_id.'/small_image')) {
+              mkdir('products/'.$request->product_id.'/small_image', 0777, true);
+          }
+         imagejpeg($cropImage,'products/'.$request->product_id.'/small_image/' .$imagename.'.jpg',40);
         Cache::forever($imagename, $imagename);
         return $imagename;
       }elseif(Cache::get($imagename) && !file_exists("products/".$request->product_id."/history/".$imagename.".png")){
