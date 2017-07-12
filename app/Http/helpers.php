@@ -79,7 +79,7 @@ function merge_image($images,$product_id,$image_position){
         mkdir('products/'.$product_id.'/history', 0777, true);
     }
     imagepng($outputImage, 'products/'.$product_id.'/history/' .$imagename.'.png',5);
-    cutImage('products/'.$product_id.'/history/' .$imagename.'.png',$image_position,$product_id,$imagename);
+    //cutImage('products/'.$product_id.'/history/' .$imagename.'.png',$image_position,$product_id,$imagename);
     return $imagename;
 
 }

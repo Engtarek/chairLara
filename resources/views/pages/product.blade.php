@@ -390,17 +390,24 @@ $(document).ready(function(){
 				$.ajax({url: "/change_image",data:{last_pro:last_pro,ch_layer_id2: ch_layer_id2,product_id:product_id,layer_id:layer_id,img_pos:img_pos},
 					success: function(result){
 						last_pro=ch_layer_id2;
-						let sm_img =new Image();
-						sm_img.onload=function(){
+						// let sm_img =new Image();
+						// sm_img.onload=function(){
+						// 	$('.chair').css('background-image','url('+$(this).attr("src")+')');
+						// 	$('#load').css('display','none');
+						// 	let img=new Image();
+						// 	img.onload=function(){
+						// 		$('.chair').css('background-image','url('+$(this).attr("src")+')');
+						// 	}
+						// 	img.src='/products/'+product_id+'/history/'+result+'.png';
+						// }
+						// sm_img.src='/products/'+product_id+'/small_image/'+result+'.jpg';
+
+						let img =new Image();
+						img.onload=function(){
 							$('.chair').css('background-image','url('+$(this).attr("src")+')');
 							$('#load').css('display','none');
-							let img=new Image();
-							img.onload=function(){
-								$('.chair').css('background-image','url('+$(this).attr("src")+')');
-							}
-							img.src='/products/'+product_id+'/history/'+result+'.png';
 						}
-						sm_img.src='/products/'+product_id+'/small_image/'+result+'.jpg';
+						img.src='/products/'+product_id+'/history/'+result+'.png';
 					}
 				});
 
