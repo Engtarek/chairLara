@@ -263,7 +263,9 @@ display: block;
 										@foreach($layers as $key=>$data)
 
 													<div class="attribute @if($key == 0) active2 @endif" data-key="{{$key+1}}" id="attr_{{$key+1}}">
-
+														@if(!empty($data->image))
+														<img src="/products/{{$data->product_id}}/layers/{{$data->image}}" width:"25" height="25">
+														@endif
 														<h4>{{$data->rankname}}</h4>
 														<div class="configurations">
 															<ul class="product-colors">
