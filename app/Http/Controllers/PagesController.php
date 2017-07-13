@@ -41,7 +41,7 @@ class PagesController extends Controller
 
     //index page
     public function shop(){
-    Cache::flush();
+    //Cache::flush();
       $products = Product::where('show',1)->take(8)->get();
       if(count($products) < 8 || count(Product::where('show',1)->skip(8)->take(8)->get()) == 0 ){
         $more=0;
@@ -125,6 +125,7 @@ class PagesController extends Controller
     // }
     //change image
     public function change_image(Request $request){
+      Cache::flush();
       //get new imagename
       $imagename = $request->product_id;
         foreach(explode("&",$request->ch_layer_id2)as $data2){
