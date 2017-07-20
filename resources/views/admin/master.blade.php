@@ -151,6 +151,11 @@
             <i class="fa fa-users"></i> <span>Setting</span>
           </a>
         </li>
+        <li class="treeview">
+          <a href="{{url('/admin/dropzone')}}">
+            <i class="fa fa-users"></i> <span>Images area</span>
+          </a>
+        </li>
       </ul>
     </section>
     <!-- /.sidebar -->

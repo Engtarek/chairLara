@@ -8,6 +8,23 @@
   input{
     margin-bottom: 20px;
   }
+  button{
+    display: block !important;
+  }
+  .img-thumbnail{
+    border: 5px solid #ddd;
+    margin: 5px;
+    padding: 0px;
+  }
+  .selected{
+    border: 5px solid #0088cc;
+  }
+  @media (min-width: 768px){
+    .modal-dialog {
+        width: 80%;
+      }
+  }
+
 </style>
 @endsection
 @section('content')
@@ -28,4 +45,34 @@
     </div>
   </div>
 </section>
+@endsection
+@section("footer")
+<script>
+$(document).ready(function(){
+    //image
+    $("img").click(function(){
+      $("img").removeClass("selected");
+      $(this).addClass("selected");
+    });
+
+    $("#pro_image_btn").click(function(e){
+      e.preventDefault();
+      var img_src = $("img.selected").attr("src");
+      var id = $("img.selected").attr("data-value");
+      $('#pro_image').modal('hide');
+      $("input[name='image']").val(id);
+      $('.pro_image').attr("src",img_src);
+    });
+    $("#pro_init_image_btn").click(function(e){
+      e.preventDefault();
+      var img_src = $("img.selected").attr("src");
+      var id = $("img.selected").attr("data-value");
+      $('#pro_init_image').modal('hide');
+      $("input[name='init_image']").val(id);
+      $('.pro_init_image').attr("src",img_src);
+    });
+
+});
+
+</script>
 @endsection

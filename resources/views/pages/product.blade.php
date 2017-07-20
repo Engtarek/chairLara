@@ -86,12 +86,23 @@
   border-radius: 0 4px 4px 0;
 }
 /* social sharing*/
-.social{
-	text-align:center;
-	padding-bottom: 20px;
-}
+
 .social a{
-	padding: 10px;
+	padding: 5px;
+	font-size: 20px;
+}
+
+.jssocials-share-pinterest .jssocials-share-link{
+	color:#000 !important;
+}
+.jssocials-share-googleplus .jssocials-share-link{
+	color:#000 !important;
+}
+.jssocials-share-facebook .jssocials-share-link{
+	color:#000 !important;
+}
+.jssocials-share-twitter .jssocials-share-link{
+	color:#000 !important;
 }
 .product-colors{
 	padding-top: 0px;
@@ -166,6 +177,7 @@ display: block;
 </style>
 @endsection
 @section('content')
+
 			<!-- breadcrumb -->
 			<div class="container-fluid hidden-xs">
 				<div class="row">
@@ -182,109 +194,122 @@ display: block;
 						<h2 class="product-title">{{$product->name}}</h2>
 					</div>
 				</div>
+
 				<div class="row" >
 					<div class="col-md-8 " >
 						<!-- chair -->
 						<div class="parent">
-							<div class="chair" style="background-image:url('/products/{{$product->id}}/history/{{$imagename}}.png')"></div>
+							@if(!empty($init_imagename))
+								<div class="chair" style="background-image:url('/images/{{$init_imagename}}.png')"></div>
+							@elseif(!empty($imagename))
+								<div class="chair" style="background-image:url('/products/{{$product->id}}/history/{{$imagename}}.png')"></div>
+							@endif
 							 <div id="load"><img src="/img/loading.gif"></div>
 						</div>
 					</div>
 					<div class="col-md-4 ">
 						<h2 class="product-title hidden-xs">{{$product->name}}</h2>
-						<!-- social sharing -->
-						<div class="social"></div>
-						<!-- Size -->
-						<div class="form-group clearfix">
-							<!-- <label class="control-label">Size</label> -->
-							<select class="form-control">
-								<option value="40">40</option>
-								<option value="41">41</option>
-								<option value="42">42</option>
-								<option value="43">43</option>
-								<option value="44">44</option>
-								<option value="45">45</option>
-							</select>
-						</div>
-						<!-- increase or decrease quantity -->
-						<div class="cart_quantity_button">
-				      <span class="cart_quantity_up"> + </span>
-				      <input class="cart_quantity_input" type="text" name="quantity" value="1" autocomplete="off" size="2">
-				      <span class="cart_quantity_down"> - </span>
-				    </div>
-              <!-- layers of color -->
-							<div class="panel-group" id="accordion" style="@if($setting->slider_show == 2) display:block @else display:none @endif">
-								 @foreach($layers as $key=>$data)
-										<div class="panel panel-default">
-											<a data-toggle="collapse" data-parent="#accordion" href="#{{$data->id}}">
-												<div class="panel-heading">
-													@if(!empty($data->image))
-													<img src="/products/{{$data->product_id}}/layers/{{$data->image}}" width:"25" height="25">
-													@endif
-													<h4 class="panel-title">{{$data->rankname}}</h4>
-												</div>
-											</a>
-											@if($key == 0)
-											<div id="{{$data->id}}" class="panel-collapse collapse in">
-											  <div class="panel-body">
-													<ul class="product-colors">
-													 @foreach($data->images as $key=>$image)
+						<!-- layers of color -->
+						<label class="control-label">Change the colors</label>
+						<div class="panel-group" id="accordion" style="@if($setting->slider_show == 2) display:block @else display:none @endif">
+							 @foreach($layers as $key=>$data)
+									<div class="panel panel-default">
+										<a data-toggle="collapse" data-parent="#accordion" href="#{{$data->id}}">
+											<div class="panel-heading">
+												@if(!empty($data->image))
+												<img src="/images/{{$data->layer_image->name}}" width:"25" height="25">
+												@endif
+												<h4 class="panel-title">{{$data->rankname}}</h4>
+											</div>
+										</a>
+										@if($key == 0)
+										<div id="{{$data->id}}" class="panel-collapse collapse in">
+											<div class="panel-body">
+												<ul class="product-colors">
+												 @foreach($data->images as $key=>$image)
+														<li class="img-circle color_{{$data->rank}}">
+															<img data-product='{{$product->id}}' class="{{$data->id}}{{$image->id}}" id="{{$data->id}}.{{$image->id}}" src="/images/{{$image->get_color->name}}">
+														</li>
+												@endforeach
+												</ul>
+											</div>
+										</div>
+										@else
+										<div id="{{$data->id}}" class="panel-collapse collapse ">
+											<div class="panel-body">
+												<ul class="product-colors">
+												 @foreach($data->images as $key=>$image)
 															<li class="img-circle color_{{$data->rank}}">
-																<img data-product='{{$product->id}}' class="{{$data->id}}{{$image->id}}" id="{{$data->id}}.{{$image->id}}" src="/products/{{$product->id}}/color/{{$image->color}}">
+																<img data-product='{{$product->id}}' class="{{$data->id}}{{$image->id}}" id="{{$data->id}}.{{$image->id}}" src="/images/{{$image->get_color->name}}">
 															</li>
-													@endforeach
-													</ul>
-											  </div>
+												@endforeach
+												</ul>
 											</div>
-											@else
-											<div id="{{$data->id}}" class="panel-collapse collapse ">
-												<div class="panel-body">
-													<ul class="product-colors">
-													 @foreach($data->images as $key=>$image)
-																<li class="img-circle color_{{$data->rank}}">
-																	<img data-product='{{$product->id}}' class="{{$data->id}}{{$image->id}}" id="{{$data->id}}.{{$image->id}}" src="/products/{{$product->id}}/color/{{$image->color}}">
-																</li>
-													@endforeach
-													</ul>
-												</div>
-											</div>
-											@endif
 										</div>
-									@endforeach
-								</div>
-								<!-- Slider of color -->
-								 <div class="box-rounded attributes" style="@if($setting->slider_show == 1) display:block @else display:none @endif">
-										<div class="next-attribute" data-count="{{count($layers)}}">
-											<img src="http://urbike.de/wp-content/themes/urbike/img/arrow-right.svg" width="32" height="32">
-										</div>
-										<div class="prev-attribute" data-count="{{count($layers)}}">
-											<img src="http://urbike.de/wp-content/themes/urbike/img/arrow-left.svg" width="32" height="32">
-										</div>
-										@foreach($layers as $key=>$data)
-
-													<div class="attribute @if($key == 0) active2 @endif" data-key="{{$key+1}}" id="attr_{{$key+1}}">
-														@if(!empty($data->image))
-														<img src="/products/{{$data->product_id}}/layers/{{$data->image}}" width:"25" height="25">
-														@endif
-														<h4>{{$data->rankname}}</h4>
-														<div class="configurations">
-															<ul class="product-colors">
-															 @foreach($data->images as $key=>$image)
-																		<li class="img-circle color_{{$data->rank}}">
-																			<img data-product='{{$product->id}}' class="{{$data->id}}{{$image->id}}" id="{{$data->id}}.{{$image->id}}" src="/products/{{$product->id}}/color/{{$image->color}}">
-																		</li>
-															@endforeach
-															</ul>
-														</div>
-													 </div>
-										 @endforeach
-
+										@endif
 									</div>
+								@endforeach
+							</div>
+							<!-- Slider of color -->
+							 <div class="box-rounded attributes" style="@if($setting->slider_show == 1) display:block @else display:none @endif">
+									<div class="next-attribute" data-count="{{count($layers)}}">
+										<i class="fa fa-chevron-right" aria-hidden="true" style="padding-top: 50%;font-size: 20px;"></i>
+										<!-- <img src="http://urbike.de/wp-content/themes/urbike/img/arrow-right.svg" width="32" height="32"> -->
+									</div>
+									<div class="prev-attribute" data-count="{{count($layers)}}">
+										<i class="fa fa-chevron-left" aria-hidden="true" style="padding-top: 50%;font-size: 20px;"></i>
+										<!-- <img src="http://urbike.de/wp-content/themes/urbike/img/arrow-left.svg" width="32" height="32"> -->
+									</div>
+									@foreach($layers as $key=>$data)
 
-								<!-- ++++++++++++++ -->
+												<div class="attribute @if($key == 0) active2 @endif" data-key="{{$key+1}}" id="attr_{{$key+1}}">
+
+													<h4>
+														@if(!empty($data->image))
+													<img src="/images/{{$data->layer_image->name}}" width:"25" height="25">
+													@endif{{$data->rankname}}
+												</h4>
+													<div class="configurations">
+														<ul class="product-colors">
+														 @foreach($data->images as $key=>$image)
+																	<li class="img-circle color_{{$data->rank}}">
+																		<img data-product='{{$product->id}}' class="{{$data->id}}{{$image->id}}" id="{{$data->id}}.{{$image->id}}" src="/images/{{$image->get_color->name}}">
+																	</li>
+														@endforeach
+														</ul>
+													</div>
+												 </div>
+									 @endforeach
+
+								</div>
+
+							<!-- ++++++++++++++ -->
+							<!-- Size -->
+							<div class="form-group clearfix" style="margin-top:15px;">
+						 		<label class="control-label">Size</label>
+								<select class="form-control">
+									<option value="40">40</option>
+									<option value="41">41</option>
+									<option value="42">42</option>
+									<option value="43">43</option>
+									<option value="44">44</option>
+									<option value="45">45</option>
+								</select>
+							</div>
+							<!-- design url -->
+							<div class="form-group clearfix" style="margin-top:15px;">
+						 		<label class="control-label"> The design url</label>
+								<input type="text" class="form-control design_url" value="">
+							</div>
+						<!-- social sharing -->
+						<label class="control-label"> Share this design </label>
+						<div class="social"></div>
+
+							<!-- add-to-cart -->
 							<div class="product-btn">
 								<a href="" class="btn add-to-cart" data-role="none">Add To Cart </a>
 							</div>
+
 					</div>
 				</div>
 				<div class="row">
@@ -346,7 +371,7 @@ $(document).ready(function(){
 			showLabel: false,
 			showCount: false,
 		});
-
+		$(".design_url").val(window.location.origin+"/product/"+product_id+"/"+default_param);
 		//add select class
 		$(".img-circle").removeClass("selected");
 		default_param.split("&").forEach(function(element,index) {
@@ -427,6 +452,7 @@ $(document).ready(function(){
 					showLabel: false,
 					showCount: false,
 				});
+				$(".design_url").val(window.location.href);
 			});
 
 			//quantity
@@ -451,7 +477,8 @@ $(document).ready(function(){
 				}else{
 					var id2 = window.location.pathname.split('/')[3];
 				}
-				var qty = $('.cart_quantity_input').val();
+				// var qty = $('.cart_quantity_input').val();
+				var qty = 1;
 				$.ajax({url: "/add",data:{size:size,product_id:product_id,id2:id2,quantity:qty},
 					success: function(result){
 						window.location.href=result;

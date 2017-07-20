@@ -54,16 +54,28 @@
             }
          }
       ?>
+      @if(file_exists("products/{{$product_id}}/history/{{$imagename}}.png"))
+        <div class="parent">
+          <div class="chair" style="background: url(/products/{{$product_id}}/history/{{$imagename}}.png);background-position: 0px -700px"></div>
+        </div>
+        <div class="parent">
+          <div class="chair" style="background: url(/products/{{$product_id}}/history/{{$imagename}}.png);background-position: 0px 0px"></div>
+        </div>
+        <div class="parent">
+          <div class="chair" style="background: url(/products/{{$product_id}}/history/{{$imagename}}.png);background-position: -700px 0px;"></div>
+        </div>
+      @else
+        <div class="parent">
+          <div class="chair" style="background: url(/images/{{\App\Product::find($product_id)->product_init_image->name}});background-position: 0px -700px"></div>
+        </div>
+        <div class="parent">
+          <div class="chair" style="background: url(/images/{{\App\Product::find($product_id)->product_init_image->name}});background-position: 0px 0px"></div>
+        </div>
+        <div class="parent">
+          <div class="chair" style="background: url(/images/{{\App\Product::find($product_id)->product_init_image->name}});background-position: -700px 0px;"></div>
+        </div>
+      @endif
 
-      <div class="parent">
-        <div class="chair" style="background: url(/products/{{$product_id}}/history/{{$imagename}}.png);background-position: 0px -700px"></div>
-      </div>
-      <div class="parent">
-        <div class="chair" style="background: url(/products/{{$product_id}}/history/{{$imagename}}.png);background-position: 0px 0px"></div>
-      </div>
-      <div class="parent">
-        <div class="chair" style="background: url(/products/{{$product_id}}/history/{{$imagename}}.png);background-position: -700px 0px;"></div>
-      </div>
       <p>Details </p>
       <table class="table">
         <tr>

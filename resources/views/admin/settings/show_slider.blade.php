@@ -27,8 +27,8 @@
         {!! Form::model($setting,['route'=>['setting.update',$setting->id],'files'=>true,'method'=>'patch'])!!}
         <div class="box-body">
         <div class="form-group {{ $errors->has('slider_show') ? ' has-error' : '' }}">
-          {!! Form::label('slider_show', 'Slider appearance')!!}
-          {!!Form::select('slider_show',['1'=>'appearnce','2'=>'not-appearnce'],null,['class'=>'form-control','placeholder'=>'Enter slider appearance'])!!}
+          {!! Form::label('slider_show', 'Product slider')!!}
+          {!!Form::select('slider_show',['1'=>'Enable','2'=>'Disable'],null,['class'=>'form-control','placeholder'=>'Enter Product slider'])!!}
           @if ($errors->has('slider_show'))
               <span class="help-block">
                   <strong>{{ $errors->first('slider_show') }}</strong>

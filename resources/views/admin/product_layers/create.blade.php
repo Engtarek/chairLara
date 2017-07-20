@@ -8,6 +8,23 @@
   input{
     margin-bottom: 20px;
   }
+  button{
+    display: block !important;
+  }
+  .img-thumbnail{
+    border: 5px solid #ddd;
+    margin: 5px;
+    padding: 0px;
+  }
+  .selected{
+    border: 5px solid #0088cc;
+  }
+  @media (min-width: 768px){
+    .modal-dialog {
+        width: 80%;
+      }
+  }
+
 </style>
 @endsection
 @section('content')
@@ -27,5 +44,28 @@
       </div>
     </div>
   </div>
-</section> 
+</section>
+@endsection
+@section('footer')
+<script>
+$(document).ready(function(){
+    //image
+    $("img").click(function(){
+      $("img").removeClass("selected");
+      $(this).addClass("selected");
+    });
+
+    $("#layer_image_btn").click(function(e){
+      e.preventDefault();
+      var img_src = $("img.selected").attr("src");
+      var id = $("img.selected").attr("data-value");
+      $('#layer_image').modal('hide');
+      $("input[name='image']").val(id);
+      $('.layer_image').attr("src",img_src);
+    });
+
+
+});
+
+</script>
 @endsection

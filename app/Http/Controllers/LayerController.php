@@ -9,7 +9,7 @@ use Yajra\Datatables\Facades\Datatables;
 
 use App\ProductLayerImage;
 use File;
-
+use App\Images;
 class LayerController extends Controller
 {
   public function index(){
@@ -17,7 +17,8 @@ class LayerController extends Controller
   }
   //show add layer form
   public function create_layer($product_id){
-    return view('admin.product_layers.create',compact('product_id'));
+    $images = Images::all();
+    return view('admin.product_layers.create',compact('product_id','images'));
   }
   //save new layer in database
   public function store(Request $request){
@@ -25,30 +26,20 @@ class LayerController extends Controller
       'rank' => 'required|integer',
       'rankname' => 'required|max:255',
     ]);
-    $image = $request->file('image');
-    if($image){
-      $image_name =time().rand().'.'.$image->getClientOriginalExtension();
-      $image->move('products/'.$request->product_id.'/layers', $image_name);
-      $data =[
+    $data =[
         'rank'=>$request->rank,
         'rankname'=>$request->rankname,
-        'image'=>$image_name,
+        'image'=>$request->image,
         'product_id'=>$request->product_id
       ];
-    }else{
-      $data =[
-        'rank'=>$request->rank,
-        'rankname'=>$request->rankname,
-        'product_id'=>$request->product_id
-      ];
-    }
     ProductLayer::create($data);
     return redirect()->route("product_layers.index")->with("success","The Layer created successfully");
   }
   //show form to delete&edit layer
   public function show($id){
     $layer = ProductLayer::find($id);
-    return view('admin.product_layers.view',compact('layer'));
+    $images = Images::all();
+    return view('admin.product_layers.view',compact('layer','images'));
   }
 
   //edit exiting layer
@@ -59,14 +50,13 @@ class LayerController extends Controller
       'rankname'=>'required',
     ]);
     $layer = ProductLayer::find($id);
-    $image = $request->file('image');
-    if($image){
-      File::delete(public_path('products/'.$layer->product_id.'/layers/'.$layer->image));
-      $image_name =rand().time().'.'.$image->getClientOriginalExtension();
-      $image->move('products/'.$layer->product_id.'/layers', $image_name);
+
+    if(!empty($request->image)){
+      $image_name = $request->image;
     }else{
-      $image_name =$layer->image;
+      $image_name = $layer->image;
     }
+
     $data =[
       'rank'=>$request->rank,
       'rankname'=>$request->rankname,
@@ -80,23 +70,48 @@ class LayerController extends Controller
 
   //delete layer
   public function destroy($id){
-      $layer = ProductLayer::find($id);
+       $layer = ProductLayer::find($id);
+       $layer_image = Images::find($layer->image);
 
-      foreach($layer->images as $image){
-        File::delete(public_path('products/'.$layer->product_id.'/image/'.$image->image));
-        File::delete(public_path('products/'.$layer->product_id.'/color/'.$image->color));
-          $image->delete();
+      foreach($layer->images as $product_layer_image){
+        $image = Images::find($product_layer_image->image);
+        $color = Images::find($product_layer_image->color);
+
+        if(count($image->product_images) == 0 && count($image->product_init_images) == 0 &&
+            count($image->layer_images) == 0 && count($image->images_color) ==0 && count($image->images_image) == 1){
+            File::delete(public_path('images/'.$image->name));
+            File::delete(public_path('images/sub_'.$image->name));
+            $image->delete();
+        }
+
+        if(count($color->product_images) == 0 && count($color->product_init_images) == 0 &&
+            count($color->layer_images) == 0 && count($color->images_image) ==0 && count($color->images_color) == 1){
+            File::delete(public_path('images/'.$color->name));
+            File::delete(public_path('images/sub_'.$color->name));
+            $color->delete();
+        }
+        $product_layer_image->delete();
       }
-      File::delete(public_path('products/'.$layer->product_id.'/layers/'.$layer->image));
+      if(!empty($layer_image)){
+        if(count($layer_image->product_images) == 0 && count($layer_image->product_init_images) == 0 &&
+            count($layer_image->layer_images) == 1 && count($layer_image->images_color) ==0 && count($layer_image->images_image) == 0){
+            File::delete(public_path('images/'.$layer_image->name));
+            File::delete(public_path('images/sub_'.$layer_image->name));
+            $layer_image->delete();
+        }
+      }
       $layer->delete();
       return redirect()->route("product_layers.index")->with("success","The Layer deleted successfully");
+
   }
   //add layer image
   public function add_image($id){
-    return view('admin.product_layers.add_image',compact('id'));
+    $images = Images::all();
+    return view('admin.product_layers.add_image',compact('id','images'));
   }
   //save layer image
   public function save_image(Request $request){
+
     $this->validate($request,[
       'image' => 'required',
       'color' => 'required',
@@ -105,25 +120,15 @@ class LayerController extends Controller
       'item_price' => 'required',
     ]);
      $product_id = ProductLayer::find($request->layer_id)->product_id;
-     $image = $request->file('image');
-     $color = $request->file('color');
-     $name = time().rand();
-    if($image){
-    $image_name =$name.'.'.$image->getClientOriginalExtension();
-      $image->move('products/'.$product_id.'/image', $image_name);
-    }
-    if($color){
-      $color_name =$name.'.'.$color->getClientOriginalExtension();
-      $color->move('products/'.$product_id.'/color', $color_name);
-    }
-    $layer_image = new ProductLayerImage;
-    $layer_image->image = $image_name;
-    $layer_image->color = $color_name;
-    $layer_image->item_name = $request->item_name;
-    $layer_image->item_distributer_name = $request->item_distributer_name;
-    $layer_image->item_price = $request->item_price;
-    $layer_image->product_layers_id = $request->layer_id;
-    $layer_image->save();
+     $data =[
+       'image'=>$request->image,
+       'color'=>$request->color,
+       'item_name'=>$request->item_name,
+       'item_distributer_name'=>$request->item_distributer_name,
+       'item_price'=>$request->item_price,
+       'product_layers_id'=>$request->layer_id,
+     ];
+    ProductLayerImage::create($data);
     return redirect('admin/layer_images')->with("success","The Layer image added successfully");
 
   }

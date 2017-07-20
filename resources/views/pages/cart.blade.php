@@ -81,7 +81,6 @@
           @if(count($items))
 				<div class="row">
 					<div class="col-sm-8 table-responsive">
-
 						<table class="table" style="overflow: auto;">
 						  <thead>
 							<tr>
@@ -107,17 +106,24 @@
                     }
                  }
               ?>
+
 							<tr>
                 <td class="hidden-xs">
                   <div class="parent">
-                    <div class="chair" style="background: url(/products/{{$product_id}}/history/{{$imagename}}.png)"></div>
+                    <?php if( file_exists("products/".$product_id."/history/".$imagename.".png")){?>
+                      <div class="chair" style="background: url(/products/{{$product_id}}/history/{{$imagename}}.png)"></div>
+                    <?php } else{  ?>
+                      <div class="chair" style="background: url(/images/{{\App\Product::find($product_id)->product_init_image->name}})"></div>
+                    <?php  }?>
                   </div>
                 </td>
 	  	 					<td class="text-center">{{$item->name}}</td>
 								<td class="text-center">{{$item->price}}</td>
                 <td class="text-center">{{$item->attributes['size']}}</td>
 								<td class="text-center cart_quantity">
-                  <?php foreach (explode("-",$item->id) as $key => $first_id) {
+                  <?php
+                   $id = explode("&",$item->id)[0];
+                   foreach (explode("-",$id) as $key => $first_id) {
                      if($key==0){$item_id = $first_id;}
                      else{foreach (explode(".",$first_id) as $key => $second_id) {
                        $item_id .= $second_id;
@@ -176,9 +182,7 @@
         @else
         <div class="row">
           <div class="col-sm-12">
-
-                  <h2 class="text-center">Your cart is empty.</h2>
-
+              <h2 class="text-center">Your cart is empty.</h2>
           </div>
         </div>
         @endif

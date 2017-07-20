@@ -11,4 +11,13 @@ class Product extends Model
   public function layers(){
       return $this->hasMany('App\ProductLayer');
   }
+
+  public function product_image(){
+        return $this->hasOne(Images::class, 'id','image');
+  }
+
+  public function product_init_image(){
+        return $this->hasOne(Images::class,'id', 'init_image');
+  }
+
 }

@@ -182,6 +182,7 @@ return [
         Barryvdh\DomPDF\ServiceProvider::class,
         Darryldecode\Cart\CartServiceProvider::class,
         Alexpechkarev\GoogleGeocoder\GoogleGeocoderServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
     ],
 
     /*
@@ -236,6 +237,7 @@ return [
         'Share' => Chencha\Share\ShareFacade::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
         'Cart' => Darryldecode\Cart\Facades\CartFacade::class,
+        'Image' => Intervention\Image\Facades\Image::class,
     ],
 
 ];

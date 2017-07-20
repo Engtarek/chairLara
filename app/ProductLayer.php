@@ -15,4 +15,8 @@ class ProductLayer extends Model
   {
       return $this->hasMany('App\ProductLayerImage','product_layers_id');
   }
+
+  public function layer_image(){
+        return $this->hasOne(Images::class, 'id','image');
+  }
 }

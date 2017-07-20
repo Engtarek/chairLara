@@ -17,7 +17,7 @@ class CreateProductLayersTable extends Migration
             $table->increments('id');
             $table->integer('rank');
             $table->string('rankname');
-            $table->string('image')->nullable();
+            $table->integer('image')->unsigned()->index()->nullable();
             $table->integer('product_id')->unsigned();
             $table->foreign('product_id')->references('id')->on('products');
             $table->timestamps();

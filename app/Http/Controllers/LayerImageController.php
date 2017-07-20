@@ -8,7 +8,7 @@ use Yajra\Datatables\Facades\Datatables;
 use App\ProductLayerImage;
 use App\ProductLayer;
 use File;
-
+use App\Images;
 class LayerImageController extends Controller
 {
   public function index(){
@@ -16,80 +16,61 @@ class LayerImageController extends Controller
   }
   // show form to edit or delete the layer
   public function show($id){
+    $images = Images::all();
     $image = ProductLayerImage::find($id);
     $product_id = ProductLayer::find($image->product_layers_id)->product_id;
-    return view('admin.layer_images.view',compact('image','product_id'));
+    return view('admin.layer_images.view',compact('image','product_id','images'));
   }
 
   //update the exiting image
   public function update($id,Request $request){
+
     $image_layer = ProductLayerImage::find($id);
-    $product_id = ProductLayer::find($image_layer->product_layers_id)->product_id;
-    $new_product_id = ProductLayer::find($request->product_layers_id)->product_id;
-    $image = $request->file('image');
-    $color = $request->file('color');
-    $name = time().rand();
-    if($product_id != $new_product_id){
-      if($image){
-        File::delete(public_path('products/'.$product_id.'/image/'.$image_layer->image));
-        $image_name =$name.'.'.$image->getClientOriginalExtension();
-        $image->move('products/'.$new_product_id.'/image', $image_name);
+    if(!empty($request->image)){
+       $image_name =$request->image;
+       
      }else{
-       copy('products/'.$product_id.'/image/'.$image_layer->image,'products/'.$new_product_id.'/image/'.$image_layer->image);
-      File::delete(public_path('products/'.$product_id.'/image/'.$image_layer->image));
-         $image_name = $image_layer->image;
+       $image_name = $image_layer->image;
      }
-      if($color){
-           File::delete(public_path('products/'.$product_id.'/color/'.$image_layer->color));
-        $color_name =$name.'.'.$color->getClientOriginalExtension();
-        $color->move('products/'.$new_product_id.'/color', $color_name);
-      }else{
-        copy('products/'.$product_id.'/color/'.$image_layer->color,'products/'.$new_product_id.'/color/'.$image_layer->color);
-        File::delete(public_path('products/'.$product_id.'/color/'.$image_layer->color));
 
-    $color_name = $image_layer->color;
-
-      }
-    }else{
-      if($image){
-        File::delete(public_path('products/'.$product_id.'/image/'.$image_layer->image));
-        $image_name =$name.'.'.$image->getClientOriginalExtension();
-        $image->move('products/'.$product_id.'/image', $image_name);
-     }else{
-          $image_name = $image_layer->image;
-     }
-      if($color){
-           File::delete(public_path('products/'.$product_id.'/color/'.$image_layer->color));
-
-        $color_name =$name.'.'.$color->getClientOriginalExtension();
-        $color->move('products/'.$product_id.'/color', $color_name);
+     if(!empty($request->color)){
+       $color_name =$request->color;
       }else{
         $color_name = $image_layer->color;
       }
-    }
 
-   $image_layer->image = $image_name;
-   $image_layer->color = $color_name;
-   $image_layer->item_name = $request->item_name;
-   $image_layer->item_distributer_name = $request->item_distributer_name;
-   $image_layer->item_price = $request->item_price;
-   $image_layer->product_layers_id =$request->product_layers_id ;
-   $image_layer->save();
+       $image_layer->image = $image_name;
+       $image_layer->color = $color_name;
+       $image_layer->item_name = $request->item_name;
+       $image_layer->item_distributer_name = $request->item_distributer_name;
+       $image_layer->item_price = $request->item_price;
+       $image_layer->product_layers_id =$request->product_layers_id ;
+       $image_layer->save();
     return redirect()->route("layer_images.show",$id)->with("success","The  image updated successfully");
+
   }
 
   //delete image
   public function destroy($id){
-    $image = ProductLayerImage::find($id);
-    $product_id = ProductLayer::find($image->product_layers_id)->product_id;
-    if(!empty($image->image)){
-       File::delete(public_path('products/'.$product_id.'/image/'.$image->image));
-    }
-     if(!empty($image->color)){
-        File::delete(public_path('products/'.$product_id.'/color/'.$image->color));
-     }
-     $image->delete();
-     return redirect()->route("layer_images.index")->with("success","The image deleted successfully");
+      $product_layer_image = ProductLayerImage::find($id);
+      $image = Images::find($product_layer_image->image);
+      $color = Images::find($product_layer_image->color);
+
+      if(count($image->product_images) == 0 && count($image->product_init_images) == 0 &&
+          count($image->layer_images) == 0 && count($image->images_color) ==0 && count($image->images_image) == 1){
+          File::delete(public_path('images/'.$image->name));
+          File::delete(public_path('images/sub_'.$image->name));
+          $image->delete();
+      }
+
+      if(count($color->product_images) == 0 && count($color->product_init_images) == 0 &&
+          count($color->layer_images) == 0 && count($color->images_image) ==0 && count($color->images_color) == 1){
+          File::delete(public_path('images/'.$color->name));
+          File::delete(public_path('images/sub_'.$color->name));
+          $color->delete();
+      }
+      $product_layer_image->delete();
+      return redirect()->route("layer_images.index")->with("success","The image deleted successfully");
 
   }
   //datatables
@@ -103,10 +84,10 @@ class LayerImageController extends Controller
       return   ProductLayer::find($model->product_layers_id)->rankname;
      })
      ->editColumn('layer_image',function($model){
-          return "<img style='width:150px' src='/products/".ProductLayer::find($model->product_layers_id)->product_id."/image/".$model->image."'>";
+          return "<img style='width:150px' src='/images/sub_".$model->get_image->name."'>";
      })
      ->editColumn('layer_color',function($model){
-          return "<img style='width:50px' src='/products/".ProductLayer::find($model->product_layers_id)->product_id."/color/".$model->color."'>";
+          return "<img style='width:50px' src='/images/sub_".$model->get_color->name."'>";
      })
      ->editColumn('item_name',function($model){
           return $model->item_name;

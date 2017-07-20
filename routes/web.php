@@ -15,6 +15,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'is-admin']], functio
 
   Route::get('/products/data','ProductController@data');
   Route::resource('/products','ProductController');
+  Route::get('/cache/{id}','ProductController@delete_cache');
 
   Route::get('/product_layers/data','LayerController@data');
   Route::get('/product_layers/create/{id}','LayerController@create_layer');
@@ -31,9 +32,9 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'is-admin']], functio
 
   Route::get('/orders/data','OrderController@data');
   Route::get('/orders/items/{id}','OrderController@items');
-    Route::get('/orders/details/{id}','OrderController@details');
-    Route::get('/orders/assign/{id}','OrderController@assignOrder');
-    Route::post('/orders/assign','OrderController@saveAssignOrder');
+  Route::get('/orders/details/{id}','OrderController@details');
+  Route::get('/orders/assign/{id}','OrderController@assignOrder');
+  Route::post('/orders/assign','OrderController@saveAssignOrder');
   Route::resource('/orders','OrderController');
 
   Route::get('/employees/data','EmployeeController@data');
@@ -41,6 +42,10 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'is-admin']], functio
 
   Route::resource('/setting','SettingController');
 
+  Route::get('dropzone', 'HomeController@dropzone');
+  Route::post('dropzone/store', ['as'=>'dropzone.store','uses'=>'HomeController@dropzoneStore']);
+  // Route::get('testing', 'HomeController@testing');
+  // Route::post('save', 'HomeController@save');
 });
 
 //Cart
@@ -51,25 +56,6 @@ Route::get('/decrease_qty/{id}', ['uses'=>'CartController@DecreaseQty','as'=>'de
 Route::get('/increase_qty/{id}', ['uses'=>'CartController@IncreaseQty','as'=>'increase.qty']);
 Route::get('clear', ['uses'=>'CartController@Clear','as'=>'cart.clear']);
 
-// Route::get('checkout', [
-//   'uses'=>'CartController@checkout',
-// ]);
-
-
-// Route::post('test', [
-//   'uses'=>'CartController@test',
-// ]);
-
-
-
-/*pages for forentend interface */
-
-//user
-// Route::get('/user/login', 'UserController@login');
-// Route::post('/user/login', 'UserController@save_login');
-// Route::get('/user/register', 'UserController@register');
-// Route::post('/user/register', 'UserController@save_register');
-// Route::get('/user/logout', 'UserController@logout');
 //privacy
 Route::get('/privacy', 'PagesController@privacy');
 //faq
@@ -103,5 +89,3 @@ Route::get('/status',function(){
     $status->save();
   }
 });
-Route::get('/hend','PagesController@testing');
-Route::post('/sabry','PagesController@upload_testing');

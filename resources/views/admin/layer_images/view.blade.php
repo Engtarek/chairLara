@@ -7,6 +7,24 @@
 @section('header')
 <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
   <script>tinymce.init({ selector:'textarea' });</script>
+  <style>
+  button{
+    display: block !important;
+  }
+  .img-thumbnail{
+    border: 5px solid #ddd;
+    margin: 5px;
+    padding: 0px;
+  }
+  .selected{
+    border: 5px solid #0088cc;
+  }
+  @media (min-width: 768px){
+    .modal-dialog {
+        width: 80%;
+      }
+  }
+  </style>
 @endsection
 
 @section('content')
@@ -46,5 +64,34 @@
 @endsection
 @section('footer')
 
+<script>
+$(document).ready(function(){
+    //image
+    $("img").click(function(){
+      $("img").removeClass("selected");
+      $(this).addClass("selected");
+    });
 
+    $("#images_image_btn").click(function(e){
+      e.preventDefault();
+      var img_src = $("img.selected").attr("src");
+      var id = $("img.selected").attr("data-value");
+      $('#images_image').modal('hide');
+      $("input[name='image']").val(id);
+      $('.images_image').attr("src",img_src);
+      $(".exit_images_image").css("display","none");
+    });
+    $("#images_color_btn").click(function(e){
+      e.preventDefault();
+      var img_src = $("img.selected").attr("src");
+      var id = $("img.selected").attr("data-value");
+      $('#images_color').modal('hide');
+      $("input[name='color']").val(id);
+      $('.images_color').attr("src",img_src);
+        $(".exit_images_color").css("display","none");
+    });
+
+});
+
+</script>
 @endsection

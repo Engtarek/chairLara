@@ -97,5 +97,47 @@ function cutImage($src,$image_position,$product_id,$imagename){
 
 
 }
+function createImage($product_id,$last_pro,$layer_id,$imagename,$image_position){
+
+    $x=2800;
+    $y=1400;
+    $outputImage = imagecreatetruecolor(2800, 1400);
+    // set background to white
+    $white = imagecolorallocate($outputImage, 255, 255, 255);
+    imagefill($outputImage, 0, 0, $white);
+
+    $last_pro_name = $product_id;
+    foreach(explode("&",$last_pro)as $data){
+      foreach (explode(".",$data) as $value) {
+        $last_pro_name .=$value;
+      }
+    }
+    if(file_exists('products/'.$product_id.'/history/'.$last_pro_name.'.png')){
+      $name= imagecreatefrompng('products/'.$product_id.'/history/'.$last_pro_name.'.png');
+      imagecopyresized($outputImage,$name,0,0,0,0, $x, $y,$x,$y);
+    }else{
+      $img = \App\Product::find($product_id)->product_init_image->name;
+      $name= imagecreatefrompng('images/'.$img);
+      imagecopyresized($outputImage,$name,0,0,0,0, $x, $y,$x,$y);
+    }
+
+    $image = \App\ProductLayer::find(explode(".",$layer_id)[0])->images()->find(explode(".",$layer_id)[1])->get_image->name;
+
+    $ext = pathinfo($image, PATHINFO_EXTENSION);
+    if($ext == 'png'){
+      $name= imagecreatefrompng('images/'.$image.'');
+      imagecopyresized($outputImage,$name,0,0,0,0, $x, $y,$x,$y);
+    }elseif($ext == 'jpg' || $ext == 'jpeg'){
+      $name="2";
+      $name= imagecreatefromjpeg('images/'.$image.'');
+      imagecopyresized($outputImage,$name,0,0,0,0, $x, $y,$x,$y);
+    }
+
+    if (!file_exists('products/'.$product_id.'/history')) {
+        mkdir('products/'.$product_id.'/history', 0777, true);
+    }
+   imagepng($outputImage, 'products/'.$product_id.'/history/' .$imagename.'.png');
+   cutImage('products/'.$product_id.'/history/' .$imagename.'.png',$image_position,$product_id,$imagename);
+}
 
 ?>

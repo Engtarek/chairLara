@@ -15,8 +15,8 @@ class CreateProductLayerImagesTable extends Migration
     {
         Schema::create('product_layer_images', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('image');
-            $table->string('color');
+            $table->integer('image')->unsigned()->index();
+            $table->integer('color')->unsigned()->index();
             $table->string('item_name');
             $table->string('item_distributer_name');
             $table->string('item_price');

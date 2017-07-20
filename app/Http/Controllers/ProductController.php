@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use Yajra\Datatables\Facades\Datatables;
 use App\Product;
 use File;
-
+use App\Images;
+use Illuminate\Support\Facades\Cache;
 class ProductController extends Controller
 {
     //show all products
@@ -16,7 +17,8 @@ class ProductController extends Controller
 
     //show add product form
     public function create(){
-      return view('admin.products.create');
+      $images = Images::all();
+      return view('admin.products.create',compact('images'));
     }
 
     //save new product in database
@@ -27,53 +29,37 @@ class ProductController extends Controller
         'show'=>'required',
         'init_image'=>'required',
       ]);
-      //image
-      $image = $request->file('image');
-      if($image){
-        $image_name =rand().'.'.$image->getClientOriginalExtension();
-      }
-      //init_image
-      $init_image = $request->file('init_image');
-      if($init_image){
-        $init_image_name ='init_image.'.$init_image->getClientOriginalExtension();
-      }
+
       $data = array(
         'name'=>$request->name,
-        'image'=>$image_name,
+        'image'=>$request->image,
         'show'=>$request->show,
-        'init_image'=>$init_image_name,
+        'init_image'=>$request->init_image,
       );
       $product = Product::create($data);
-      $image->move('products/'.$product->id, $image_name);
-      $init_image->move('products/'.$product->id.'/history', $init_image_name);
       return redirect()->route("products.index")->with("success","The product created successfully");
     }
 
     //show form to delete&edit product
     public function show($id){
       $product = Product::find($id);
-      return view('admin.products.view',compact('product'));
+      $images = Images::all();
+      return view('admin.products.view',compact('product','images'));
     }
     //edit exiting product
     public function update(Request $request, $id){
       $product = Product::find($id);
-      $image = $request->file('image');
-      $init_image = $request->file('init_image');
-      //image
-      if($image){
-        File::delete(public_path('products/'.$product->id.'/'.$product->image));
-        $image_name =rand().'.'.$image->getClientOriginalExtension();
-        $image->move('products/'.$product->id, $image_name);
+      if($request->image == ""){
+        $image_name = $product->image;
       }else{
-         $image_name = $product->image;
+        $image_name = $request->image;
       }
-      //init_image
-      if($init_image){
-        File::delete(public_path('products/'.$product->id.'/history'.$product->init_image));
-        $init_image_name ='init_image.'.$init_image->getClientOriginalExtension();
-        $init_image->move('products/'.$product->id.'/history', $init_image_name);
+      if($request->init_image == ""){
+      $init_image_name = $product->init_image;
       }else{
-        $init_image_name = $product->init_image;
+        File::deleteDirectory(public_path('products/'.$id));
+        Cache::flush();
+        $init_image_name = $request->init_image;
       }
       $data = array(
         'name'=>$request->name,
@@ -87,17 +73,56 @@ class ProductController extends Controller
 
     //delete product
     public function destroy($id){
-        $product = Product::find($id);
+       $product = Product::find($id);
+       $pro_image = Images::find($product->image);
+       $pro_init_image = Images::find($product->init_image);
         foreach($product->layers as $layer){
-          foreach($layer->images as $image){
-            File::delete(public_path('products/'.$id.'/image/'.$image->image));
-            File::delete(public_path('products/'.$id.'/color/'.$image->color));
-            $image->delete();
-          }
-          $layer->delete();
+          $layer_image = Images::find($layer->image);
+            foreach($layer->images as $product_layer_image){
+              $image = Images::find($product_layer_image->image);
+              $color = Images::find($product_layer_image->color);
+
+              if(count($image->product_images) == 0 && count($image->product_init_images) == 0 &&
+                  count($image->layer_images) == 0 && count($image->images_color) ==0 && count($image->images_image) == 1){
+                  File::delete(public_path('images/'.$image->name));
+                  File::delete(public_path('images/sub_'.$image->name));
+                  $image->delete();
+              }
+
+              if(count($color->product_images) == 0 && count($color->product_init_images) == 0 &&
+                  count($color->layer_images) == 0 && count($color->images_image) ==0 && count($color->images_color) == 1){
+                  File::delete(public_path('images/'.$color->name));
+                  File::delete(public_path('images/sub_'.$color->name));
+                  $color->delete();
+              }
+              $product_layer_image->delete();
+            }
+            if(!empty($layer_image)){
+              if(count($layer_image->product_images) == 0 && count($layer_image->product_init_images) == 0 &&
+                  count($layer_image->layer_images) == 1 && count($layer_image->images_color) ==0 && count($layer_image->images_image) == 0){
+                  File::delete(public_path('images/'.$layer_image->name));
+                  File::delete(public_path('images/sub_'.$layer_image->name));
+                  $layer_image->delete();
+              }
+            }
+
+           $layer->delete();
         }
-        File::deleteDirectory(public_path('products/'.$id));
-        $product->delete();
+        if(count($pro_image->product_images) == 1 && count($pro_image->product_init_images) == 0 &&
+            count($pro_image->layer_images) == 0 && count($pro_image->images_color) ==0 && count($pro_image->images_image) == 0){
+            File::delete(public_path('images/'.$pro_image->name));
+            File::delete(public_path('images/sub_'.$pro_image->name));
+            $pro_image->delete();
+        }
+
+        if(count($pro_init_image->product_images) == 0 && count($pro_init_image->product_init_images) == 1 &&
+            count($pro_init_image->layer_images) == 0 && count($pro_init_image->images_image) ==0 && count($pro_init_image->images_color) == 0){
+            File::delete(public_path('images/'.$pro_init_image->name));
+            File::delete(public_path('images/sub_'.$pro_init_image->name));
+            $pro_init_image->delete();
+        }
+      File::deleteDirectory(public_path('products/'.$id));
+       $product->delete();
         return redirect()->route("products.index")->with("success","The Product deleted successfully");
     }
 
@@ -116,5 +141,10 @@ class ProductController extends Controller
       })
 
       ->make(true);
+    }
+
+    public function delete_cache($id){
+        Cache::flush();
+        return redirect()->route("products.show",$id)->with("success","The cache deleted successfully");
     }
 }

@@ -1,10 +1,30 @@
 
-@if(!empty($image))
-<img src="/products/{{$product_id}}/image/{{$image->image}}" style="width:250px">
-@endif
+
 <div class="form-group {{ $errors->has('image') ? ' has-error' : '' }}">
   {!! Form::label('image', 'Layer Image')!!}
-  {!!Form::file('image',null,['class'=>'form-control'])!!}
+  {{ Form::hidden('image', '') }}
+  <!-- start model -->
+  <button type="button" class="btn btn-default " data-toggle="modal" data-target="#images_image">Choose image </button>
+  <div class="modal fade" id="images_image" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div>
+            @foreach($images as $key=>$img)
+              <img class="img-responsive img-thumbnail"src="/images/sub_{{$img->name}}" data-value="{{$img->id}}">
+            @endforeach
+          </div>
+          <button class="btn btn-primary btn-img pull-right" id="images_image_btn" >select</button>
+          <div style="clear:both"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end model -->
+<div><img class="images_image" src=""></div>
   @if ($errors->has('image'))
     <span class="help-block">
     <strong>{{ $errors->first('image') }}</strong>
@@ -12,17 +32,43 @@
   @endif
 </div>
 @if(!empty($image))
-<img src="/products/{{$product_id}}/color/{{$image->color}}" style="width:150px">
+<img class="exit_images_image" src="/images/sub_{{$image->get_image->name}}" >
 @endif
+
 <div class="form-group {{ $errors->has('color') ? ' has-error' : '' }}">
   {!! Form::label('color', 'Layer Color')!!}
-  {!!Form::file('color',null,['class'=>'form-control'])!!}
+  {{ Form::hidden('color', '') }}
+  <!-- start model -->
+  <button type="button" class="btn btn-default " data-toggle="modal" data-target="#images_color">Choose image </button>
+  <div class="modal fade" id="images_color" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div>
+            @foreach($images as $key=>$img)
+              <img class="img-responsive img-thumbnail"src="/images/sub_{{$img->name}}" data-value="{{$img->id}}">
+            @endforeach
+          </div>
+          <button class="btn btn-primary btn-img pull-right" id="images_color_btn" >select</button>
+          <div style="clear:both"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end model -->
+  <div><img class="images_color" src=""></div>
   @if ($errors->has('color'))
     <span class="help-block">
     <strong>{{ $errors->first('color') }}</strong>
     </span>
   @endif
 </div>
+@if(!empty($image))
+<img class="exit_images_color" src="/images/sub_{{$image->get_color->name}}" >
+@endif
 <div class="form-group {{ $errors->has('item_name') ? ' has-error' : '' }}">
   {!! Form::label('item_name', 'Item Name')!!}
   {!!Form::text('item_name',null,['class'=>'form-control'])!!}
