@@ -239,7 +239,7 @@ display: block;
 												@if(!empty($data->image))
 												<img src="/images/{{$data->layer_image->name}}" width:"25" height="25">
 												@endif
-												<h4 class="panel-title">{{$data->rankname}}</h4>
+												<h4 class="panel-title">@if(App::isLocale('ar')){{$data->rankname_ar}} @else {{$data->rankname_en}} @endif </h4>
 											</div>
 										</a>
 										@if($key == 0)
@@ -287,7 +287,7 @@ display: block;
 													<h4>
 														@if(!empty($data->image))
 													<img src="/images/{{$data->layer_image->name}}" width:"25" height="25">
-													@endif{{$data->rankname}}
+													@endif @if(App::isLocale('ar')){{$data->rankname_ar}} @else {{$data->rankname_en}} @endif
 												</h4>
 													<div class="configurations">
 														<ul class="product-colors">
