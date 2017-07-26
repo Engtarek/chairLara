@@ -3,7 +3,7 @@
 function product(){
   $product = [];
   foreach(\App\Product::all() as $value){
-    $product[$value->id] = $value->name;
+    $product[$value->id] = $value->name_en;
   }
   return $product;
 }
@@ -26,7 +26,7 @@ function status(){
 function layers(){
   $layers = [];
   foreach(\App\ProductLayer::all() as $value){
-    $layers[$value->id] = $value->rankname;
+    $layers[$value->id] = $value->rankname_en;
   }
   return $layers;
 }

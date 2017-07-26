@@ -8,22 +8,9 @@
 <link rel="stylesheet" href="/admin/image-picker.css">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.0.1/min/dropzone.min.css" rel="stylesheet">
 
+<link rel="stylesheet" type="text/css" href="/admin/sweetalert.css">
+
  <style>
-/*ul.thumbnails.image_picker_selector li{
-  width: 150px;
-  height: 150px;
-}
-ul.thumbnails.image_picker_selector li .thumbnail.selected{
-  border-color:#0088cc;
-  background: transparent;
-}
-ul.thumbnails.image_picker_selector li .thumbnail{
-  border:5px solid #dddddd;
-  padding: 0;
-}
-.thumbnail{
-  padding: 1px;
-}*/
 .tab-content{
   padding-top: 25px;
 }
@@ -35,6 +22,22 @@ ul.thumbnails.image_picker_selector li .thumbnail{
 }
 .selected{
   border: 5px solid #0088cc;
+}
+.pic{
+  position: relative;
+  display: inline-block;
+}
+.pic-delete{
+position: absolute;
+right: 15px;
+top: 15px;
+/*border: 1px solid #000;
+padding: 1px 2px;*/
+cursor: pointer;
+}
+.sweet-alert h2{
+  font-size: 23px;
+  margin: 0;
 }
  </style>
 
@@ -69,18 +72,13 @@ ul.thumbnails.image_picker_selector li .thumbnail{
             <div id="images" class="tab-pane fade in active">
               <div>
                 @foreach($images as $key=>$image)
-                  <img class="img-responsive img-thumbnail"src="/images/sub_{{$image->name}}" data-value="{{$image->id}}">
+                  <div class="pic" id="{{$image->id}}">
+                      <img data-toggle="tooltip" data-placement="bottom" title="{{$image->name}}" class="img-responsive img-thumbnail"src="/images/sub_{{$image->name}}"  data-value="{{$image->id}}">
+                      <p class="pic-delete" data-image-id="{{$image->id}}"><i class="glyphicon glyphicon-remove"></i></p>
+                  </div>
+
                 @endforeach
               </div>
-              <!-- <button class="btn btn-primary" id="image_selected" disabled>Save</button> -->
-              <!-- <form>
-              <select class="image-picker">
-                  @foreach($images as $key=>$image)
-                      <option data-img-src=""  value="{{$image->id}}">dasdfs</option>
-                  @endforeach
-                </select>
-                <button class="btn btn-primary" id="image_selected">Save</button>
-              </form> -->
             </div>
           </div>
       </div>
@@ -92,8 +90,11 @@ ul.thumbnails.image_picker_selector li .thumbnail{
 @section('footer')
  <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.2.0/min/dropzone.min.js"></script>
 <script src="/admin/image-picker.js"></script>
+<script src="/admin/sweetalert.min.js"></script>
 <script>
 $(document).ready(function(){
+  //tooltip
+  $('[data-toggle="tooltip"]').tooltip();
     //drag and drop images
     Dropzone.options.imageUpload = {
       acceptedFiles: ".jpeg,.jpg,.png",
@@ -110,8 +111,46 @@ $(document).ready(function(){
       $("#image_selected").removeAttr('disabled');
     });
 
-    $("#image_selected").click(function(){
-      window.history.back();
+    //delete
+    $(".pic-delete").click(function(){
+      var image_id = $(this).attr("data-image-id");
+      swal({
+        title: "Are you sure you want to delete this image ?",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Delete",
+        cancelButtonText: "Cancel",
+        closeOnConfirm: false,
+        closeOnCancel: false
+      },
+      function(isConfirm){
+        if (isConfirm) {
+          $.ajax({url: "/admin/dropzone/delete",data:{image_id:image_id},
+            success: function(result){
+              if(result['key'] == "not_delete"){
+                  var text = "";
+                  var names = Object.keys(result['product']).map(function (key) { return result['product'][key]; });
+                  for (var i = 0; i < names.length; i++) {
+                    if(i+1 == names.length){
+                      text += names[i];
+                    }else{
+                      text += names[i] + " , ";
+                    }
+                  }
+                  swal("Not Deleted!", "Image has not been deleted because of using in other products such as "+ text+" .");
+              }else if(result['key'] == "delete"){
+                $(".sweet-overlay").hide();
+                $("div.sweet-alert").css('display','none');
+                $("#"+result['product']).hide();
+              }
+            }
+          });
+        } else {
+          $(".sweet-overlay").hide();
+          $("div.sweet-alert").css('display','none');
+        }
+      });
+
     });
 
 });

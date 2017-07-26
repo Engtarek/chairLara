@@ -17,8 +17,10 @@ class CreateProductLayerImagesTable extends Migration
             $table->increments('id');
             $table->integer('image')->unsigned()->index();
             $table->integer('color')->unsigned()->index();
-            $table->string('item_name');
-            $table->string('item_distributer_name');
+            $table->string('item_name_en');
+            $table->string('item_name_ar');
+            $table->string('item_distributer_name_en');
+            $table->string('item_distributer_name_ar');
             $table->string('item_price');
             $table->integer('product_layers_id')->unsigned();
             $table->foreign('product_layers_id')->references('id')->on('product_layers');

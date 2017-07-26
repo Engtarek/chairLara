@@ -7,8 +7,9 @@
 @section('header')
 <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
   <script>tinymce.init({ selector:'textarea' });</script>
+  <link rel="stylesheet" type="text/css" href="/admin/sweetalert.css">
   <style>
-  button{
+  .image_picker{
     display: block !important;
   }
   .img-thumbnail{
@@ -19,12 +20,14 @@
   .selected{
     border: 5px solid #0088cc;
   }
-  @media (min-width: 768px){
-    .modal-dialog {
-        width: 80%;
-      }
+  .modal-body{
+      height:600px;
+      overflow:auto;
   }
-
+  .sweet-alert h2{
+    font-size: 22px;
+    margin: 0;
+  }
   </style>
 @endsection
 
@@ -54,11 +57,11 @@
             {!! Form::close()!!}
 
             {!! Form::model($product,['route'=>['products.destroy',$product->id],'method'=>'delete','style'=>'display:inline-block'])!!}
-              {!! Form::submit('Delete product',['class'=>'btn btn-primary'])!!}
+              {!! Form::submit('Delete product',['class'=>'btn btn-primary delete_product', 'data-id' => $product->id])!!}
             {!! Form::close()!!}
 
             {!! Form::open(['url'=>['/admin/cache/'.$product->id],'method'=>'get','style'=>'display:inline-block'])!!}
-              {!! Form::submit('Delete cache',['class'=>'btn btn-primary'])!!}
+              {!! Form::submit('Delete cache',['class'=>'btn btn-primary delete_cache', 'data-id' => $product->id])!!}
             {!! Form::close()!!}
           </div>
       </div>
@@ -68,9 +71,84 @@
 
 @endsection
 @section('footer')
-
+  <script src="/admin/sweetalert.min.js"></script>
 <script>
+
 $(document).ready(function(){
+  //delete product
+  $(".delete_product").click(function(e){
+    e.preventDefault();
+    var product_id = $(this).attr("data-id");
+    swal({
+      title: "Are you sure you want to delete this product ?",
+      showCancelButton: true,
+      confirmButtonColor: "#DD6B55",
+      confirmButtonText: "Delete",
+      cancelButtonText: "Cancel",
+      closeOnConfirm: false,
+      closeOnCancel: false
+    },
+    function(isConfirm){
+      if (isConfirm) {
+        $.ajax({url: "/admin/products/delete/"+product_id,
+          success: function(result){
+            $(".sweet-overlay").hide();
+            $("div.sweet-alert").css('display','none');
+            location.href="/admin/products";
+          }
+        });
+      } else {
+        $(".sweet-overlay").hide();
+        $("div.sweet-alert").css('display','none');
+      }
+    });
+  });
+
+  //delete cache
+  $(".delete_cache").click(function(e){
+    e.preventDefault();
+    var product_id = $(this).attr("data-id");
+    swal({
+      title: "Are you sure you want to delete cache ?",
+      showCancelButton: true,
+      confirmButtonColor: "#DD6B55",
+      confirmButtonText: "Delete",
+      cancelButtonText: "Cancel",
+      closeOnConfirm: false,
+      closeOnCancel: false
+    },
+    function(isConfirm){
+      if (isConfirm) {
+        $.ajax({url: "/admin/cache/"+product_id,
+          success: function(result){
+            swal("Deleted!", "Cache has been deleted.");
+          }
+        });
+      } else {
+        $(".sweet-overlay").hide();
+        $("div.sweet-alert").css('display','none');
+      }
+    });
+  });
+    // add selected class as default
+    $(".pro_image").click(function(){
+      var image_id = $("[name='image']").val();
+      var image_id_prev = "<?php echo $product->image;?>";
+      if(image_id != ""){
+        $("#pro_image").find(".modal-body").find("div").find("#img_"+image_id).addClass("selected");
+      }else{
+        $("#pro_image").find(".modal-body").find("div").find("#img_"+image_id_prev).addClass("selected");
+      }
+    });
+    $(".pro_init_image").click(function(){
+      var init_image_id = $("[name='init_image']").val();
+      var init_image_id_prev = "<?php echo $product->init_image;?>";
+      if(init_image_id != ""){
+          $("#pro_init_image").find(".modal-body").find("div").find("#img_"+init_image_id).addClass("selected");
+       }else{
+         $("#pro_init_image").find(".modal-body").find("div").find("#img_"+init_image_id_prev).addClass("selected");
+       }
+    });
     //image
     $("img").click(function(){
       $("img").removeClass("selected");

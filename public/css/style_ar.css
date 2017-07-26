@@ -1,0 +1,49 @@
+body{
+  direction: rtl;
+}
+.menu-wrapper h3{
+  margin-right: 20px;
+  margin-left: 0px;
+}
+@media (max-width: 767px){
+  .close-menu {
+    left:20px;
+    right:auto;
+  }
+}
+@media (max-width: 767px){
+  .menu-wrapper .nav-list li {
+    text-align: right;
+
+  }
+}
+@media (max-width: 767px){
+  .menu-wrapper .nav-list {
+      padding: 0 15px 0 0;
+    }
+}
+.nav-header .cart{
+  right: auto;
+  left: 0;
+}
+@media (max-width: 767px){
+  .nav-brand {
+    float: right;
+  }
+}
+.nav-icon, .nav-icon-outline{
+  margin-right: 15px;
+  margin-left: auto;
+}
+.effect li.lang a:hover, .effect li.lang a:focus{
+  background: transparent;
+}
+.ar_dir{
+  float: right;
+}
+.btn {
+  margin: 0 0 15px 15px;
+}
+.jssocials-share{
+  margin: 0.3em 0 0.3em 0.6em;
+}

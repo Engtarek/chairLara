@@ -4,6 +4,33 @@
 <link rel="stylesheet" type="text/css" href="\css\jssocials-theme-minima.css" />
 <link rel="stylesheet" type="text/css" href="\css\font-awesome.min.css" />
 <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.css" />
+@if(App::isLocale('ar'))
+<style>
+@media(max-width:767px){
+	.parent{
+		right: 50%;
+		margin-right: -350px;
+	}
+}
+@media(min-width:992px){
+	.chair-right{
+float: right;
+	}
+	.layer-left{
+float: left;
+	}
+}
+</style>
+@else
+<style>
+@media(max-width:767px){
+	.parent{
+		left: 50%;
+		margin-left: -350px;
+	}
+}
+</style>
+@endif
 <style>
 .parent{
 	position: relative;
@@ -28,14 +55,6 @@
 @media(max-width:767px){
 .chair{
 		transform: scale(.7);
-	}
-	.parent{
-		width: 700px;
-		height: 700px;
-		left: 50%;
-		margin-left: -350px;
-
-
 	}
 }
 /*increament and decrement input*/
@@ -177,26 +196,27 @@ display: block;
 </style>
 @endsection
 @section('content')
-
 			<!-- breadcrumb -->
 			<div class="container-fluid hidden-xs">
 				<div class="row">
 					<ol class="breadcrumb">
-					  <li><a href="{{url('/')}}">Shop </a></li>
-					  <li class="active">{{$product->name}}</li>
+					  <li><a href="{{url('/')}}">{{trans('menue.Shop')}} </a></li>
+					  <li class="active">
+							@if(App::isLocale('ar')) {{$product->name_ar}} @else {{$product->name_en}} @endif
+						</li>
 					</ol>
 				</div>
 			</div>
 
 			<div class="container-fluid product">
-				<div class="row visible-xs product-mobile">
+				<div class="row visible-xs product-mobile" style="padding-bottom:0px">
 					<div class="col-xs-12 text-center">
-						<h2 class="product-title">{{$product->name}}</h2>
+						<h2 class="product-title">@if(App::isLocale('ar')) {{$product->name_ar}} @else {{$product->name_en}} @endif</h2>
 					</div>
 				</div>
 
-				<div class="row" >
-					<div class="col-md-8 " >
+				<div class="row clearfix" >
+					<div class="col-md-8 col-xs-12 chair-right" style="overflow: hidden;" >
 						<!-- chair -->
 						<div class="parent">
 							@if(!empty($init_imagename))
@@ -207,10 +227,10 @@ display: block;
 							 <div id="load"><img src="/img/loading.gif"></div>
 						</div>
 					</div>
-					<div class="col-md-4 ">
-						<h2 class="product-title hidden-xs">{{$product->name}}</h2>
+					 <div class="col-md-4 col-xs-12 layer-left">
+						<h2 class="product-title hidden-xs">	@if(App::isLocale('ar')) {{$product->name_ar}} @else {{$product->name_en}} @endif</h2>
 						<!-- layers of color -->
-						<label class="control-label">Change the colors</label>
+						<label class="control-label">{{trans('keys.Change_the_colors')}}</label>
 						<div class="panel-group" id="accordion" style="@if($setting->slider_show == 2) display:block @else display:none @endif">
 							 @foreach($layers as $key=>$data)
 									<div class="panel panel-default">
@@ -286,7 +306,7 @@ display: block;
 							<!-- ++++++++++++++ -->
 							<!-- Size -->
 							<div class="form-group clearfix" style="margin-top:15px;">
-						 		<label class="control-label">Size</label>
+						 		<label class="control-label">{{trans('keys.Size')}}</label>
 								<select class="form-control">
 									<option value="40">40</option>
 									<option value="41">41</option>
@@ -296,21 +316,24 @@ display: block;
 									<option value="45">45</option>
 								</select>
 							</div>
-							<!-- design url -->
-							<div class="form-group clearfix" style="margin-top:15px;">
-						 		<label class="control-label"> The design url</label>
-								<input type="text" class="form-control design_url" value="">
-							</div>
-						<!-- social sharing -->
-						<label class="control-label"> Share this design </label>
-						<div class="social"></div>
+
 
 							<!-- add-to-cart -->
 							<div class="product-btn">
-								<a href="" class="btn add-to-cart" data-role="none">Add To Cart </a>
+								<a href="" class="btn add-to-cart" data-role="none">{{trans('keys.add_to_cart')}}</a>
+							</div>
+
+							<!-- social sharing -->
+							<label class="control-label"> {{trans('keys.share_this_design')}} </label>
+							<div class="social"></div>
+
+							<!-- design url -->
+							<div class="form-group clearfix" style="margin-top:15px;">
+								<input type="text" class="form-control design_url" value="">
 							</div>
 
 					</div>
+
 				</div>
 				<div class="row">
 					<div class="col-sm-8 ">

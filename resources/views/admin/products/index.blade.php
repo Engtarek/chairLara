@@ -38,7 +38,8 @@
         <thead>
           <tr>
             <th> # </th>
-            <th> Name </th>
+            <th> English Name </th>
+            <th> Arabic Name </th>
             <th> View </th>
             <th> Add layers </th>
           </tr>
@@ -67,7 +68,8 @@ var table = $('#data').DataTable({
     ajax: "{{ url('/admin/products/data') }}",//url get all data
     columns: [// the number of columns you have
         {data: 'id', name: 'id'},
-        {data: 'name', name: 'name'},
+        {data: 'name_en', name: 'name_en'},
+          {data: 'name_ar', name: 'name_ar'},
         {data: 'view', name: 'view'},
         {data: 'add_layer', name: 'add_layer'},
     ],

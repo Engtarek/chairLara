@@ -19,10 +19,9 @@
   .selected{
     border: 5px solid #0088cc;
   }
-  @media (min-width: 768px){
-    .modal-dialog {
-        width: 80%;
-      }
+  .modal-body{
+      height:600px;
+      overflow:auto;
   }
 
 </style>
@@ -49,6 +48,14 @@
 @section('footer')
 <script>
 $(document).ready(function(){
+    // add selected class as default
+    $(".layer_image").click(function(){
+      var image_id = $("[name='image']").val();
+      if(image_id != ""){
+        $("#layer_image").find(".modal-body").find("div").find("#img_"+image_id).addClass("selected");
+      }
+    });
+
     //image
     $("img").click(function(){
       $("img").removeClass("selected");

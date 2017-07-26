@@ -43,8 +43,10 @@
             <th> Layer Name </th>
             <th> Image </th>
             <th> Color </th>
-            <th> Item Name </th>
-            <th> Item Details </th>
+            <th> English Item Name </th>
+            <th> Arabic Item Name </th>
+            <th> English Item Details </th>
+            <th> Arabic Item Details </th>
             <th> Item Price </th>
             <th> View </th>
           </tr>
@@ -77,8 +79,10 @@ var table = $('#data').DataTable({
         {data: 'layer_name', name: 'layer_name'},
         {data: 'layer_image', name: 'layer_image'},
         {data: 'layer_color', name: 'layer_color'},
-        {data: 'item_name', name: 'item_name'},
-        {data: 'item_dist', name: 'item_dist'},
+        {data: 'item_name_en', name: 'item_name_en'},
+        {data: 'item_name_ar', name: 'item_name_ar'},
+        {data: 'item_dist_en', name: 'item_dist_en'},
+        {data: 'item_dist_ar', name: 'item_dist_ar'},
         {data: 'item_price', name: 'item_price'},
         {data: 'view', name: 'view'},
     ],

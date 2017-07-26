@@ -1,6 +1,10 @@
 <html>
   <head>
+    <meta charset="utf-8">
     <style>
+    body{
+      font-family: 'dejavu sans', sans-serif;
+    }
       .parent{
         width:235px;
         height:235px;
@@ -36,7 +40,7 @@
   <body>
 
     @foreach($order as $data)
-      <p>Product : {{$data['cart']['name']}}</p>
+      <p>Product : {{$data['cart']['name']['name_en']}}</p>
       <p>
         <span style="padding-right:40px"> Quentity : {{$data['cart']['quantity']}}</span>
         <span>Total Price : {{$data['cart']['quantity'] *$data['cart']['price']}}</span>
@@ -54,7 +58,7 @@
             }
          }
       ?>
-      @if(file_exists("products/{{$product_id}}/history/{{$imagename}}.png"))
+      <?php if( file_exists("products/".$product_id."/history/".$imagename.".png")){?>
         <div class="parent">
           <div class="chair" style="background: url(/products/{{$product_id}}/history/{{$imagename}}.png);background-position: 0px -700px"></div>
         </div>
@@ -64,7 +68,7 @@
         <div class="parent">
           <div class="chair" style="background: url(/products/{{$product_id}}/history/{{$imagename}}.png);background-position: -700px 0px;"></div>
         </div>
-      @else
+      <?php } else{  ?>
         <div class="parent">
           <div class="chair" style="background: url(/images/{{\App\Product::find($product_id)->product_init_image->name}});background-position: 0px -700px"></div>
         </div>
@@ -74,7 +78,7 @@
         <div class="parent">
           <div class="chair" style="background: url(/images/{{\App\Product::find($product_id)->product_init_image->name}});background-position: -700px 0px;"></div>
         </div>
-      @endif
+      <?php  }?>
 
       <p>Details </p>
       <table class="table">

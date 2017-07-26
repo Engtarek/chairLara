@@ -1,15 +1,26 @@
 @if(!empty($product_id))
 {{ Form::hidden('product_id', $product_id) }}
 @endif
- <div class="form-group {{ $errors->has('rankname') ? ' has-error' : '' }}">
-  <label for="">Layer Name</label>
-  {!!Form::text('rankname',null,['class'=>'form-control','placeholder'=>'Enter Layer Name'])!!}
-  @if ($errors->has('rankname'))
+ <div class="form-group {{ $errors->has('rankname_en') ? ' has-error' : '' }}">
+  <label for="">English Layer Name</label>
+  {!!Form::text('rankname_en',null,['class'=>'form-control','placeholder'=>'Enter english Layer Name'])!!}
+  @if ($errors->has('rankname_en'))
       <span class="help-block">
-          <strong>{{ $errors->first('rankname') }}</strong>
+          <strong>{{ $errors->first('rankname_en') }}</strong>
       </span>
   @endif
 </div>
+
+<div class="form-group {{ $errors->has('rankname_ar') ? ' has-error' : '' }}">
+ <label for="">Arabic Layer Name</label>
+ {!!Form::text('rankname_ar',null,['class'=>'form-control','placeholder'=>'Enter arabic Layer Name'])!!}
+ @if ($errors->has('rankname_ar'))
+     <span class="help-block">
+         <strong>{{ $errors->first('rankname_ar') }}</strong>
+     </span>
+ @endif
+</div>
+
 <div class="form-group {{ $errors->has('rank') ? ' has-error' : '' }}">
   <label for="">Layer order</label>
   {!!Form::text('rank',null,['class'=>'form-control','placeholder'=>'Enter Layer Order'])!!}
@@ -24,7 +35,7 @@
   {!! Form::label('image', 'Layer image')!!}
   {{ Form::hidden('image', '') }}
   <!-- start model -->
-  <button type="button" class="btn btn-default " data-toggle="modal" data-target="#layer_image">Choose image </button>
+  <button type="button" class=" layer_image image_picker btn btn-default " data-toggle="modal" data-target="#layer_image">Choose image </button>
   <div class="modal fade" id="layer_image" role="dialog">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -34,11 +45,12 @@
         <div class="modal-body">
           <div>
             @foreach($images as $key=>$image)
-              <img class="img-responsive img-thumbnail"src="/images/sub_{{$image->name}}" data-value="{{$image->id}}">
+              <img data-toggle="tooltip" data-placement="bottom" title="{{$image->name}}" class="img-responsive img-thumbnail"src="/images/sub_{{$image->name}}" id="img_{{$image->id}}" data-value="{{$image->id}}">
             @endforeach
           </div>
+        </div>
+        <div class="modal-footer">
           <button class="btn btn-primary btn-img pull-right" id="layer_image_btn" >select</button>
-          <div style="clear:both"></div>
         </div>
       </div>
     </div>

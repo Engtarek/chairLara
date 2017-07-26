@@ -8,6 +8,14 @@
 <link rel="stylesheet" type="text/css" href="/admin/css/jquery.datetimepicker.css"/>
 <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
   <script>tinymce.init({ selector:'textarea' });</script>
+  <link rel="stylesheet" type="text/css" href="/admin/sweetalert.css">
+  <style>
+  .sweet-alert h2{
+    font-size: 22px;
+    margin: 0;
+  }
+
+  </style>
 @endsection
 
 @section('content')
@@ -36,7 +44,7 @@
             {!! Form::close()!!}
 
             {!! Form::model($order,['route'=>['orders.destroy',$order->id],'method'=>'delete','style'=>'display:inline-block'])!!}
-              {!! Form::submit('Delete',['class'=>'btn btn-primary'])!!}
+              {!! Form::submit('Delete',['class'=>'btn btn-primary delete_order', 'data-id' => $order->id])!!}
             {!! Form::close()!!}
           </div>
       </div>
@@ -48,9 +56,43 @@
 @section('footer')
 
 <script src="/admin/js/jquery.datetimepicker.full.min.js"></script>
+<script src="/admin/sweetalert.min.js"></script>
 <script>
 
-
 $('#datetimepicker').datetimepicker({});
+$(document).ready(function(){
+
+    //delete layer image
+    $(".delete_order").click(function(e){
+      e.preventDefault();
+      var order_id = $(this).attr("data-id");
+      swal({
+        title: "Are you sure you want to delete this order ?",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Delete",
+        cancelButtonText: "Cancel",
+        closeOnConfirm: false,
+        closeOnCancel: false
+      },
+      function(isConfirm){
+        if (isConfirm) {
+          $.ajax({url: "/admin/orders/delete/"+order_id,
+            success: function(result){
+              $(".sweet-overlay").hide();
+              $("div.sweet-alert").css('display','none');
+              location.href="/admin/orders";
+            }
+          });
+        } else {
+          $(".sweet-overlay").hide();
+          $("div.sweet-alert").css('display','none');
+        }
+      });
+    });
+  });
+
+
+
 </script>
 @endsection

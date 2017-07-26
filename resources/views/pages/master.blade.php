@@ -14,6 +14,7 @@
 		<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/img/ico/72.png" type="image/png"/>
 		<link rel="apple-touch-icon-precomposed" sizes="120x120" href="/img/ico/120.png" type="image/png"/>
 		<link rel="apple-touch-icon-precomposed" sizes="152x152" href="/img/ico/152.png" type="image/png"/>
+		<link rel="stylesheet" href="/css/style_{{App::getLocale()}}.css">
 		<!--[if lt IE 9]>
 			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
 			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
@@ -21,18 +22,22 @@
 		@yield('style')
 	</head>
 
-	<body id="home"  style="overflow-x: hidden !important;">
+	<body id="home">
 		<div class="container-fluid">
 			<div class="menu-wrapper">
 				<a href="#" class="close-menu visible-xs"><i class="icon-close"></i></a>
-				<h3 class="visible-xs">Navigation</h3>
+				<h3 class="visible-xs">{{trans('menue.Navigation')}}</h3>
 				<ul class="nav-list text-center effect">
-					<li  class="{{ Request::path() == '/' ? 'active' : '' }}"><a href="{{url('/')}}">Shop</a></li>
-					<li   class="{{ Request::path() == 'about' ? 'active' : '' }}"><a href="{{url('/about')}}">About</a></li>
-					<li  class="{{ Request::path() == 'contact' ? 'active' : '' }}"><a href="{{url('/contact')}}">Contact</a></li>
-
+					<li  class="{{ Request::path() == '/' ? 'active' : '' }}"><a href="{{url('/')}}">{{trans('menue.Shop')}}</a></li>
+					<li   class="{{ Request::path() == 'about' ? 'active' : '' }}"><a href="{{url('/about')}}">{{trans('menue.About')}}</a></li>
+					<li  class="{{ Request::path() == 'contact' ? 'active' : '' }}"><a href="{{url('/contact')}}">{{trans('menue.Contact')}}</a></li>
 					<!-- <li class="{{ Request::path() == 'user/register' ? 'active' : '' }}"><a href="{{url('/user/register')}}">Register</a></li>
 					<li class="{{ Request::path() == 'user/login' ? 'active' : '' }}" ><a href="{{url('/user/login')}}">Login</a></li> -->
+					@if (App::isLocale('en'))
+					<li class="lang"><a href="{{url('/lang/ar')}}"><img src="/img/ar.png" alt="Arabic" width="20"></a></li>
+					@else
+					<li class="lang"><a href="{{url('/lang/en')}}"><img src="/img/en_US.png" alt="English" width="20" > </a></li>
+					@endif
 				</ul>
 			</div>
 		</div>
@@ -40,10 +45,16 @@
 		<div id="wrap"  >
 			<div id="main-nav" class="">
 				<div class="container-fluid">
-					<div class="nav-header">
-							<a href="{{url('/')}}" class="nav-brand">STELLA <span>SHOP</span></a>
-							<a class="nav-icon pull-right visible-xs menu-link" href="#"><i class="icon-menu2"></i></a>
-							<a class="nav-icon-outline cart pull-right" href="{{url('/cart')}}"><i class="icon-cart"></i><span class="badge">{{Cart::getTotalQuantity()}}</span></a>
+					<div class="nav-header clearfix">
+							<a href="{{url('/')}}" class="nav-brand">
+								@if (App::isLocale('en'))
+									{{trans('menue.STELLA')}} <span>{{trans('menue.Shop')}}</span>
+								@else
+									<span>{{trans('menue.Shop')}}</span> {{trans('menue.STELLA')}}
+								@endif
+							</a>
+							<a class="nav-icon @if (App::isLocale('en')) pull-right @else pull-left @endif visible-xs menu-link" href="#"><i class="icon-menu2"></i></a>
+							<a class="nav-icon-outline cart @if (App::isLocale('en')) pull-right @else pull-left @endif" href="{{url('/cart')}}"><i class="icon-cart"></i><span class="badge">{{Cart::getTotalQuantity()}}</span></a>
 						</div>
 				</div>
 			</div>
@@ -52,17 +63,17 @@
 
 			<footer class="footer">
 				<div class="container-fluid">
-					<div class="pull-left copyright">
+					<div class="@if (App::isLocale('en')) pull-left @else pull-right @endif copyright">
 						<p>STELLA <b>SHOP</b> &copy; 2014. Designed by <a href="http://www.angelostudio.net" target="_blank">Angelo Studio</a>.</p>
 						<ul class="nav-list effect">
-							<li><a href="{{url('terms_conditions')}}">Delivery & Returns</a></li>
-							<li><a href="{{url('terms_conditions')}}">Terms & Conditions</a></li>
-							<li><a href="{{url('privacy')}}">Privacy</a></li>
-							<li><a href="{{url('faq')}}">FAQ</a></li>
+							<li><a href="{{url('terms_conditions')}}">{{trans('menue.Delivery_Returns')}}</a></li>
+							<li><a href="{{url('terms_conditions')}}">{{trans('menue.Terms_Conditions')}}</a></li>
+							<li><a href="{{url('privacy')}}">{{trans('menue.Privacy')}}</a></li>
+							<li><a href="{{url('faq')}}">{{trans('menue.FAQ')}}</a></li>
 						</ul>
 					</div>
 
-					<div class="pull-right copyright">
+					<div class="@if (App::isLocale('en')) pull-right @else pull-left @endif copyright">
 							<ul class="social-links">
 								<li><a href="#"><i class="icon-twitter"></i></a></li>
 								<li><a href="#"><i class="icon-dribbble"></i></a></li>

@@ -24,11 +24,14 @@ class LayerController extends Controller
   public function store(Request $request){
     $this->validate($request,[
       'rank' => 'required|integer',
-      'rankname' => 'required|max:255',
+      'rankname_en' => 'required|max:255',
+      'rankname_ar' => 'required|max:255',
     ]);
     $data =[
         'rank'=>$request->rank,
-        'rankname'=>$request->rankname,
+        'rankname_en'=>$request->rankname_en,
+        'rankname_ar'=>$request->rankname_ar,
+
         'image'=>$request->image,
         'product_id'=>$request->product_id
       ];
@@ -47,7 +50,8 @@ class LayerController extends Controller
   {
     $this->validate($request,[
       'rank'=>'required',
-      'rankname'=>'required',
+      'rankname_en'=>'required',
+      'rankname_ar'=>'required',
     ]);
     $layer = ProductLayer::find($id);
 
@@ -59,7 +63,8 @@ class LayerController extends Controller
 
     $data =[
       'rank'=>$request->rank,
-      'rankname'=>$request->rankname,
+      'rankname_en'=>$request->rankname_en,
+        'rankname_ar'=>$request->rankname_ar,
       'image'=>$image_name,
       'product_id'=>$layer->product_id
     ];
@@ -115,16 +120,20 @@ class LayerController extends Controller
     $this->validate($request,[
       'image' => 'required',
       'color' => 'required',
-      'item_name' => 'required',
-      'item_distributer_name' => 'required',
+      'item_name_en' => 'required',
+      'item_name_ar' => 'required',
+      'item_distributer_name_en' => 'required',
+      'item_distributer_name_ar' => 'required',
       'item_price' => 'required',
     ]);
      $product_id = ProductLayer::find($request->layer_id)->product_id;
      $data =[
        'image'=>$request->image,
        'color'=>$request->color,
-       'item_name'=>$request->item_name,
-       'item_distributer_name'=>$request->item_distributer_name,
+       'item_name_en'=>$request->item_name_en,
+       'item_name_ar'=>$request->item_name_ar,
+       'item_distributer_name_en'=>$request->item_distributer_name_en,
+       'item_distributer_name_ar'=>$request->item_distributer_name_ar,
        'item_price'=>$request->item_price,
        'product_layers_id'=>$request->layer_id,
      ];
@@ -140,8 +149,11 @@ class LayerController extends Controller
     ->editColumn('product_id',function($model){
         return product()[$model->product_id];
      })
-     ->editColumn('rankname',function($model){
-        return $model->rankname;
+     ->editColumn('rankname_en',function($model){
+        return $model->rankname_en;
+     })
+     ->editColumn('rankname_ar',function($model){
+        return $model->rankname_ar;
      })
      ->editColumn('rank',function($model){
         return $model->rank;

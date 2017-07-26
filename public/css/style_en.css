@@ -1,0 +1,9 @@
+body{
+  direction: ltr;
+}
+.effect li.lang a:hover, .effect li.lang a:focus{
+  background: transparent;
+}
+.en_dir{
+  float: right;
+}

@@ -28,7 +28,7 @@ class LayerImageController extends Controller
     $image_layer = ProductLayerImage::find($id);
     if(!empty($request->image)){
        $image_name =$request->image;
-       
+
      }else{
        $image_name = $image_layer->image;
      }
@@ -41,8 +41,10 @@ class LayerImageController extends Controller
 
        $image_layer->image = $image_name;
        $image_layer->color = $color_name;
-       $image_layer->item_name = $request->item_name;
-       $image_layer->item_distributer_name = $request->item_distributer_name;
+       $image_layer->item_name_en = $request->item_name_en;
+        $image_layer->item_name_ar = $request->item_name_ar;
+       $image_layer->item_distributer_name_en = $request->item_distributer_name_en;
+       $image_layer->item_distributer_name_ar = $request->item_distributer_name_ar;
        $image_layer->item_price = $request->item_price;
        $image_layer->product_layers_id =$request->product_layers_id ;
        $image_layer->save();
@@ -81,7 +83,7 @@ class LayerImageController extends Controller
         return product()[ProductLayer::find($model->product_layers_id)->product_id];
      })
     ->editColumn('layer_name',function($model){
-      return   ProductLayer::find($model->product_layers_id)->rankname;
+      return   ProductLayer::find($model->product_layers_id)->rankname_en;
      })
      ->editColumn('layer_image',function($model){
           return "<img style='width:150px' src='/images/sub_".$model->get_image->name."'>";
@@ -89,11 +91,17 @@ class LayerImageController extends Controller
      ->editColumn('layer_color',function($model){
           return "<img style='width:50px' src='/images/sub_".$model->get_color->name."'>";
      })
-     ->editColumn('item_name',function($model){
-          return $model->item_name;
+     ->editColumn('item_name_en',function($model){
+          return $model->item_name_en;
      })
-     ->editColumn('item_dist',function($model){
-          return $model->item_distributer_name;
+     ->editColumn('item_name_ar',function($model){
+          return $model->item_name_ar;
+     })
+     ->editColumn('item_dist_en',function($model){
+          return $model->item_distributer_name_en;
+     })
+     ->editColumn('item_dist_ar',function($model){
+          return $model->item_distributer_name_ar;
      })
      ->editColumn('item_price',function($model){
           return $model->item_price;

@@ -40,7 +40,8 @@
           <tr>
             <th> # </th>
             <th> Product Name </th>
-            <th> Layer Name </th>
+            <th> English Layer Name </th>
+            <th> Arabic Layer Name </th>
             <th> Layer Order </th>
             <th> View </th>
             <th> Add Layer Image </th>
@@ -71,7 +72,8 @@ var table = $('#data').DataTable({
     columns: [// the number of columns you have
         {data: 'id', name: 'id'},
         {data: 'product_id', name: 'product_id'},
-        {data: 'rankname', name: 'rankname'},
+        {data: 'rankname_en', name: 'rankname_en'},
+        {data: 'rankname_ar', name: 'rankname_ar'},
         {data: 'rank', name: 'rank'},
         {data: 'view', name: 'view'},
         {data: 'layer_image', name: 'layer_image'},

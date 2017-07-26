@@ -7,6 +7,13 @@
 @section('header')
 <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
   <script>tinymce.init({ selector:'textarea' });</script>
+  <link rel="stylesheet" type="text/css" href="/admin/sweetalert.css">
+  <style>
+    .sweet-alert h2{
+      font-size: 22px;
+      margin: 0;
+    }
+  </style>
 @endsection
 
 @section('content')
@@ -35,7 +42,7 @@
             {!! Form::close()!!}
 
             {!! Form::model($employee,['route'=>['employees.destroy',$employee->id],'method'=>'delete','style'=>'display:inline-block'])!!}
-              {!! Form::submit('Delete',['class'=>'btn btn-primary'])!!}
+              {!! Form::submit('Delete',['class'=>'btn btn-primary  delete_employee', 'data-id' => $employee->id])!!}
             {!! Form::close()!!}
           </div>
       </div>
@@ -45,6 +52,39 @@
 
 @endsection
 @section('footer')
+<script src="/admin/sweetalert.min.js"></script>
+<script>
+$(document).ready(function(){
 
+    //delete layer image
+    $(".delete_employee").click(function(e){
+      e.preventDefault();
+      var employee_id = $(this).attr("data-id");
+      swal({
+        title: "Are you sure you want to delete this employee ?",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Delete",
+        cancelButtonText: "Cancel",
+        closeOnConfirm: false,
+        closeOnCancel: false
+      },
+      function(isConfirm){
+        if (isConfirm) {
+          $.ajax({url: "/admin/employees/delete/"+employee_id,
+            success: function(result){
+              $(".sweet-overlay").hide();
+              $("div.sweet-alert").css('display','none');
+              location.href="/admin/employees";
+            }
+          });
+        } else {
+          $(".sweet-overlay").hide();
+          $("div.sweet-alert").css('display','none');
+        }
+      });
+    });
+});
+</script>
 
 @endsection

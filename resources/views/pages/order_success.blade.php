@@ -5,7 +5,7 @@
 			<div class="container-fluid title">
 				<div class="row">
 					<div class="col-sm-12">
-						<h2>Your Order Send successfully.</h2>
+						<h2>{{trans('keys.Your Order Send successfully')}}.</h2>
 					</div>
 				</div>
 			</div>

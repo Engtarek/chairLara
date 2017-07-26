@@ -2,6 +2,24 @@
 @section('title')
     Order-{{$order->order_number}}
 @endsection
+@section('header')
+<style>
+.parent{
+  width:65px;
+  height:85px;
+  display:inline-block;
+}
+.chair{
+  width: 575px;
+  height: 655px;
+  position: absolute;
+  transform: scale(.13);
+  margin-left: -245px;
+  margin-top: -283px;
+  background-position: 0px 0px;
+}
+</style>
+@endsection
 
 @section('content')
 <section class="content-header">
@@ -27,6 +45,7 @@
         <thead>
           <tr>
             <th> # </th>
+            <th>  </th>
             <th> Product Name </th>
             <th> Price </th>
               <th> Size </th>
@@ -35,11 +54,32 @@
           </tr>
         </thead>
         <tbody>
+
           <?php $i=1;?>
           @foreach($order_items as $data)
+          <?php
+              $id = explode("&",$data->id)[0];
+              $imagename="";
+              $array = explode("-",$id);
+              foreach ($array as $value){
+                $product_id=$array[0];
+                foreach(explode(".",$value) as $data2){
+                  $imagename .= $data2;
+                }
+             }
+          ?>
           <tr>
             <td> {{$i++}} </td>
-            <td> {{$data->name}}</td>
+            <td>
+              <div class="parent">
+                <?php if( file_exists("products/".$product_id."/history/".$imagename.".png")){?>
+                  <div class="chair" style="background: url(/products/{{$product_id}}/history/{{$imagename}}.png)"></div>
+                <?php } else{  ?>
+                  <div class="chair" style="background: url(/images/{{\App\Product::find($product_id)->product_init_image->name}})"></div>
+                <?php  }?>
+              </div>
+            </td>
+            <td> {{$data->name['name_en']}} </td>
             <td> {{$data->price}}</td>
             <td> {{$data->attributes['size']}}</td>
             <td> {{$data->quantity}}</td>
@@ -48,6 +88,7 @@
           @endforeach
         </tbody>
       </table>
+      <a class="btn btn-primary pull-right" href="{{url('/admin/orders/pdf/'.$order->id)}}"> Download </a>
       <div>
     </div>
     </div>

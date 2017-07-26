@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProductLayerImage extends Model
 {
-  protected $fillable = ['image','color','item_name','item_distributer_name','item_price','product_layers_id'];
+  protected $fillable = ['image','color','item_name_en','item_name_ar','item_distributer_name_en','item_distributer_name_ar','item_price','product_layers_id'];
   public function productlayer()
   {
      return $this->belongsTo('App\ProductLayer','product_layers_id');

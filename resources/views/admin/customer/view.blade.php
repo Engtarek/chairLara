@@ -7,6 +7,14 @@
 @section('header')
 <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
   <script>tinymce.init({ selector:'textarea' });</script>
+    <link rel="stylesheet" type="text/css" href="/admin/sweetalert.css">
+    <style>
+    .sweet-alert h2{
+      font-size: 22px;
+      margin: 0;
+    }
+
+    </style>
 @endsection
 
 @section('content')
@@ -35,7 +43,7 @@
             {!! Form::close()!!}
 
             {!! Form::model($customer,['route'=>['customers.destroy',$customer->id],'method'=>'delete','style'=>'display:inline-block'])!!}
-              {!! Form::submit('Delete',['class'=>'btn btn-primary'])!!}
+              {!! Form::submit('Delete',['class'=>'btn btn-primary delete_customer', 'data-id' => $customer->id])!!}
             {!! Form::close()!!}
           </div>
       </div>
@@ -45,6 +53,39 @@
 
 @endsection
 @section('footer')
+<script src="/admin/sweetalert.min.js"></script>
+<script>
+$(document).ready(function(){
 
+    //delete layer image
+    $(".delete_customer").click(function(e){
+      e.preventDefault();
+      var customer_id = $(this).attr("data-id");
+      swal({
+        title: "Are you sure you want to delete this customer ?",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Delete",
+        cancelButtonText: "Cancel",
+        closeOnConfirm: false,
+        closeOnCancel: false
+      },
+      function(isConfirm){
+        if (isConfirm) {
+          $.ajax({url: "/admin/customers/delete/"+customer_id,
+            success: function(result){
+              $(".sweet-overlay").hide();
+              $("div.sweet-alert").css('display','none');
+              location.href="/admin/customers";
+            }
+          });
+        } else {
+          $(".sweet-overlay").hide();
+          $("div.sweet-alert").css('display','none');
+        }
+      });
+    });
+  });
+  </script>
 
 @endsection

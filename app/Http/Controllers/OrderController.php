@@ -168,4 +168,32 @@ class OrderController extends Controller
      })
     ->make(true);
   }
+
+  public function order_pdf($id,Request $request){
+    $order_items= unserialize(Order::find($id)->items) ;
+
+    $order=array();
+    foreach ($order_items as $key => $value) {
+       $items = explode("-",$value->id);
+       foreach ($items as $k => $data) {
+         if($k==0){
+           $url=$data.'/';
+         }elseif($k == count($items)-1){
+           $url.=$data;
+         }else{
+           $url.=$data.'&';
+         }
+       }
+       $product_url =$request->root().'/product/'.$url;
+       $array = [
+         'cart'=>$value,
+         'url'=>$product_url,
+       ];
+       array_push($order,$array);
+     }
+   view()->share('order',$order);
+   // view('order-pdf');
+   $pdf = PDF::loadView('order-pdf');
+   return $pdf->download('items.pdf');
+  }
 }

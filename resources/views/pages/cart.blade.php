@@ -1,5 +1,17 @@
 @extends('pages.master')
 @section('style')
+@if(App::isLocale('ar'))
+<style>
+@media(min-width:767px){
+	.table-right{
+float: right;
+	}
+	.table-left{
+float: left;
+	}
+}
+</style>
+@endif
 <style>
 .parent{
   width:65px;
@@ -11,7 +23,6 @@
   height: 655px;
   position: absolute;
   transform: scale(.13);
-  margin-left: -245px;
   margin-top: -283px;
   background-position: 0px 0px;
 }
@@ -72,7 +83,7 @@
 			 <div class="container-fluid title">
 				<div class="row">
 					<div class="col-sm-12">
-						<h2>Shopping Cart</h2>
+						<h2>{{trans('keys.shopping_cart')}}</h2>
 					</div>
 				</div>
 			</div>
@@ -80,16 +91,16 @@
 			<div class="container-fluid cart-list" ng-controller="cartController">
           @if(count($items))
 				<div class="row">
-					<div class="col-sm-8 table-responsive">
+					<div class="col-sm-8 col-xs-12 table-right table-responsive">
 						<table class="table" style="overflow: auto;">
 						  <thead>
 							<tr>
-                <th class="hidden-xs text-center"></th>
-							  <th class="text-center">Item</th>
-							  <th class="text-center">Unit Cost</th>
-                <th class="text-center">Size</th>
-							  <th class="text-center">Quantity</th>
-							  <th class="text-center">Total</th>
+                <th class="text-center"></th>
+							  <th class="text-center">{{trans('keys.item')}}</th>
+							  <th class="text-center">{{trans('keys.unit_cost')}}</th>
+                <th class="text-center">{{trans('keys.Size')}}</th>
+							  <th class="text-center">{{trans('keys.quantity')}}</th>
+							  <th class="text-center">{{trans('keys.total')}}</th>
 							  <th class="text-center"></th>
 							</tr>
 						  </thead>
@@ -108,16 +119,16 @@
               ?>
 
 							<tr>
-                <td class="hidden-xs">
+                <td>
                   <div class="parent">
                     <?php if( file_exists("products/".$product_id."/history/".$imagename.".png")){?>
-                      <div class="chair" style="background: url(/products/{{$product_id}}/history/{{$imagename}}.png)"></div>
+                      <div class="chair" style="@if(App::isLocale('ar')) margin-right: -245px; @else margin-left: -245px; @endif background: url(/products/{{$product_id}}/history/{{$imagename}}.png)"></div>
                     <?php } else{  ?>
-                      <div class="chair" style="background: url(/images/{{\App\Product::find($product_id)->product_init_image->name}})"></div>
+                      <div class="chair" style="@if(App::isLocale('ar')) margin-right: -245px; @else margin-left: -245px; @endif background: url(/images/{{\App\Product::find($product_id)->product_init_image->name}})"></div>
                     <?php  }?>
                   </div>
                 </td>
-	  	 					<td class="text-center">{{$item->name}}</td>
+	  	 					<td class="text-center">@if(App::isLocale('ar')) {{$item->name['name_ar']}} @else {{$item->name['name_en']}} @endif</td>
 								<td class="text-center">{{$item->price}}</td>
                 <td class="text-center">{{$item->attributes['size']}}</td>
 								<td class="text-center cart_quantity">
@@ -129,11 +140,21 @@
                        $item_id .= $second_id;
                      }}
                   }?>
+                  @if(App::isLocale('ar'))
+                  <div class="cart_quantity_button" style="white-space: nowrap;">
+                    <a class="cart_quantity_down" data-mergeid="{{$item_id}}" data-id="{{$item->id}}"  href="{{route('decrease.qty',['id'=>$item->id])}}"> - </a>
+
+                      <input class="cart_quantity_input qty_{{$item_id}}" type="text" name="quantity" value="{{$item->quantity}}" autocomplete="off" size="2">
+                      <a class="cart_quantity_up" data-mergeid="{{$item_id}}" data-id="{{$item->id}}"  href="{{route('increase.qty',['id'=>$item->id])}}"> + </a>
+
+                  </div>
+                  @else
                     <div class="cart_quantity_button" style="white-space: nowrap;">
                         <a class="cart_quantity_up" data-mergeid="{{$item_id}}" data-id="{{$item->id}}"  href="{{route('increase.qty',['id'=>$item->id])}}"> + </a>
                         <input class="cart_quantity_input qty_{{$item_id}}" type="text" name="quantity" value="{{$item->quantity}}" autocomplete="off" size="2">
                         <a class="cart_quantity_down" data-mergeid="{{$item_id}}" data-id="{{$item->id}}"  href="{{route('decrease.qty',['id'=>$item->id])}}"> - </a>
                     </div>
+                    @endif
                 </td>
 								<td class="text-center cart_total_price_{{$item_id}}"> {{ $item->quantity * $item->price }}</td>
                 <td class="cart_delete text-center">
@@ -144,52 +165,52 @@
 						  </tbody>
 						</table>
 
-						<h4>INTERNATIONAL ORDERS</h4>
+						<h4>{{trans('keys.INTERNATIONAL ORDERS')}}</h4>
 						<p>Shipping costs for international orders will be displayed at checkout.<br>
 						All international orders must have a ship-to destination outside of the United States. We cannot support customers with international billing addresses shipping to U.S. addresses.
 						</p>
 
 					</div>
-					<div class="col-sm-4 ">
+					<div class="col-sm-4 col-xs-12 table-left">
 							<table class="table">
 							  <thead>
 								<tr>
-								  <th colspan="3" class="text-center">Order sumary</th>
+								  <th colspan="3" class="text-center">{{trans('keys.Order sumary')}}</th>
 								</tr>
 							  </thead>
 							  <tbody>
 								<tr>
-								  <td>Sub total:</td>
+								  <td>{{trans('keys.Sub total')}}:</td>
 								  <td></td>
 								  <td class="text-right sub_total"><b> {{Cart::getTotal()}} </b></td>
 								</tr>
 								<tr>
-								  <td>Shipping cost:</td>
+								  <td>{{trans('keys.Shipping cost')}}:</td>
 								  <td></td>
 								  <td class="text-right"> 0 </td>
 								</tr>
 								<tr>
-								  <td>Total:</td>
+								  <td>{{trans('keys.total')}}:</td>
 								  <td></td>
 								  <td id="total" class="text-right"><span> {{Cart::getTotal() +0}} </span></td>
 								</tr>
 							  </tbody>
 							</table>
 
-							<a href="{{url('/checkout')}}" class="btn btn-right">Checkout</a>
+							<a href="{{url('/checkout')}}" class="btn btn-right">{{trans('keys.Checkout')}}</a>
 					</div>
 				</div>
         @else
         <div class="row">
           <div class="col-sm-12">
-              <h2 class="text-center">Your cart is empty.</h2>
+              <h2 class="text-center">{{trans('keys.Your cart is empty')}}.</h2>
           </div>
         </div>
         @endif
 
 				<div class="row">
 					<div class="col-sm-12 text-center show-more">
-						<a href="{{url('/')}}" class="btn btn-outline">Cancel and return to store</a>
+						<a href="{{url('/')}}" class="btn btn-outline">{{trans('keys.Cancel and return to store')}}</a>
 					</div>
 				</div>
 

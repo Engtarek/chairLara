@@ -7,8 +7,9 @@
 @section('header')
 <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
   <script>tinymce.init({ selector:'textarea' });</script>
+  <link rel="stylesheet" type="text/css" href="/admin/sweetalert.css">
   <style>
-  button{
+  .image_picker{
     display: block !important;
   }
   .img-thumbnail{
@@ -19,10 +20,13 @@
   .selected{
     border: 5px solid #0088cc;
   }
-  @media (min-width: 768px){
-    .modal-dialog {
-        width: 80%;
-      }
+  .modal-body{
+      height:600px;
+      overflow:auto;
+  }
+  .sweet-alert h2{
+    font-size: 22px;
+    margin: 0;
   }
   </style>
 @endsection
@@ -53,7 +57,7 @@
             {!! Form::close()!!}
 
             {!! Form::model($image,['route'=>['layer_images.destroy',$image->id],'method'=>'delete','style'=>'display:inline-block'])!!}
-              {!! Form::submit('Delete',['class'=>'btn btn-primary'])!!}
+              {!! Form::submit('Delete',['class'=>'btn btn-primary delete_layer_image', 'data-id' => $image->id])!!}
             {!! Form::close()!!}
           </div>
       </div>
@@ -63,9 +67,58 @@
 
 @endsection
 @section('footer')
-
+<script src="/admin/sweetalert.min.js"></script>
 <script>
 $(document).ready(function(){
+
+    //delete layer image
+    $(".delete_layer_image").click(function(e){
+      e.preventDefault();
+      var layer_image_id = $(this).attr("data-id");
+      swal({
+        title: "Are you sure you want to delete this image ?",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Delete",
+        cancelButtonText: "Cancel",
+        closeOnConfirm: false,
+        closeOnCancel: false
+      },
+      function(isConfirm){
+        if (isConfirm) {
+          $.ajax({url: "/admin/layer_images/delete/"+layer_image_id,
+            success: function(result){
+              $(".sweet-overlay").hide();
+              $("div.sweet-alert").css('display','none');
+              location.href="/admin/layer_images";
+            }
+          });
+        } else {
+          $(".sweet-overlay").hide();
+          $("div.sweet-alert").css('display','none');
+        }
+      });
+    });
+
+    // add selected class as default
+    $(".images_image").click(function(){
+      var image_id = $("[name='image']").val();
+      var image_id_prev = "<?php echo $image->image;?>";
+      if(image_id != ""){
+        $("#images_image").find(".modal-body").find("div").find("#img_"+image_id).addClass("selected");
+      }else{
+        $("#images_image").find(".modal-body").find("div").find("#img_"+image_id_prev).addClass("selected");
+      }
+    });
+    $(".images_color").click(function(){
+      var color_id = $("[name='color']").val();
+      var color_id_prev = "<?php echo $image->color;?>";
+      if(color_id != ""){
+          $("#images_color").find(".modal-body").find("div").find("#img_"+color_id).addClass("selected");
+       }else{
+         $("#images_color").find(".modal-body").find("div").find("#img_"+color_id_prev).addClass("selected");
+       }
+    });
     //image
     $("img").click(function(){
       $("img").removeClass("selected");

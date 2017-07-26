@@ -10,7 +10,9 @@ use App\Customer;
 use App\Order;
 use App\ProductLayer;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Cookie;
 use App\Settings;
+use App;
 
 class PagesController extends Controller
 {
@@ -215,6 +217,29 @@ class PagesController extends Controller
         return view('pages.order_success');
         }
     }
+
+    //language
+    public function lang($locale){
+      $locale = Cookie::forever('locale',$locale);
+      return redirect()->back()->withCookie($locale);
+    }
+
+    // public static function lang(){
+    //   if(session()->has('lang')){
+    //     if(session()->get('lang') == 'ar'){
+    //         App::setLocale('ar');
+    //         $lang='ar';
+    //
+    //     }else{
+    //       App::setLocale('en');
+    //       $lang='en';
+    //     }
+    //   }else{
+    //     App::setLocale('en');
+    //     $lang='en';
+    //   }
+    //   return $lang;
+    // }
     //test
 //     public function testing(){
 //       return view('test');

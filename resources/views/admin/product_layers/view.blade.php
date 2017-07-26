@@ -7,8 +7,9 @@
 @section('header')
 <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
   <script>tinymce.init({ selector:'textarea' });</script>
+    <link rel="stylesheet" type="text/css" href="/admin/sweetalert.css">
   <style>
-  button{
+  .image_picker{
     display: block !important;
   }
   .img-thumbnail{
@@ -19,12 +20,14 @@
   .selected{
     border: 5px solid #0088cc;
   }
-  @media (min-width: 768px){
-    .modal-dialog {
-        width: 80%;
-      }
+  .modal-body{
+      height:600px;
+      overflow:auto;
   }
-
+  .sweet-alert h2{
+    font-size: 22px;
+    margin: 0;
+  }
   </style>
 @endsection
 
@@ -54,7 +57,7 @@
             {!! Form::close()!!}
 
             {!! Form::model($layer,['route'=>['product_layers.destroy',$layer->id],'method'=>'delete','style'=>'display:inline-block'])!!}
-              {!! Form::submit('Delete',['class'=>'btn btn-primary'])!!}
+              {!! Form::submit('Delete',['class'=>'btn btn-primary delete_layer', 'data-id' => $layer->id])!!}
             {!! Form::close()!!}
           </div>
       </div>
@@ -64,9 +67,48 @@
 
 @endsection
 @section('footer')
-
+<script src="/admin/sweetalert.min.js"></script>
 <script>
 $(document).ready(function(){
+    //delete layer
+    $(".delete_layer").click(function(e){
+      e.preventDefault();
+      var layer_id = $(this).attr("data-id");
+      swal({
+        title: "Are you sure you want to delete this layer ?",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Delete",
+        cancelButtonText: "Cancel",
+        closeOnConfirm: false,
+        closeOnCancel: false
+      },
+      function(isConfirm){
+        if (isConfirm) {
+          $.ajax({url: "/admin/product_layers/delete/"+layer_id,
+            success: function(result){
+              $(".sweet-overlay").hide();
+              $("div.sweet-alert").css('display','none');
+              location.href="/admin/product_layers";
+            }
+          });
+        } else {
+          $(".sweet-overlay").hide();
+          $("div.sweet-alert").css('display','none');
+        }
+      });
+    });
+
+    // add selected class as default
+    $(".layer_image").click(function(){
+      var image_id = $("[name='image']").val();
+      var image_id_prev = "<?php echo $layer->image;?>";
+      if(image_id != ""){
+        $("#layer_image").find(".modal-body").find("div").find("#img_"+image_id).addClass("selected");
+      }else{
+          $("#layer_image").find(".modal-body").find("div").find("#img_"+image_id_prev).addClass("selected");
+      }
+    });
     //image
     $("img").click(function(){
       $("img").removeClass("selected");

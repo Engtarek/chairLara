@@ -1,19 +1,27 @@
 
-<div class="form-group {{ $errors->has('name') ? ' has-error' : '' }}">
-  {!! Form::label('name', 'Product Name')!!}
-  {!!Form::text('name',null,['class'=>'form-control','placeholder'=>'Enter product name'])!!}
-  @if ($errors->has('name'))
+<div class="form-group {{ $errors->has('name_en') ? ' has-error' : '' }}">
+  {!! Form::label('name_en', 'English Product Name')!!}
+  {!!Form::text('name_en',null,['class'=>'form-control','placeholder'=>'Enter english product name'])!!}
+  @if ($errors->has('name_en'))
       <span class="help-block">
-          <strong>{{ $errors->first('name') }}</strong>
+          <strong>{{ $errors->first('name_en') }}</strong>
       </span>
   @endif
 </div>
-
+<div class="form-group {{ $errors->has('name_ar') ? ' has-error' : '' }}">
+  {!! Form::label('name_ar', 'Arabic Product Name')!!}
+  {!!Form::text('name_ar',null,['class'=>'form-control','placeholder'=>'Enter arabic product name'])!!}
+  @if ($errors->has('name_ar'))
+      <span class="help-block">
+          <strong>{{ $errors->first('name_ar') }}</strong>
+      </span>
+  @endif
+</div>
 <div class="form-group {{ $errors->has('image') ? ' has-error' : '' }}">
   {!! Form::label('image', 'Product Image')!!}
   {{ Form::hidden('image', '') }}
   <!-- start model -->
-  <button type="button" class="btn btn-default " data-toggle="modal" data-target="#pro_image">Choose image </button>
+  <button type="button" class=" pro_image image_picker btn btn-default " data-toggle="modal" data-target="#pro_image">Choose image </button>
   <div class="modal fade" id="pro_image" role="dialog">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -23,11 +31,12 @@
         <div class="modal-body">
           <div>
             @foreach($images as $key=>$image)
-              <img class="img-responsive img-thumbnail"src="/images/sub_{{$image->name}}" data-value="{{$image->id}}">
+              <img data-toggle="tooltip" data-placement="bottom" title="{{$image->name}}" class="img-responsive img-thumbnail"src="/images/sub_{{$image->name}}" id="img_{{$image->id}}" data-value="{{$image->id}}">
             @endforeach
           </div>
+        </div>
+        <div class="modal-footer">
           <button class="btn btn-primary btn-img pull-right" id="pro_image_btn" >select</button>
-          <div style="clear:both"></div>
         </div>
       </div>
     </div>
@@ -47,7 +56,7 @@
   {!! Form::label('init_image', 'Initial Image')!!}
   {{ Form::hidden('init_image', '') }}
   <!-- start model -->
-  <button type="button" class="btn btn-default " data-toggle="modal" data-target="#pro_init_image">Choose initial image  </button>
+  <button type="button" class=" pro_init_image image_picker btn btn-default " data-toggle="modal" data-target="#pro_init_image">Choose initial image  </button>
   <div class="modal fade" id="pro_init_image" role="dialog">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -57,11 +66,12 @@
         <div class="modal-body">
           <div>
             @foreach($images as $key=>$image)
-              <img class="img-responsive img-thumbnail"src="/images/sub_{{$image->name}}" data-value="{{$image->id}}">
+              <img data-toggle="tooltip" data-placement="bottom" title="{{$image->name}}" class="img-responsive img-thumbnail"src="/images/sub_{{$image->name}}" id="img_{{$image->id}}" data-value="{{$image->id}}">
             @endforeach
           </div>
-          <button class="btn btn-primary btn-img pull-right" id="pro_init_image_btn" >select</button>
-          <div style="clear:both"></div>
+        </div>
+        <div class="modal-footer">
+         <button class="btn btn-primary btn-img pull-right" id="pro_init_image_btn" >select</button>
         </div>
       </div>
     </div>

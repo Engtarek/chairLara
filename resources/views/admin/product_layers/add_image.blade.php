@@ -19,10 +19,9 @@
   .selected{
     border: 5px solid #0088cc;
   }
-  @media (min-width: 768px){
-    .modal-dialog {
-        width: 80%;
-      }
+  .modal-body{
+      height:600px;
+      overflow:auto;
   }
 </style>
 @endsection
@@ -41,7 +40,7 @@
               {!! Form::label('image', 'Layer Image')!!}
               {{ Form::hidden('image', '') }}
               <!-- start model -->
-              <button type="button" class="btn btn-default " data-toggle="modal" data-target="#images_image">Choose image </button>
+              <button type="button" class=" images_image btn btn-default " data-toggle="modal" data-target="#images_image">Choose image </button>
               <div class="modal fade" id="images_image" role="dialog">
                 <div class="modal-dialog">
                   <div class="modal-content">
@@ -51,11 +50,13 @@
                     <div class="modal-body">
                       <div>
                         @foreach($images as $key=>$image)
-                          <img class="img-responsive img-thumbnail"src="/images/sub_{{$image->name}}" data-value="{{$image->id}}">
+                          <img data-toggle="tooltip" data-placement="bottom" title="{{$image->name}}" class="img-responsive img-thumbnail"src="/images/sub_{{$image->name}}" id="img_{{$image->id}}" data-value="{{$image->id}}">
                         @endforeach
                       </div>
+
+                    </div>
+                    <div class="modal-footer">
                       <button class="btn btn-primary btn-img pull-right" id="images_image_btn" >select</button>
-                      <div style="clear:both"></div>
                     </div>
                   </div>
                 </div>
@@ -72,7 +73,7 @@
               {!! Form::label('color', 'Layer Color')!!}
               {{ Form::hidden('color', '') }}
               <!-- start model -->
-              <button type="button" class="btn btn-default " data-toggle="modal" data-target="#images_color">Choose image </button>
+              <button type="button" class=" images_color btn btn-default " data-toggle="modal" data-target="#images_color">Choose image </button>
               <div class="modal fade" id="images_color" role="dialog">
                 <div class="modal-dialog">
                   <div class="modal-content">
@@ -82,11 +83,13 @@
                     <div class="modal-body">
                       <div>
                         @foreach($images as $key=>$image)
-                          <img class="img-responsive img-thumbnail"src="/images/sub_{{$image->name}}" data-value="{{$image->id}}">
+                          <img data-toggle="tooltip" data-placement="bottom" title="{{$image->name}}" class="img-responsive img-thumbnail"src="/images/sub_{{$image->name}}" id="img_{{$image->id}}" data-value="{{$image->id}}">
                         @endforeach
                       </div>
+
+                    </div>
+                    <div class="modal-footer">
                       <button class="btn btn-primary btn-img pull-right" id="images_color_btn" >select</button>
-                      <div style="clear:both"></div>
                     </div>
                   </div>
                 </div>
@@ -99,21 +102,39 @@
                 </span>
               @endif
             </div>
-            <div class="form-group {{ $errors->has('item_name') ? ' has-error' : '' }}">
-              {!! Form::label('item_name', 'Item Name')!!}
-              {!!Form::text('item_name',null,['class'=>'form-control'])!!}
-              @if ($errors->has('item_name'))
+            <div class="form-group {{ $errors->has('item_name_en') ? ' has-error' : '' }}">
+              {!! Form::label('item_name_en', 'English Item Name')!!}
+              {!!Form::text('item_name_en',null,['class'=>'form-control'])!!}
+              @if ($errors->has('item_name_en'))
                 <span class="help-block">
-                <strong>{{ $errors->first('item_name') }}</strong>
+                <strong>{{ $errors->first('item_name_en') }}</strong>
                 </span>
               @endif
             </div>
-            <div class="form-group {{ $errors->has('item_distributer_name') ? ' has-error' : '' }}">
-              {!! Form::label('item_details_name', 'Item Details')!!}
-              {!!Form::text('item_distributer_name',null,['class'=>'form-control'])!!}
-              @if ($errors->has('item_distributer_name'))
+            <div class="form-group {{ $errors->has('item_name_ar') ? ' has-error' : '' }}">
+              {!! Form::label('item_name_ar', 'Arabic Item Name')!!}
+              {!!Form::text('item_name_ar',null,['class'=>'form-control'])!!}
+              @if ($errors->has('item_name_ar'))
                 <span class="help-block">
-                <strong>{{ $errors->first('item_distributer_name') }}</strong>
+                <strong>{{ $errors->first('item_name_ar') }}</strong>
+                </span>
+              @endif
+            </div>
+            <div class="form-group {{ $errors->has('item_distributer_name_en') ? ' has-error' : '' }}">
+              {!! Form::label('item_details_name_en', 'English Item Details')!!}
+              {!!Form::text('item_distributer_name_en',null,['class'=>'form-control'])!!}
+              @if ($errors->has('item_distributer_name_en'))
+                <span class="help-block">
+                <strong>{{ $errors->first('item_distributer_name_en') }}</strong>
+                </span>
+              @endif
+            </div>
+            <div class="form-group {{ $errors->has('item_distributer_name_ar') ? ' has-error' : '' }}">
+              {!! Form::label('item_details_name_ar', 'Arabic Item Details')!!}
+              {!!Form::text('item_distributer_name_ar',null,['class'=>'form-control'])!!}
+              @if ($errors->has('item_distributer_name_ar'))
+                <span class="help-block">
+                <strong>{{ $errors->first('item_distributer_name_ar') }}</strong>
                 </span>
               @endif
             </div>
@@ -137,6 +158,21 @@
 @section('footer')
 <script>
 $(document).ready(function(){
+    // add selected class as default
+    $(".images_image").click(function(){
+      var image_id = $("[name='image']").val();
+      var image_id_prev = "<?php echo $image->image;?>";
+      if(image_id != ""){
+        $("#images_image").find(".modal-body").find("div").find("#img_"+image_id).addClass("selected");
+      }
+    });
+    $(".images_color").click(function(){
+      var color_id = $("[name='color']").val();
+      var color_id_prev = "<?php echo $image->color;?>";
+      if(color_id != ""){
+          $("#images_color").find(".modal-body").find("div").find("#img_"+color_id).addClass("selected");
+       }
+    });
     //image
     $("img").click(function(){
       $("img").removeClass("selected");

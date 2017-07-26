@@ -19,12 +19,10 @@
   .selected{
     border: 5px solid #0088cc;
   }
-  @media (min-width: 768px){
-    .modal-dialog {
-        width: 80%;
-      }
+  .modal-body{
+      height:600px;
+      overflow:auto;
   }
-
 </style>
 @endsection
 @section('content')
@@ -49,6 +47,19 @@
 @section("footer")
 <script>
 $(document).ready(function(){
+
+    $(".pro_image").click(function(){
+      var image_id = $("[name='image']").val();
+      if(image_id != ""){
+        $("#pro_image").find(".modal-body").find("div").find("#img_"+image_id).addClass("selected");
+      }
+    });
+    $(".pro_init_image").click(function(){
+      var init_image_id = $("[name='init_image']").val();
+      if(init_image_id != ""){
+          $("#pro_init_image").find(".modal-body").find("div").find("#img_"+init_image_id).addClass("selected");
+       }
+    });
     //image
     $("img").click(function(){
       $("img").removeClass("selected");
@@ -62,6 +73,7 @@ $(document).ready(function(){
       $('#pro_image').modal('hide');
       $("input[name='image']").val(id);
       $('.pro_image').attr("src",img_src);
+
     });
     $("#pro_init_image_btn").click(function(e){
       e.preventDefault();

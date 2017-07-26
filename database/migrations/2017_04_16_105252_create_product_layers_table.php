@@ -16,7 +16,8 @@ class CreateProductLayersTable extends Migration
         Schema::create('product_layers', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('rank');
-            $table->string('rankname');
+            $table->string('rankname_en');
+              $table->string('rankname_ar');
             $table->integer('image')->unsigned()->index()->nullable();
             $table->integer('product_id')->unsigned();
             $table->foreign('product_id')->references('id')->on('products');

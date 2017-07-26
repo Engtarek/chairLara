@@ -24,14 +24,16 @@ class ProductController extends Controller
     //save new product in database
     public function store(Request $request){
       $this->validate($request,[
-        'name'=>'required|max:255',
+        'name_en'=>'required|max:255',
+        'name_ar'=>'required|max:255',
         'image'=>'required',
         'show'=>'required',
         'init_image'=>'required',
       ]);
 
       $data = array(
-        'name'=>$request->name,
+        'name_en'=>$request->name_en,
+        'name_ar'=>$request->name_ar,
         'image'=>$request->image,
         'show'=>$request->show,
         'init_image'=>$request->init_image,
@@ -62,7 +64,8 @@ class ProductController extends Controller
         $init_image_name = $request->init_image;
       }
       $data = array(
-        'name'=>$request->name,
+        'name_en'=>$request->name_en,
+        'name_ar'=>$request->name_ar,
         'image'=>$image_name,
         'show'=>$request->show,
         'init_image'=>$init_image_name,
@@ -130,8 +133,11 @@ class ProductController extends Controller
     public function data(){
       $product = Product::all();
       return DataTables::of($product)
-      ->editColumn('name',function($model){
-        return $model->name;
+      ->editColumn('name_en',function($model){
+        return $model->name_en;
+      })
+      ->editColumn('name_ar',function($model){
+        return $model->name_ar;
       })
       ->editColumn('view',function($model){
          return \Html::link('/admin/products/'.$model->id,'View');
