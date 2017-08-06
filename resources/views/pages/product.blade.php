@@ -44,6 +44,22 @@ float: left;
 	left: 50%;
 	transform: translate(-50%,-50%);
 }
+#sm_load{
+	display: none;
+	position: absolute;
+	top:50px;
+	right:50px;
+}
+#load_360{
+	display: none;
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+#load_360 img{
+		float: right;
+		width: 12%;
+}
 .chair{
 	height: 100%;
 	width: 100%;
@@ -224,7 +240,9 @@ display: block;
 							@elseif(!empty($imagename))
 								<div class="chair" style="background-image:url('/products/{{$product->id}}/history/{{$imagename}}.png')"></div>
 							@endif
-							 <div id="load"><img src="/img/loading.gif"></div>
+							 <div id="load"></div>
+							 <div id="sm_load"></div>
+							 <div id="load_360"><img src="/img/media-360-600.png" ></div>
 						</div>
 					</div>
 					 <div class="col-md-4 col-xs-12 layer-left">
@@ -352,6 +370,7 @@ display: block;
 @endsection
 @section('script')
 <script src="/js/jssocials.min.js"></script>
+<script src="/js/spin.min.js"></script>
 <script src="{{ mix('/custom/js/chair-click.js') }}"></script>
 <script src="{{ mix('/custom/js/chair-move.js') }}"></script>
 <script src="{{ mix('/custom/js/change-image.js') }}"></script>
@@ -434,8 +453,62 @@ $(document).ready(function(){
 					}
 				}
 				history.pushState(null, null,ch_layer_id);
-				//change image
+
+				//loading
 				$('#load').css('display','flex');
+				$('#sm_load').css('display','none');
+				$('#load_360').css('display','none');
+				var opts = {   lines: 17 // The number of lines to draw
+					, length: 0 // The length of each line
+					, width: 8 // The line thickness
+					, radius: 30 // The radius of the inner circle
+					, scale: 2.25 // Scales overall size of the spinner
+					, corners: 1 // Corner roundness (0..1)
+					, color: '#000' // #rgb or #rrggbb or array of colors
+					, opacity: 0.15 // Opacity of the lines
+					, rotate: 0 // The rotation offset
+					, direction: 1 // 1: clockwise, -1: counterclockwise
+					, speed: 1.7 // Rounds per second
+					, trail: 49 // Afterglow percentage
+					, fps: 20 // Frames per second when using setTimeout() as a fallback for CSS
+					, zIndex: 2e9 // The z-index (defaults to 2000000000)
+					, className: 'spinner' // The CSS class to assign to the spinner
+					, top: '50%' // Top position relative to parent
+					, left: '50%' // Left position relative to parent
+					, shadow: false // Whether to render a shadow
+					, hwaccel: false // Whether to use hardware acceleration
+					, position: 'absolute' // Element positioning
+ 				}
+				var target = document.getElementById('load')
+				var spinner = new Spinner(opts).spin(target);
+
+				//small load
+				var opts = {
+					  lines: 17 // The number of lines to draw
+					, length: 0 // The length of each line
+					, width: 8 // The line thickness
+					, radius: 42 // The radius of the inner circle
+					, scale: 0.25 // Scales overall size of the spinner
+					, corners: 1 // Corner roundness (0..1)
+					, color: '#000' // #rgb or #rrggbb or array of colors
+					, opacity: 0.15 // Opacity of the lines
+					, rotate: 0 // The rotation offset
+					, direction: 1 // 1: clockwise, -1: counterclockwise
+					, speed: 1.7 // Rounds per second
+					, trail: 49 // Afterglow percentage
+					, fps: 20 // Frames per second when using setTimeout() as a fallback for CSS
+					, zIndex: 2e9 // The z-index (defaults to 2000000000)
+					, className: 'spinner' // The CSS class to assign to the spinner
+					, top: '7%' // Top position relative to parent
+					, left: '93%' // Left position relative to parent
+					, shadow: false // Whether to render a shadow
+					, hwaccel: false // Whether to use hardware acceleration
+					, position: 'absolute' // Element positioning
+					}
+					var target = document.getElementById('sm_load');
+					var spinner = new Spinner(opts).spin(target);
+
+				//change image
 				var img_pos = $(".chair").css('background-position');
 				$.ajax({url: "/change_image",data:{last_pro:last_pro,ch_layer_id2: ch_layer_id2,product_id:product_id,layer_id:layer_id,img_pos:img_pos},
 					success: function(result){
@@ -444,20 +517,16 @@ $(document).ready(function(){
 						sm_img.onload=function(){
 							$('.chair').css('background-image','url('+$(this).attr("src")+')');
 							$('#load').css('display','none');
+							$('#sm_load').css('display','flex');
 							let img=new Image();
 							img.onload=function(){
 								$('.chair').css('background-image','url('+$(this).attr("src")+')');
+								$('#sm_load').css('display','none');
+								$('#load_360').css('display','block');
 							}
 							img.src='/products/'+product_id+'/history/'+result+'.png';
 						}
 						sm_img.src='/products/'+product_id+'/small_image/'+result+'.jpg';
-
-						// let img =new Image();
-						// img.onload=function(){
-						// 	$('.chair').css('background-image','url('+$(this).attr("src")+')');
-						// 	$('#load').css('display','none');
-						// }
-						// img.src='/products/'+product_id+'/history/'+result+'.png';
 					}
 				});
 

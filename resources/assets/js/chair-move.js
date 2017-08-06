@@ -5,6 +5,7 @@ window.chair=function(){
   let y=0;
   let offset=25;
   $('.parent').on('mousedown touchstart',function (e) {
+
       down=true;
       if(e.type == 'mousedown'){
           startPoint=e.clientX;
@@ -15,8 +16,10 @@ window.chair=function(){
 
   });
   $('.parent').on('mousemove touchmove',function (e) {
+
       if(e.type == 'mousemove'){
         if(down){
+              $('#load_360').css('display','none');
             if((e.clientX-startPoint)-offset>0){
                 startPoint=e.clientX;
 
@@ -51,6 +54,7 @@ window.chair=function(){
   }
 }else if(e.type == 'touchmove'){
   if(down){
+      $('#load_360').css('display','none');
       if((e.originalEvent.touches[0].clientX-startPoint)-offset>0){
 
           startPoint=e.originalEvent.touches[0].clientX;

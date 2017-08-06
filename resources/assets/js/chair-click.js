@@ -1,6 +1,7 @@
 
 window.changepostion=function(){
   $(".parent").click(function(){
+    $('#load_360').css('display','none');
       var myPos = $(this).find("div").css("background-position").split(" ");
       myPos[0] = parseInt(myPos[0].replace("px",""));
       myPos[1] = parseInt(myPos[1].replace("px",""));
@@ -23,4 +24,4 @@ window.changepostion=function(){
     }
   });
 
-} 
+}

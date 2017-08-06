@@ -15,8 +15,7 @@ class HomeController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
+    public function __construct(){
         $this->middleware('auth');
     }
 
@@ -25,13 +24,11 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index(){
         return view('home');
     }
 
-    public function dropzone()
-     {
+    public function dropzone(){
        $images = Images::all();
          return view('admin.dropzone-view',compact('images'));
      }
@@ -41,23 +38,22 @@ class HomeController extends Controller
       *
       * @return void
       */
-     public function dropzoneStore(Request $request)
-     {
+     public function dropzoneStore(Request $request){
          $image = $request->file('file');
          $array = explode('.', $image->getClientOriginalName());
          $imageName =$array[0]."_".rand().".".$array[1];
          //create submnails
          $img = Image::make($image->getRealPath());
           $img->resize(150, 150, function ($constraint) {
-         	  $constraint->aspectRatio();
+             $constraint->aspectRatio();
           })->save(public_path('images').'/'."sub_".$imageName);
           //create image
          $image->move(public_path('images'),$imageName);
+
          $image_id = Images::create(array('name'=>$imageName))->id;
          return response()->json(['name'=>$imageName,'id'=>$image_id]);
      }
-     public function dropzoneDelete(Request $request)
-     {
+     public function dropzoneDelete(Request $request){
        $image = Images::find($request->image_id);
        $products =[];
 
