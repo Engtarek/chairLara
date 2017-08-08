@@ -3,9 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Product;
 
 class ApiController extends Controller
 {
+  public function products(){
+    $products = Product::all();
+    return response()->json(['products'=>$products]);
+  }
     //return response()->json(['key'=>'val']);
     //product function
     //give me [product_id,layers&images_id,]

@@ -88,18 +88,8 @@ Route::get('/home', 'HomeController@index');
 
 //language
 Route::get('/lang/{locale}','PagesController@lang');
-// app()->singleton('lang',function(){
-//   return App\Http\Controllers\PagesController::lang();
-// });
-// Route::get('/lang/{locale}',function($lang){
-//   if($lang == 'ar'){
-//     session()->put('lang','ar');
-//   }else{
-//     session()->put('lang','en');
-//   }
-//   return back();
-// });
 
+Route::get('/api/products','ApiController@products');
 Route::get('/status',function(){
   $array=['new','confirmed','canceled','making','delivery','delivered'];
   foreach($array as $data){
