@@ -24,7 +24,7 @@ class ApiController extends Controller
               $imagename .=$value;
             }
           }
-          $imagename .="png";
+          $imagename .=".png";
         }else{
           $init_imagename = $product->product_init_image->name;
           foreach($layers as $key=>$layer){
