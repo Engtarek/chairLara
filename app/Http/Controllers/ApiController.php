@@ -35,7 +35,7 @@ class ApiController extends Controller
             }
         }
 
-        return response()->json(['imagename'=>$imagename,'init_imagename'=>$init_imagename]);
+        return response()->json(['imagename'=>$imagename,'init_imagename'=>$init_imagename,'product'=>$product]);
 
   }
     //return response()->json(['key'=>'val']);
