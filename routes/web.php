@@ -90,6 +90,9 @@ Route::get('/home', 'HomeController@index');
 Route::get('/lang/{locale}','PagesController@lang');
 
 Route::get('/api/products','ApiController@products');
+Route::get('/api/product/{id}/{id2?}','ApiController@product');
+
+
 Route::get('/status',function(){
   $array=['new','confirmed','canceled','making','delivery','delivered'];
   foreach($array as $data){

@@ -7,9 +7,35 @@ use App\Product;
 
 class ApiController extends Controller
 {
-  public function products(){
+  public function get_all_product(){
     $products = Product::all();
     return response()->json(['products'=>$products]);
+  }
+  public function get_product($id,$id2=""){
+    $product = Product::find($id);
+    $layers = $product->layers()->orderBy('rank','asc')->get();
+    $imagename = "";
+
+      if(!empty($id2)){
+          $imagename = $id;
+          foreach(explode("&",$id2)as $data){
+            foreach (explode(".",$data) as $value) {
+              $imagename .=$value;
+            }
+          }
+          $imagename .="png";
+        }else{
+          $imagename = $product->product_init_image->name;
+          foreach($layers as $key=>$layer){
+              $id2 .= $layer->id.'.'.$layer->Images->first()->id;
+              if( $key != ( count( $layers ) - 1 ) ){
+                $id2.='&';
+              }
+            }
+        }
+
+        return response()->json(['id2'=>$id2,'product'=>$product,'imagename'=>$imagename,'layers'=>$layers]);
+
   }
     //return response()->json(['key'=>'val']);
     //product function
