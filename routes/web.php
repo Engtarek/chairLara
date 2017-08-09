@@ -89,8 +89,8 @@ Route::get('/home', 'HomeController@index');
 //language
 Route::get('/lang/{locale}','PagesController@lang');
 
-Route::get('/api/products','ApiController@products');
-Route::get('/api/product/{id}/{id2?}','ApiController@product');
+Route::get('/api/products','ApiController@get_all_product');
+Route::get('/api/product/{id}/{id2?}','ApiController@get_product');
 
 
 Route::get('/status',function(){
