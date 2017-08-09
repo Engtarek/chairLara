@@ -34,8 +34,37 @@ class ApiController extends Controller
               }
             }
         }
+        $layers_arr =[];
+        $images_arr = [];
+        foreach ($layers as $key => $layer) {
+          foreach ($layer->images as $key => $image) {
+            $array_1=[
+              'id'=>$image->id,
+              'image'=>$image->get_image->name,
+              'color'=>$image->get_color->name,
+              'item_name_en'=>$image->item_name_en,
+              'item_name_ar'=>$image->item_name_ar,
+              'item_distributer_name_en'=>$image->item_distributer_name_en,
+              'item_distributer_name_ar'=>$image->item_distributer_name_ar,
+              'item_price'=>$image->item_price,
+              'product_layers_id'=>$image->product_layers_id,
+            ];
+            array_push($images_arr,$array_1);
+          }
+          $array_2=[
+            'id'=>$layer->id,
+            'rank'=>$layer->rank,
+            'rankname_en'=>$layer->rankname_en,
+            'rankname_ar'=>$layer->rankname_ar,
+            'image'=>$layer->image,
+            'product_id'=>$layer->product_id,
+            'images'=>$images_arr
+          ];
+            array_push($layers_arr,$array_2);
+            $images_arr = [];
+        }
 
-        return response()->json(['imagename'=>$imagename,'init_imagename'=>$init_imagename,'product'=>$product,'layers'=>$layers]);
+        return response()->json(['imagename'=>$imagename,'init_imagename'=>$init_imagename,'product'=>$product,'layers'=>$layers_arr]);
 
   }
     //return response()->json(['key'=>'val']);
