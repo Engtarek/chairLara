@@ -15,6 +15,7 @@ class ApiController extends Controller
     $product = Product::find($id);
     $layers = $product->layers()->orderBy('rank','asc')->get();
     $imagename = "";
+    $init_imagename ="";
 
       if(!empty($id2)){
           $imagename = $id;
@@ -25,7 +26,7 @@ class ApiController extends Controller
           }
           $imagename .="png";
         }else{
-          $imagename = $product->product_init_image->name;
+          $init_imagename = $product->product_init_image->name;
           foreach($layers as $key=>$layer){
               $id2 .= $layer->id.'.'.$layer->Images->first()->id;
               if( $key != ( count( $layers ) - 1 ) ){
@@ -34,7 +35,7 @@ class ApiController extends Controller
             }
         }
 
-        return response()->json(['id2'=>$id2,'product'=>$product,'imagename'=>$imagename,'layers'=>$layers]);
+        return response()->json(['imagename'=>$imagename,'init_imagename'=>$init_imagename]);
 
   }
     //return response()->json(['key'=>'val']);
