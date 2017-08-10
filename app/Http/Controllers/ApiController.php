@@ -71,6 +71,7 @@ class ApiController extends Controller
 
   //change image
   public function change_image(Request $request){
+    //
 
     //get new imagename
     $imagename = $request->product_id;
