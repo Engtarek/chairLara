@@ -100,7 +100,8 @@ class ApiController extends Controller
       createImage($request->product_id,$request->last_pro,$request->layer_id,$imagename,$request->img_pos);
 
       Cache::forever($imagename, $imagename);
-      return $imagename;
+      return response()->json(['imagename'=>$imagename]);
+      //return $imagename;
     }
   }
 
