@@ -107,7 +107,8 @@ class ApiController extends Controller
   }
 
   public function test(){
-    return response()->json(['key'=>'val']);
+    return response()->json(['key'=>'val'])->withHeaders(['Access-Control-Allow-Origin'=>'*'
+            ]);
   }
     //return response()->json(['key'=>'val']);
     //product function
