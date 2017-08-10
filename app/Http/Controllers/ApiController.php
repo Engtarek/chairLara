@@ -103,6 +103,10 @@ class ApiController extends Controller
       return $imagename;
     }
   }
+
+  public function test(){
+    return response()->json(['key'=>'val']);
+  }
     //return response()->json(['key'=>'val']);
     //product function
     //give me [product_id,layers&images_id,]
