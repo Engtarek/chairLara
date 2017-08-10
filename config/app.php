@@ -183,6 +183,7 @@ return [
         Darryldecode\Cart\CartServiceProvider::class,
         Alexpechkarev\GoogleGeocoder\GoogleGeocoderServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
+        Barryvdh\Cors\ServiceProvider::class,
     ],
 
     /*

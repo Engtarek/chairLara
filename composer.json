@@ -7,6 +7,7 @@
     "require": {
         "php": ">=5.6.4",
         "alexpechkarev/google-geocoder": "dev-master",
+        "barryvdh/laravel-cors": "^0.9.2",
         "barryvdh/laravel-dompdf": "^0.8.0",
         "chencha/share": "^5.2",
         "cloudinary/cloudinary_php": "dev-master",
