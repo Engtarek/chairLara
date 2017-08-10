@@ -91,6 +91,7 @@ Route::get('/lang/{locale}','PagesController@lang');
 
 Route::get('/api/products','ApiController@get_all_product');
 Route::get('/api/product/{id}/{id2?}','ApiController@get_product');
+Route::get('/api/change_image','ApiController@change_image');
 
 
 Route::get('/status',function(){

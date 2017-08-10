@@ -67,6 +67,41 @@ class ApiController extends Controller
         return response()->json(['imagename'=>$imagename,'init_imagename'=>$init_imagename,'product'=>$product,'layers'=>$layers_arr,'id2'=>$id2]);
 
   }
+
+  //change image
+  public function change_image(Request $request){
+
+    //get new imagename
+    $imagename = $request->product_id;
+      foreach(explode("&",$request->ch_layer_id2)as $data2){
+        foreach (explode(".",$data2) as $value2) {
+          $imagename .=$value2;
+        }
+      }
+
+    // make condition
+    if(!Cache::get($imagename) && !file_exists("products/".$request->product_id."/history/".$imagename.".png")){
+
+      createImage($request->product_id,$request->last_pro,$request->layer_id,$imagename,$request->img_pos);
+      Cache::forever($imagename, $imagename);
+      return $imagename;
+
+    }elseif(Cache::get($imagename) && file_exists("products/".$request->product_id."/history/".$imagename.".png")){
+      cutImage('products/'.$request->product_id.'/history/' .$imagename.'.png',$request->img_pos,$request->product_id,$imagename);
+       return  Cache::get($imagename);
+
+    }elseif(!Cache::get($imagename) && file_exists("products/".$request->product_id."/history/".$imagename.".png")){
+        cutImage('products/'.$request->product_id.'/history/' .$imagename.'.png',$request->img_pos,$request->product_id,$imagename);
+       Cache::forever($imagename, $imagename);
+       return $imagename;
+    }elseif(Cache::get($imagename) && !file_exists("products/".$request->product_id."/history/".$imagename.".png")){
+      Cache::forget($imagename);
+      createImage($request->product_id,$request->last_pro,$request->layer_id,$imagename,$request->img_pos);
+
+      Cache::forever($imagename, $imagename);
+      return $imagename;
+    }
+  }
     //return response()->json(['key'=>'val']);
     //product function
     //give me [product_id,layers&images_id,]
