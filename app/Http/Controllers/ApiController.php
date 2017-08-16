@@ -9,7 +9,19 @@ use Cache;
 class ApiController extends Controller
 {
   public function get_all_product(){
-    $products = Product::all();
+    $products = [];
+    foreach(Product::all() as $product){
+      $array =[
+        "id"=>$product->id,
+        "name_en"=>$product->name_en,
+        "name_ar"=>$product->name_ar,
+        "image"=>$product->product_image->name,
+        "init_image"=>$product->product_init_image->name,
+        "show"=>$product->show,
+      ];
+      array_push($products,$array);
+
+    }
     return response()->json(['products'=>$products]);
   }
   public function get_product($id,$id2=""){
