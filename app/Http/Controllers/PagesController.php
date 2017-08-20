@@ -53,6 +53,11 @@ class PagesController extends Controller
       return view('pages.index',compact('products','more'));
     }
 
+    public function wp_shop(){
+
+      $products = Product::where('show',1)->get();
+      return view('pages.wp_index',compact('products'));
+    }
     //get more data in index page
     public function showmore(Request $request){
         $products = Product::where('show',1)->skip($request->numofelement)->take(8)->get();
@@ -114,7 +119,44 @@ class PagesController extends Controller
         return view('pages.404');
       }
     }
+    public function wp_product($id,$id2="",Request $request){
+      //setting
+      $setting = Settings::find(1);
+      $product = Product::find($id);
+      $init_imagename = "";
+      $imagename = "";
+      $layers = $product->layers()->orderBy('rank','asc')->get();
+      if($product->show == 1){
+        if(!empty($id2)){
+            $imagename = $id;
+            foreach(explode("&",$id2)as $data){
+              foreach (explode(".",$data) as $value) {
+                $imagename .=$value;
+              }
+            }
+          }else{
+            $init_imagename = explode(".",$product->product_init_image->name)[0];
+            foreach($layers as $key=>$layer){
+                $id2 .= $layer->id.'.'.$layer->Images->first()->id;
+                if( $key != ( count( $layers ) - 1 ) ){
+                  $id2.='&';
+                }
+              }
+          }
 
+        $last="";
+        $next="";
+        if(!empty(Product::find($id+1))){
+          $next=$id+1;
+        }
+        if(!empty(Product::find($id-1))){
+          $last=$id-1;
+        }
+        return view('pages.wp_product',compact('id2','product','init_imagename','imagename','layers','last','next','setting'));
+      }else{
+        return view('pages.404');
+      }
+    }
     //change image
     public function change_image(Request $request){
 

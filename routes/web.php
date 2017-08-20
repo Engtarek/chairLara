@@ -73,10 +73,12 @@ Route::get('/about', 'PagesController@about');
 Route::get('/contact', 'PagesController@contact');
 //all products
 Route::get('/','PagesController@shop');
+Route::get('/wp/','PagesController@wp_shop');
 //showmore
 Route::get('/showmore','PagesController@showmore');
 //product
 Route::get('/product/{id}/{id2?}','PagesController@product');
+Route::get('/wp/product/{id}/{id2?}','PagesController@wp_product');
 //change image
 Route::get('/change_image/{id}/{id2}/{image_index}','PagesController@change_image');
 Route::get('/change_image','PagesController@change_image');
