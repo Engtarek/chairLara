@@ -95,5 +95,8 @@ class HomeController extends Controller
            }
 
      }
+     public function outh_api(){
+       return view('admin.outh');
+     }
 
 }

@@ -51,6 +51,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'is-admin']], functio
   Route::get('dropzone', 'HomeController@dropzone');
   Route::post('dropzone/store', ['as'=>'dropzone.store','uses'=>'HomeController@dropzoneStore']);
   Route::get('dropzone/delete', ['as'=>'dropzone.delete','uses'=>'HomeController@dropzoneDelete']);
+    Route::get('outh/api', 'HomeController@outh_api');
 });
 
 //Cart

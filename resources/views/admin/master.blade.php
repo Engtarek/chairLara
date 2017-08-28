@@ -22,6 +22,12 @@
   <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
+  <script>
+  window.Laravel = {!! json_encode([
+      'csrfToken' => csrf_token(),
+  ]) !!};
+  </script>
+
       @yield('header')
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
@@ -154,6 +160,11 @@
         <li class="treeview">
           <a href="{{url('/admin/dropzone')}}">
             <i class="fa fa-users"></i> <span>Images area</span>
+          </a>
+        </li>
+        <li class="treeview">
+          <a href="{{url('/admin/outh/api')}}">
+            <i class="fa fa-users"></i> <span>Outh api</span>
           </a>
         </li>
       </ul>

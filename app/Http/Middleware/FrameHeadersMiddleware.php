@@ -17,7 +17,7 @@ class FrameHeadersMiddleware
     {
       $response = $next($request);
         //  $response->header_remove('X-Frame-Options');
-     $response->header('X-Frame-Options', 'ALLOW ALL');
+     $response->header('X-Frame-Options', 'ALLOW FROM 127.0.0.1 ');
      //$response->header('X-Frame-Options', 'DENY');
      return $response;
 

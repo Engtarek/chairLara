@@ -184,6 +184,7 @@ return [
         Alexpechkarev\GoogleGeocoder\GoogleGeocoderServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
         Barryvdh\Cors\ServiceProvider::class,
+        Laravel\Passport\PassportServiceProvider::class,
     ],
 
     /*

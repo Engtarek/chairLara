@@ -8,6 +8,11 @@ use Cache;
 
 class ApiController extends Controller
 {
+  public function __construct()
+  {
+    $this->middleware('auth:api');
+  }
+
   public function get_all_product(){
     $products = [];
     foreach(Product::all() as $product){
