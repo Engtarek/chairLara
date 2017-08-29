@@ -19,7 +19,7 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \App\Http\Middleware\FrameHeadersMiddleware::class,
-                   \Barryvdh\Cors\HandleCors::class,
+        \Barryvdh\Cors\HandleCors::class,
     ];
 
     /**
@@ -37,11 +37,9 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\Language::class,
-             \Barryvdh\Cors\HandleCors::class,
         ],
 
         'api' => [
-           \Barryvdh\Cors\HandleCors::class,
             'throttle:60,1',
             'bindings',
         ],
@@ -61,7 +59,6 @@ class Kernel extends HttpKernel
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'is-admin' => \App\Http\Middleware\IsAdminMiddleware::class,
-        'cors' => \App\Http\Middleware\Cors::class, 
+        'is-admin' => \App\Http\Middleware\IsAdminMiddleware::class, 
     ];
 }
