@@ -118,7 +118,7 @@ class ApiController extends Controller
       createImage($request->product_id,$request->last_pro,$request->layer_id,$imagename,$request->img_pos);
 
       Cache::forever($imagename, $imagename);
-      return response()->json(['imagename'=>$imagename]);
+      return response()->json(['sm_imagename'=>$request->root()."/products/".$request->product_id."/small_image/".$imagename.".jpg",'imagename'=>$request->root()."/products/".$request->product_id."/history/".$imagename.".png"]);
       //return $imagename;
     }
   }
