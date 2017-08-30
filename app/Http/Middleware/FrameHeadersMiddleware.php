@@ -15,11 +15,11 @@ class FrameHeadersMiddleware
      */
     public function handle($request, Closure $next)
     {
-      $response = $next($request);
-        //  $response->header_remove('X-Frame-Options');
-     $response->header('X-Frame-Options', 'ALLOW FROM 127.0.0.1 ');
-     //$response->header('X-Frame-Options', 'DENY');
-     return $response;
+      // $response = $next($request);
+    //     //  $response->header_remove('X-Frame-Options');
+    //  $response->header('X-Frame-Options', 'ALLOW FROM 127.0.0.1 ');
+    //  //$response->header('X-Frame-Options', 'DENY');
+      return  $next($request);;
 
     }
 }
