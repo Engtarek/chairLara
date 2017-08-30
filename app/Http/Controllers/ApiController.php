@@ -103,16 +103,19 @@ class ApiController extends Controller
 
       createImage($request->product_id,$request->last_pro,$request->layer_id,$imagename,$request->img_pos);
       Cache::forever($imagename, $imagename);
-      return $imagename;
+      //return $imagename;
+        return response()->json(['sm_imagename'=>$request->root()."/products/".$request->product_id."/small_image/".$imagename.".jpg",'imagename'=>$request->root()."/products/".$request->product_id."/history/".$imagename.".png"]);
 
     }elseif(Cache::get($imagename) && file_exists("products/".$request->product_id."/history/".$imagename.".png")){
       cutImage('products/'.$request->product_id.'/history/' .$imagename.'.png',$request->img_pos,$request->product_id,$imagename);
-       return  Cache::get($imagename);
+      // return  Cache::get($imagename);
+         return response()->json(['sm_imagename'=>$request->root()."/products/".$request->product_id."/small_image/".Cache::get($imagename).".jpg",'imagename'=>$request->root()."/products/".$request->product_id."/history/".Cache::get($imagename).".png"]);
 
     }elseif(!Cache::get($imagename) && file_exists("products/".$request->product_id."/history/".$imagename.".png")){
         cutImage('products/'.$request->product_id.'/history/' .$imagename.'.png',$request->img_pos,$request->product_id,$imagename);
        Cache::forever($imagename, $imagename);
-       return $imagename;
+       //return $imagename;
+         return response()->json(['sm_imagename'=>$request->root()."/products/".$request->product_id."/small_image/".$imagename.".jpg",'imagename'=>$request->root()."/products/".$request->product_id."/history/".$imagename.".png"]);
     }elseif(Cache::get($imagename) && !file_exists("products/".$request->product_id."/history/".$imagename.".png")){
       Cache::forget($imagename);
       createImage($request->product_id,$request->last_pro,$request->layer_id,$imagename,$request->img_pos);
