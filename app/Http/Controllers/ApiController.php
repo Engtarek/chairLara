@@ -13,7 +13,7 @@ class ApiController extends Controller
     $this->middleware('auth:api');
   }
 
-  public function get_all_product(Request $reques){
+  public function get_all_product(Request $request){
     $products = [];
     foreach(Product::all() as $product){
       $array =[
