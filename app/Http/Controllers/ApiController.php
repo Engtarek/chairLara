@@ -13,7 +13,7 @@ class ApiController extends Controller
     $this->middleware('auth:api');
   }
 
-  public function get_all_product(Request $request){
+  public function get_all_product(Request $reques){
     $products = [];
     foreach(Product::all() as $product){
       $array =[
@@ -29,14 +29,14 @@ class ApiController extends Controller
     }
     return response()->json(['products'=>$products]);
   }
-  public function get_product($id,$id2=""){
+  public function get_product(Request $request,$id,$id2=""){
     $product = Product::find($id);
     $layers = $product->layers()->orderBy('rank','asc')->get();
     $imagename = "";
-    $init_imagename ="";
+    $init_imagename =$request->root().'/images/';
 
       if(!empty($id2)){
-          $imagename = $id;
+        $imagename = $request->root().'/products/'.$id.'/history/'.$id;
           foreach(explode("&",$id2)as $data){
             foreach (explode(".",$data) as $value) {
               $imagename .=$value;
@@ -44,7 +44,7 @@ class ApiController extends Controller
           }
           $imagename .=".png";
         }else{
-          $init_imagename = $product->product_init_image->name;
+          $init_imagename .= $product->product_init_image->name;
           foreach($layers as $key=>$layer){
               $id2 .= $layer->id.'.'.$layer->Images->first()->id;
               if( $key != ( count( $layers ) - 1 ) ){
@@ -58,8 +58,8 @@ class ApiController extends Controller
           foreach ($layer->images as $key => $image) {
             $array_1=[
               'id'=>$image->id,
-              'image'=>$image->get_image->name,
-              'color'=>$image->get_color->name,
+              'image'=>$request->root().'/images/'.$image->get_image->name,
+              'color'=>$request->root().'/images/'.$image->get_color->name,
               'item_name_en'=>$image->item_name_en,
               'item_name_ar'=>$image->item_name_ar,
               'item_distributer_name_en'=>$image->item_distributer_name_en,
@@ -74,7 +74,7 @@ class ApiController extends Controller
             'rank'=>$layer->rank,
             'rankname_en'=>$layer->rankname_en,
             'rankname_ar'=>$layer->rankname_ar,
-            'image'=>$layer->image,
+            'image'=>$request->root().'/images/'.$layer->image,
             'product_id'=>$layer->product_id,
             'images'=>$images_arr
           ];
@@ -122,18 +122,5 @@ class ApiController extends Controller
       //return $imagename;
     }
   }
-
-  public function test(){
-    return response()->json(['key'=>'val'])->withHeaders(['Access-Control-Allow-Origin'=>'*'
-            ]);
-  }
-    //return response()->json(['key'=>'val']);
-    //product function
-    //give me [product_id,layers&images_id,]
-    //take['layers&images_id','product','init_imagename','layers',];
-
-    //change image function
-    //give me [last_pro[last layers and images ids],product_id,layer_andimageid,layer&imagesid,img_pos]
-    //take[image];
 
 }
