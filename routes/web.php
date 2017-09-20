@@ -95,7 +95,11 @@ Route::get('/lang/{locale}','PagesController@lang');
 Route::get('/api/products','ApiController@get_all_product');
 Route::get('/api/product/{id}/{id2?}','ApiController@get_product');
 Route::get('/api/change_image','ApiController@change_image');
-Route::get('/api/test','ApiController@test');
+Route::post('/api/save_product','ApiController@save_product');
+Route::get('/api/get_woo_product','ApiController@get_woo_product');
+Route::post('/api/save_layer','ApiController@save_layer');
+Route::get('/api/get_woo_layer','ApiController@get_woo_layer');
+Route::post('/api/save_image','ApiController@save_image');
 
 Route::get('/status',function(){
   $array=['new','confirmed','canceled','making','delivery','delivered'];

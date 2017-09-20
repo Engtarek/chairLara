@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Product;
 use Cache;
+use App\Images;
+use Image;
+use File;
+use App\ProductLayer;
+use App\ProductLayerImage;
 
 class ApiController extends Controller
 {
@@ -13,6 +18,7 @@ class ApiController extends Controller
     $this->middleware('auth:api');
   }
 
+  //get all products
   public function get_all_product(Request $request){
     $products = [];
     foreach(Product::all() as $product){
@@ -29,6 +35,7 @@ class ApiController extends Controller
     }
     return response()->json(['products'=>$products]);
   }
+  //get product data
   public function get_product(Request $request,$id,$id2=""){
     $product = Product::find($id);
     $layers = $product->layers()->orderBy('rank','asc')->get();
@@ -124,6 +131,124 @@ class ApiController extends Controller
       return response()->json(['sm_imagename'=>$request->root()."/products/".$request->product_id."/small_image/".$imagename.".jpg",'imagename'=>$request->root()."/products/".$request->product_id."/history/".$imagename.".png"]);
       //return $imagename;
     }
+  }
+
+  public function save_product(Request $request ){
+    $image = $request->file('image');
+   $array = explode('.', $image->getClientOriginalName());
+   $imageName =$array[0]."_".rand().".".$array[1];
+   //create submnails
+   $img = Image::make($image->getRealPath());
+    $img->resize(150, 150, function ($constraint) {
+       $constraint->aspectRatio();
+    })->save(public_path('images').'/'."sub_".$imageName);
+    //create image
+   $image->move(public_path('images'),$imageName);
+
+   $image_id = Images::create(array('name'=>$imageName))->id;
+
+   //color
+   $init_image = $request->file('init_image');
+   $array2 = explode('.', $init_image->getClientOriginalName());
+   $init_image_name =$array2[0]."_".rand().".".$array2[1];
+   //create submnails
+   $init = Image::make($init_image->getRealPath());
+    $init->resize(150, 150, function ($constraint) {
+       $constraint->aspectRatio();
+    })->save(public_path('images').'/'."sub_".$init_image_name);
+    //create image
+   $init_image->move(public_path('images'),$init_image_name);
+
+   $init_image_id = Images::create(array('name'=>$init_image_name))->id;
+
+
+    $data = array(
+      'name_en'=>$request->post_title,
+      'name_ar'=>$request->post_title_ar,
+      'image'=>$image_id,
+      'show'=>1,
+      'init_image'=>$init_image_id,
+      'wooCommerce_product_id'=>$request->wooCommerce_product_id,
+    );
+
+    $product = Product::create($data);
+return response()->json(['msg'=>'success']);
+  }
+
+  public function get_woo_product(){
+    $products = Product::where('wooCommerce_product_id','!=',0)->get();
+    return response()->json(['products'=>$products]);
+  }
+  public function save_layer(Request $request ){
+
+    $data =[
+        'rank'=>$request->rank,
+        'rankname_en'=>$request->rankname_en,
+        'rankname_ar'=>$request->rankname_ar,
+        'product_id'=>$request->product_id
+      ];
+    ProductLayer::create($data);
+return response()->json(['msg'=>'success']);
+  }
+  public function get_woo_layer(){
+    $products = Product::where('wooCommerce_product_id','!=',0)->get();
+    $layers=[];
+    foreach ($products as $value) {
+      foreach ($value->layers as $key => $data) {
+        $array = array(
+            "id"=> $data->id,
+            "rank"=> $data->rank,
+            "rankname_en"=> $data->rankname_en,
+            "rankname_ar"=>$data->rankname_ar ,
+            "product_id"=> $data->product_id,
+        );
+        array_push($layers,$array);
+      }
+    }
+return response()->json($layers);
+  }
+
+  public function save_image(Request $request){
+
+     $image = $request->file('image');
+    $array = explode('.', $image->getClientOriginalName());
+    $imageName =$array[0]."_".rand().".".$array[1];
+    //create submnails
+    $img = Image::make($image->getRealPath());
+     $img->resize(150, 150, function ($constraint) {
+        $constraint->aspectRatio();
+     })->save(public_path('images').'/'."sub_".$imageName);
+     //create image
+    $image->move(public_path('images'),$imageName);
+
+    $image_id = Images::create(array('name'=>$imageName))->id;
+
+    //color
+    $color = $request->file('color');
+    $array2 = explode('.', $color->getClientOriginalName());
+    $colorName =$array2[0]."_".rand().".".$array2[1];
+    //create submnails
+    $col = Image::make($color->getRealPath());
+     $col->resize(150, 150, function ($constraint) {
+        $constraint->aspectRatio();
+     })->save(public_path('images').'/'."sub_".$colorName);
+     //create image
+    $color->move(public_path('images'),$colorName);
+
+    $color_id = Images::create(array('name'=>$colorName))->id;
+
+    $data =[
+      'image'=>$image_id,
+      'color'=>$color_id,
+      'item_name_en'=>$request->item_en,
+      'item_name_ar'=>$request->item_ar,
+      'item_distributer_name_en'=>$request->details_en,
+      'item_distributer_name_ar'=>$request->details_ar,
+      'item_price'=>$request->price,
+      'product_layers_id'=>$request->product_layers_id,
+    ];
+   ProductLayerImage::create($data);
+   return response()->json(['msg'=>'success']);
   }
 
 }
