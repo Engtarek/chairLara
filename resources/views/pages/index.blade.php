@@ -1,5 +1,6 @@
 @extends('pages.master')
 @section('content')
+<?php echo 'test' ?>
 			<div class="container-fluid productlist">
         <div class="row">
           @foreach($products as $product)
