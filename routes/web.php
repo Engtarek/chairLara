@@ -91,15 +91,28 @@ Route::get('/home', 'HomeController@index');
 
 //language
 Route::get('/lang/{locale}','PagesController@lang');
-
-Route::get('/api/products','ApiController@get_all_product');
+//API
 Route::get('/api/product/{id}/{id2?}','ApiController@get_product');
 Route::get('/api/change_image','ApiController@change_image');
+//API PRODUCT
+Route::get('/api/products','ApiController@get_all_product');
 Route::post('/api/save_product','ApiController@save_product');
-Route::get('/api/get_woo_product','ApiController@get_woo_product');
+Route::post('/api/update_product','ApiController@update_product');
+Route::get('/api/delete_product/{id}','ApiController@delete_product');
+Route::get('/api/show_pro/{id}','ApiController@show_pro');
+// Route::get('/api/get_woo_product','ApiController@get_woo_product');
+//API LAYER
 Route::post('/api/save_layer','ApiController@save_layer');
 Route::get('/api/get_woo_layer','ApiController@get_woo_layer');
+Route::get('/api/delete_layer/{id}','ApiController@delete_layer');
+Route::get('/api/show_layer/{id}','ApiController@show_layer');
+Route::post('/api/update_layer','ApiController@update_layer');
+//API IMAGES
+Route::get('/api/get_image','ApiController@get_image');
+Route::get('/api/delete_image/{id}','ApiController@delete_image');
+Route::get('/api/show_image/{id}','ApiController@show_image');
 Route::post('/api/save_image','ApiController@save_image');
+Route::post('/api/update_image','ApiController@update_image');
 
 Route::get('/status',function(){
   $array=['new','confirmed','canceled','making','delivery','delivered'];
