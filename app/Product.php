@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-  protected $fillable = ['name_en','name_ar','image','show','init_image','wooCommerce_product_id'];
+  protected $fillable = ['name_en','name_ar','image','show','init_image','wooCommerce_product_id','uuid','is_wooCommerce_product','price','user_id'];
 
   public function layers(){
       return $this->hasMany('App\ProductLayer');
@@ -20,4 +20,7 @@ class Product extends Model
         return $this->hasOne(Images::class,'id', 'init_image');
   }
 
+  public function user(){
+        return $this->belongsTo('App\User');
+  }
 }

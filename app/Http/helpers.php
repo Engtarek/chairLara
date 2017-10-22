@@ -53,6 +53,14 @@ function appearnce(){
   ];
   return $appearnce;
 }
+//get all roles
+function roles(){
+  $roles = [];
+  foreach(\App\Role::all() as $value){
+    $roles[$value->id] = $value->name;
+  }
+  return $roles;
+}
 //convert layers to one image
 function merge_image($images,$product_id,$image_position){
     $x=2800;

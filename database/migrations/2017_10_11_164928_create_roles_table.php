@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddWooCommerceProductIdToProducts extends Migration
+class CreateRolesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,11 @@ class AddWooCommerceProductIdToProducts extends Migration
      */
     public function up()
     {
-      Schema::table('products', function (Blueprint $table) {
-          $table->unsignedInteger('wooCommerce_product_id')->default(0);
-      });
+        Schema::create('roles', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -25,8 +27,6 @@ class AddWooCommerceProductIdToProducts extends Migration
      */
     public function down()
     {
-      Schema::table('products', function (Blueprint $table) {
-          $table->dropColumn('wooCommerce_product_id');
-      });
+        Schema::dropIfExists('roles');
     }
 }

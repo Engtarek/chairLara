@@ -19,6 +19,8 @@ class RedirectIfAuthenticated
     {
         if (Auth::guard($guard)->check()) {
             return redirect('/admin/products');
+        }else{
+          return redirect('/admin/login');
         }
 
         return $next($request);
