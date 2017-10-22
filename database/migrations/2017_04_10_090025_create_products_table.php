@@ -16,10 +16,15 @@ class CreateProductsTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name_en');
-              $table->string('name_ar');
+            $table->string('name_ar');
             $table->integer('image')->unsigned()->index();
             $table->integer('init_image')->unsigned()->index();
             $table->integer('show');
+            $table->integer('wooCommerce_product_id')->nullable();
+            $table->string('uuid');
+            $table->boolean('is_wooCommerce_product')->default(0);
+            $table->float('price');
+            $table->integer('user_id')->unsigned();
             $table->timestamps();
         });
     }

@@ -46,13 +46,41 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'is-admin']], functio
   Route::resource('/employees','EmployeeController');
   Route::get('/employees/delete/{id}','EmployeeController@destroy');
 
+  // Route::get('/api_tokens/data','ApiTokenController@data');
+  // Route::resource('/api_tokens','ApiTokenController');
+  // Route::get('/api_tokens/delete/{id}','ApiTokenController@destroy');
+
+
   Route::resource('/setting','SettingController');
+
+  Route::get('/users/delete/{id}','UserController@destroy');
+  Route::get('/users/data','UserController@data');
+  Route::resource('/users','UserController');
+
+
+  Route::get('/licenses/{id}','LicenseController@all_license');
+  Route::get('/licenses/delete/{id}','LicenseController@destroy');
+  Route::get('/licenses/create/{user_id}','LicenseController@create_license');
+  Route::get('/create_new_user','LicenseController@create_new_user');
+  Route::post('/create_new_user','LicenseController@save_new_user');
+  Route::get('/enable_update/{id}','LicenseController@enable_update');
+  Route::resource('/licenses','LicenseController');
 
   Route::get('dropzone', 'HomeController@dropzone');
   Route::post('dropzone/store', ['as'=>'dropzone.store','uses'=>'HomeController@dropzoneStore']);
   Route::get('dropzone/delete', ['as'=>'dropzone.delete','uses'=>'HomeController@dropzoneDelete']);
-    Route::get('outh/api', 'HomeController@outh_api');
+  Route::get('outh/api', 'HomeController@outh_api');
+
+
 });
+
+Route::get('/admin/register','UserController@register');
+Route::post('/admin/register','UserController@save_reqister');
+Route::get('/admin/login','UserController@login');
+Route::post('/admin/login','UserController@save_login');
+
+Route::get('/change_password','UserController@change_password');
+Route::post('/save_change_password','UserController@save_change_password');
 
 //Cart
 Route::get('/add', 'CartController@AddToCart');
@@ -113,6 +141,8 @@ Route::get('/api/delete_image/{id}','ApiController@delete_image');
 Route::get('/api/show_image/{id}','ApiController@show_image');
 Route::post('/api/save_image','ApiController@save_image');
 Route::post('/api/update_image','ApiController@update_image');
+Route::get('/api/check_token','ApiController@check_token');
+Route::post('/api/check_license','ApiController@check_license');
 
 Route::get('/status',function(){
   $array=['new','confirmed','canceled','making','delivery','delivered'];

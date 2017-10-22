@@ -162,9 +162,19 @@
             <i class="fa fa-users"></i> <span>Images area</span>
           </a>
         </li>
-        <li class="treeview">
+        <!-- <li class="treeview">
           <a href="{{url('/admin/outh/api')}}">
             <i class="fa fa-users"></i> <span>Outh api</span>
+          </a>
+        </li> -->
+        <!-- <li class="treeview">
+          <a href="{{url('/admin/api_tokens')}}">
+            <i class="fa fa-users"></i> <span>Api Tokens</span>
+          </a>
+        </li> -->
+        <li class="treeview">
+          <a href="{{url('/admin/users')}}">
+            <i class="fa fa-users"></i> <span>Users </span>
           </a>
         </li>
       </ul>

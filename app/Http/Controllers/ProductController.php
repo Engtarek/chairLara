@@ -8,6 +8,7 @@ use App\Product;
 use File;
 use App\Images;
 use Illuminate\Support\Facades\Cache;
+use Auth;
 class ProductController extends Controller
 {
     //show all products
@@ -37,6 +38,9 @@ class ProductController extends Controller
         'image'=>$request->image,
         'show'=>$request->show,
         'init_image'=>$request->init_image,
+        'uuid'=>uniqid(),
+        'price'=>0,
+         'user_id'=>Auth::user()->id,
       );
       $product = Product::create($data);
       return redirect()->route("products.index")->with("success","The product created successfully");
